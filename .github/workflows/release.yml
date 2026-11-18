@@ -1,0 +1,171 @@
+# fork: builds a fork release when a tag like v2.5.1.1 is pushed.
+# The two fork binaries are placed on top of the official package of the same
+# upstream version (v2.5.1), so 1pctl, init scripts, lang/ and GeoIP stay official.
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to build again, for example v2.5.1.1'
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository != '1Panel-dev/1Panel'
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      ARCHES: amd64 arm64
+    steps:
+      - name: Validate tag
+        run: |
+          if [[ ! "${TAG}" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "::error::Tag ${TAG} is not in the form vX.Y.Z.N"
+            exit 1
+          fi
+          echo "BASE=v${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.${BASH_REMATCH[3]}" >> "${GITHUB_ENV}"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+          fetch-depth: 0
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: agent/go.mod
+          cache-dependency-path: |
+            agent/go.sum
+            core/go.sum
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Download official packages
+        run: |
+          set -euo pipefail
+          mkdir -p official
+          for arch in ${ARCHES}; do
+            name="1panel-${BASE}-linux-${arch}"
+            ok=""
+            for url in \
+              "https://resource.fit2cloud.com/1panel/package/v2/stable/${BASE}/release/${name}.tar.gz" \
+              "https://resource.1panel.pro/v2/stable/${BASE}/release/${name}.tar.gz"; do
+              if curl -fsSL --retry 3 --connect-timeout 20 -o "official/${name}.tar.gz" "${url}"; then
+                echo "Downloaded ${url}"
+                ok=1
+                break
+              fi
+            done
+            if [ -z "${ok}" ]; then
+              echo "::error::Official package ${name}.tar.gz was not found for upstream ${BASE}."
+              exit 1
+            fi
+            tar -xzf "official/${name}.tar.gz" -C official
+            if [ ! -d "official/${name}" ]; then
+              echo "::error::Unexpected layout in ${name}.tar.gz:"
+              ls -la official
+              exit 1
+            fi
+            for item in 1panel-core 1panel-agent 1pctl initscript lang GeoIP.mmdb; do
+              if [ ! -e "official/${name}/${item}" ]; then
+                echo "::error::${item} is missing from the official ${name}.tar.gz"
+                exit 1
+              fi
+            done
+            if ! grep -q "ORIGINAL_VERSION=${BASE}" "official/${name}/1pctl"; then
+              echo "::warning::official 1pctl does not contain ORIGINAL_VERSION=${BASE}"
+            fi
+          done
+
+      - name: Match the official embedded config
+        run: |
+          set -euo pipefail
+          # Upstream sources embed "mode: dev"; official binaries are built in another mode.
+          # Read the mode and log level from the official binaries and use the same values.
+          detect() { # binary key
+            grep -a -A12 'install_dir: /opt' "$1" | grep -a -m1 -oE "^\s*$2: [A-Za-z]+" | awk '{print $2}' || true
+          }
+          official="official/1panel-${BASE}-linux-amd64"
+          core_mode="$(detect "${official}/1panel-core" mode)"
+          agent_mode="$(detect "${official}/1panel-agent" mode)"
+          core_level="$(detect "${official}/1panel-core" level)"
+          agent_level="$(detect "${official}/1panel-agent" level)"
+          echo "official: core mode=${core_mode:-?} level=${core_level:-?}; agent mode=${agent_mode:-?} level=${agent_level:-?}"
+          if [ -z "${core_mode}" ] || [ -z "${agent_mode}" ]; then
+            echo "::warning::Could not read the mode from the official binaries, using 'stable'."
+          fi
+          core_mode="${core_mode:-stable}"
+          agent_mode="${agent_mode:-stable}"
+          if [ "${core_mode}" = "dev" ] || [ "${agent_mode}" = "dev" ]; then
+            echo "::error::Official binaries report mode dev, refusing to guess."
+            exit 1
+          fi
+          sed -i -E "s/^(\s*mode:\s*)dev\s*$/\1${core_mode}/" core/cmd/server/conf/app.yaml
+          sed -i -E "s/^(\s*mode:\s*)dev\s*$/\1${agent_mode}/" agent/cmd/server/conf/app.yaml
+          if [ -n "${core_level}" ]; then sed -i -E "s/^(\s*level:\s*)[A-Za-z]+\s*$/\1${core_level}/" core/cmd/server/conf/app.yaml; fi
+          if [ -n "${agent_level}" ]; then sed -i -E "s/^(\s*level:\s*)[A-Za-z]+\s*$/\1${agent_level}/" agent/cmd/server/conf/app.yaml; fi
+          grep -nE "mode:|level:" core/cmd/server/conf/app.yaml agent/cmd/server/conf/app.yaml
+
+      - name: Build frontend
+        run: make build_frontend
+
+      - name: Build binaries
+        run: |
+          set -euo pipefail
+          bash agent/utils/vm/helper/prepare.sh
+          core_ldflags="-s -w -X github.com/1Panel-dev/1Panel/core/global.ForkVersion=${TAG} -X github.com/1Panel-dev/1Panel/core/global.ForkRepo=${GITHUB_REPOSITORY}"
+          for arch in ${ARCHES}; do
+            (cd core && CGO_ENABLED=0 GOOS=linux GOARCH="${arch}" go build -trimpath -ldflags "${core_ldflags}" -o "../build/${arch}/1panel-core" ./cmd/server)
+            (cd agent && CGO_ENABLED=0 GOOS=linux GOARCH="${arch}" go build -trimpath -ldflags '-s -w' -o "../build/${arch}/1panel-agent" ./cmd/server)
+          done
+          ls -lR build
+
+      - name: Package
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          for arch in ${ARCHES}; do
+            src="official/1panel-${BASE}-linux-${arch}"
+            out="1panel-${TAG}-linux-${arch}"
+            cp -a "${src}" "dist/${out}"
+            install -m 755 "build/${arch}/1panel-core" "dist/${out}/1panel-core"
+            install -m 755 "build/${arch}/1panel-agent" "dist/${out}/1panel-agent"
+            echo "${TAG}" > "dist/${out}/FORK_VERSION"
+            tar -czf "dist/${out}.tar.gz" -C dist "${out}"
+            rm -rf "dist/${out}"
+          done
+          install -m 755 fork/scripts/fork-upgrade.sh dist/fork-upgrade.sh
+          (cd dist && sha256sum -- *.tar.gz fork-upgrade.sh > checksums.txt && cat checksums.txt)
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          notes="$(git tag -l --format='%(contents)' "${TAG}")"
+          {
+            echo "Fork build **${TAG}** on top of upstream 1Panel **${BASE}**."
+            echo
+            if [ -n "${notes}" ]; then echo "${notes}"; echo; fi
+            echo "Install on a server running official ${BASE}: download \`fork-upgrade.sh\` and run \`bash fork-upgrade.sh ${TAG}\` as root."
+            echo "Panels already on a fork build: GitHub > Fork Updates."
+            echo
+            echo "Source: this repository at tag \`${TAG}\` (GPL-3.0)."
+          } > release-notes.md
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            gh release upload "${TAG}" dist/* --clobber
+          else
+            gh release create "${TAG}" dist/* --title "${TAG}" --notes-file release-notes.md --verify-tag
+          fi
