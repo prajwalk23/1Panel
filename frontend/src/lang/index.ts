@@ -1,4 +1,5 @@
 import { createI18n } from 'vue-i18n';
+import { withGithubMessages } from './github'; // fork
 
 type LocaleMessage = Record<string, unknown>;
 type LocaleLoader = () => Promise<{ default: LocaleMessage }>;
@@ -40,7 +41,7 @@ export const loadLocaleMessages = async (locale: string) => {
         return targetLocale;
     }
     const messagesModule = await loader();
-    const messages = messagesModule.default || {};
+    const messages = withGithubMessages(targetLocale, messagesModule.default || {}); // fork
     if (!i18n) {
         return targetLocale;
     }
@@ -56,7 +57,7 @@ const getInitialMessages = async (): Promise<Record<string, LocaleMessage>> => {
     }
     try {
         const messagesModule = await loader();
-        const messages = messagesModule.default || {};
+        const messages = withGithubMessages(initialLocale, messagesModule.default || {}); // fork
         loadedLocales.add(initialLocale);
         return { [initialLocale]: messages };
     } catch {
