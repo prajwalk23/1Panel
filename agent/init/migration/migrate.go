@@ -121,6 +121,7 @@ func agentDBMigrations() []*gormigrate.Migration {
 		migrations.UpdateModelServicesQuickJumpRouter,
 		migrations.AddAgentAccountVerificationResult,
 		migrations.AddGPUGroup,
+		migrations.AddGithubTables, // fork: keep last
 	}
 }
 
