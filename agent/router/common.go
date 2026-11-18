@@ -27,5 +27,6 @@ func commonGroups() []CommonRouter {
 		&GroupRouter{},
 		&AlertRouter{},
 		&RuntimeDiagnosticsRouter{},
+		&GithubRouter{}, // fork
 	}
 }

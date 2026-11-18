@@ -90,6 +90,18 @@ func (q *Queue[T]) Running(projectID uint) bool {
 	return st != nil && st.running
 }
 
+// WaitProject blocks until projectID has no running job, or timeout passes.
+func (q *Queue[T]) WaitProject(projectID uint, timeout time.Duration) bool {
+	deadline := time.Now().Add(timeout)
+	for q.Running(projectID) {
+		if time.Now().After(deadline) {
+			return false
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
+	return true
+}
+
 // Wait blocks until every started job has finished (used by tests and shutdown).
 func (q *Queue[T]) Wait() {
 	q.wg.Wait()

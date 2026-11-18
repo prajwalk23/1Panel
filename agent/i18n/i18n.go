@@ -158,6 +158,7 @@ func Init() {
 	if !isSuccess {
 		panic("[i18n] failed to init language files, See log above for details")
 	}
+	loadGithubLangFiles() // fork
 	lang := GetLanguageFromDB()
 	global.I18n = i18n.NewLocalizer(bundle, lang)
 }
