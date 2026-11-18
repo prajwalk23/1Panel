@@ -126,15 +126,17 @@ func (g *GithubService) CreateProject(req dto.GithubProjectOperate) (*dto.Github
 		return nil, err
 	}
 
+	if project.DomainMode == dto.GithubDomainWebsite {
+		if err := githubEnsureHookProxy(project.WebsiteID, setting); err != nil {
+			githubDropKey(createdKeyID)
+			return nil, err
+		}
+	}
 	if err := githubRepo.CreateProject(&project); err != nil {
 		githubDropKey(createdKeyID)
 		return nil, err
 	}
-	if err := githubSyncHookProxies(setting); err != nil {
-		_ = githubRepo.DeleteProject(repo.WithByID(project.ID))
-		githubDropKey(createdKeyID)
-		return nil, err
-	}
+	githubSyncHookProxiesQuiet(setting)
 	info := githubProjectInfo(project, setting)
 	return &dto.GithubProjectSecret{ID: project.ID, Secret: secret, WebhookURL: info.WebhookURL, PublicKey: info.PublicKey}, nil
 }
@@ -152,6 +154,12 @@ func (g *GithubService) UpdateProject(req dto.GithubProjectOperate) error {
 		return err
 	}
 
+	setting := loadGithubSetting()
+	if project.DomainMode == dto.GithubDomainWebsite {
+		if err := githubEnsureHookProxy(project.WebsiteID, setting); err != nil {
+			return err
+		}
+	}
 	createdKeyID := uint(0)
 	if project.KeyMode == dto.GithubKeyModeProject {
 		if oldKeyMode == dto.GithubKeyModeProject && oldKeyID != 0 {
@@ -172,7 +180,8 @@ func (g *GithubService) UpdateProject(req dto.GithubProjectOperate) error {
 	if oldKeyMode == dto.GithubKeyModeProject && oldKeyID != 0 && project.KeyID != oldKeyID {
 		githubDropKey(oldKeyID)
 	}
-	return githubSyncHookProxies(loadGithubSetting())
+	githubSyncHookProxiesQuiet(setting)
+	return nil
 }
 
 func (g *GithubService) DeleteProject(id uint) error {
@@ -192,7 +201,8 @@ func (g *GithubService) DeleteProject(id uint) error {
 	if project.KeyMode == dto.GithubKeyModeProject {
 		githubDropKey(project.KeyID)
 	}
-	return githubSyncHookProxies(loadGithubSetting())
+	githubSyncHookProxiesQuiet(loadGithubSetting())
+	return nil
 }
 
 func (g *GithubService) UpdateProjectStatus(req dto.GithubProjectStatus) error {
@@ -729,6 +739,14 @@ func githubSyncHookProxies(setting dto.GithubSetting) error {
 	return firstErr
 }
 
+// githubSyncHookProxiesQuiet is used after project changes: a broken website
+// elsewhere must not block saving a project, so errors are only logged.
+func githubSyncHookProxiesQuiet(setting dto.GithubSetting) {
+	if err := githubSyncHookProxies(setting); err != nil {
+		global.LOG.Errorf("[github] sync hook proxies failed: %v", err)
+	}
+}
+
 func githubProxyPass(setting dto.GithubSetting) string {
 	host := setting.WebhookBind
 	if ip := net.ParseIP(host); ip == nil || ip.IsUnspecified() {
@@ -755,6 +773,11 @@ func githubEnsureHookProxy(websiteID uint, setting dto.GithubSetting) error {
 	}
 	operate := "create"
 	if fileOp.Stat(conf) {
+		if content, err := fileOp.GetContent(conf); err == nil &&
+			strings.Contains(string(content), "proxy_pass "+githubProxyPass(setting)+";") &&
+			strings.Contains(string(content), githubHookPath) {
+			return nil
+		}
 		operate = "edit"
 	}
 	return websiteService.OperateProxy(request.WebsiteProxyConfig{
