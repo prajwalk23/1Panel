@@ -1,0 +1,54 @@
+# fork: builds and tests the fork on every push and PR to main.
+name: Fork CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fork-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.repository != '1Panel-dev/1Panel'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: agent/go.mod
+          cache-dependency-path: |
+            agent/go.sum
+            core/go.sum
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Unit tests (fork packages)
+        run: |
+          (cd agent && go test ./utils/github/...)
+          (cd core && go test ./utils/github/...)
+
+      - name: Build frontend
+        run: make build_frontend
+
+      - name: Vet fork code
+        run: |
+          bash agent/utils/vm/helper/prepare.sh
+          (cd agent && go vet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...)
+          (cd core && go vet ./utils/github/... ./app/... ./router/... ./global/... ./init/migration/... ./i18n/...)
+
+      - name: Build binaries (linux/amd64)
+        run: |
+          (cd core && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags '-s -w' -o ../build/1panel-core ./cmd/server)
+          (cd agent && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags '-s -w' -o ../build/1panel-agent ./cmd/server)
+          ls -lh build/

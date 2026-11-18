@@ -1,0 +1,113 @@
+# fork: keeps the fork in step with upstream 1Panel without ever overwriting fork code.
+# - dev-v2: fast-forward mirror of upstream dev-v2 (reference only)
+# - main:   merges the newest upstream *stable* tag; clean merge is pushed, a conflict opens a PR
+# Never force-pushes, resets or rebases. See fork/README.md.
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository != '1Panel-dev/1Panel'
+    runs-on: ubuntu-latest
+    env:
+      UPSTREAM_URL: https://github.com/1Panel-dev/1Panel.git
+      MIRROR_BRANCH: dev-v2
+      MAIN_BRANCH: main
+    steps:
+      - name: Check token
+        env:
+          SYNC_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          if [ -z "${SYNC_TOKEN}" ]; then
+            echo "::error::Repository secret SYNC_TOKEN is missing. Create a fine-grained token for this repo with Contents, Workflows and Pull requests (read and write) and save it as SYNC_TOKEN."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.MAIN_BRANCH }}
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN }}
+
+      - name: Fetch upstream
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream "${UPSTREAM_URL}"
+          git fetch --no-tags upstream "+refs/heads/${MIRROR_BRANCH}:refs/remotes/upstream/${MIRROR_BRANCH}"
+          # Upstream tags go to their own namespace so they never mix with fork tags (v2.5.1.1 ...).
+          git fetch --no-tags upstream "+refs/tags/*:refs/upstream-tags/*"
+          git fetch --no-tags origin "+refs/heads/${MIRROR_BRANCH}:refs/remotes/origin/${MIRROR_BRANCH}" || true
+
+      - name: Mirror dev-v2 (fast-forward only)
+        run: |
+          if git rev-parse --verify -q "refs/remotes/origin/${MIRROR_BRANCH}" >/dev/null; then
+            if ! git merge-base --is-ancestor "refs/remotes/origin/${MIRROR_BRANCH}" "refs/remotes/upstream/${MIRROR_BRANCH}"; then
+              echo "::warning::Fork ${MIRROR_BRANCH} has commits that are not in upstream. Mirror not updated."
+              exit 0
+            fi
+          fi
+          git push origin "refs/remotes/upstream/${MIRROR_BRANCH}:refs/heads/${MIRROR_BRANCH}"
+
+      - name: Merge newest upstream stable tag
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="$(git for-each-ref --format='%(refname:strip=2)' refs/upstream-tags/ \
+                  | grep -E '^v2\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1 || true)"
+          if [ -z "${TAG}" ]; then
+            echo "No upstream stable tag found."
+            exit 0
+          fi
+          TAG_SHA="$(git rev-parse "refs/upstream-tags/${TAG}^{commit}")"
+          echo "Newest upstream stable tag: ${TAG} (${TAG_SHA})"
+          if git merge-base --is-ancestor "${TAG_SHA}" HEAD; then
+            echo "${MAIN_BRANCH} already contains ${TAG}. Nothing to do."
+            exit 0
+          fi
+
+          BRANCH="sync/upstream-${TAG}"
+          if git ls-remote --exit-code --heads origin "${BRANCH}" >/dev/null 2>&1; then
+            echo "${BRANCH} already exists and waits for review. Nothing to do."
+            exit 0
+          fi
+
+          if git merge --no-ff --no-commit "${TAG_SHA}"; then
+            # Keep the fork's workflow files exactly as they are on main.
+            git restore --source=HEAD --staged --worktree -- .github/workflows
+            git commit -m "chore(sync): merge upstream ${TAG}"
+            git push origin "HEAD:refs/heads/${MAIN_BRANCH}"
+            echo "::notice::Merged upstream ${TAG} into ${MAIN_BRANCH}."
+          else
+            git merge --abort
+            git push origin "${TAG_SHA}:refs/heads/${BRANCH}"
+            gh pr create \
+              --base "${MAIN_BRANCH}" \
+              --head "${BRANCH}" \
+              --title "Sync upstream ${TAG}" \
+              --body "Upstream \`${TAG}\` does not merge cleanly into \`${MAIN_BRANCH}\`.
+
+          Resolve locally:
+
+          \`\`\`
+          git fetch origin
+          git switch ${MAIN_BRANCH}
+          git merge origin/${BRANCH}
+          \`\`\`
+
+          Fix the conflicts using \`FORK_PATCHES.md\`, keep the fork's \`.github/workflows\`, then push \`${MAIN_BRANCH}\` and close this PR."
+            echo "::warning::Conflict merging upstream ${TAG}. Opened a PR from ${BRANCH}."
+          fi
