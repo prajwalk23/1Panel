@@ -41,7 +41,8 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
   `agent/i18n/github.go`
 - Core: `core/global/fork.go`, `core/utils/github/`, `core/app/service/github_update.go`,
   `core/app/dto/github.go`, `core/app/api/v2/github_update.go`, `core/router/ro_github.go`,
-  `core/init/migration/migrations/github_menu.go`, `core/i18n/lang/github/`, `core/i18n/github.go`
+  `core/init/migration/migrations/github_menu.go`, `core/init/migration/helper/github_menu.go`,
+  `core/i18n/lang/github/`, `core/i18n/github.go`
 - Frontend: `frontend/src/routers/modules/github.ts`, `frontend/src/views/github/`,
   `frontend/src/api/modules/github.ts`, `frontend/src/api/interface/github.ts`, `frontend/src/lang/github/`
 - Fork tooling: `.github/workflows/sync-upstream.yml`, `.github/workflows/fork-ci.yml`,

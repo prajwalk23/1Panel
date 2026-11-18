@@ -1,0 +1,10 @@
+# fork: 分支更新文案
+ErrForkOfficialUpgrade: '此分支版本已停用官方更新，請使用 GitHub - 分支更新'
+ErrForkNotForkBuild: '目前面板不是分支建置版本，無法使用分支更新'
+ErrForkInvalidVersion: '分支版本無效，格式應為 v2.5.1.1'
+ErrForkNotNewer: '所選版本不比目前版本新'
+ErrForkBusy: '已有更新正在進行'
+ErrForkRepoInvalid: '建置中的分支倉庫名稱無效'
+ErrForkReleaseNotFound: '分支倉庫中沒有找到發佈版本'
+ErrForkAssetMissing: '該發佈版本缺少檔案 {{ .name }}'
+ErrForkGithubAPI: 'GitHub 請求失敗：{{ .name }}'

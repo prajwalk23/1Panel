@@ -126,6 +126,7 @@ func LoadMenus() string {
 			}},
 		{ID: "8", Disabled: false, Title: "menu.terminal", IsShow: true, Label: "Terminal-Menu", Path: "/hosts/terminal", Sort: 800},
 		{ID: "10", Disabled: false, Title: "menu.cronjob", IsShow: true, Label: "Cronjob-Menu", Path: "/cronjobs", Sort: 900},
+		GithubMenu, // fork
 		{ID: "9", Disabled: false, Title: "menu.toolbox", IsShow: true, Label: "Toolbox-Menu", Path: "/toolbox", Sort: 1000},
 		{ID: "11", Disabled: false, Title: "xpack.menu", IsShow: true, Label: "Xpack-Menu", Sort: 1100,
 			Children: []dto.ShowMenu{
@@ -225,6 +226,7 @@ func MenuSort() []dto.MenuLabelSort {
 		{Label: "Disk", Sort: 600},
 		{Label: "Terminal-Menu", Sort: 800},
 		{Label: "Cronjob-Menu", Sort: 900},
+		{Label: GithubMenu.Label, Sort: GithubMenu.Sort}, // fork
 		{Label: "Toolbox-Menu", Sort: 1000},
 		{Label: "Xpack-Menu", Sort: 1100},
 		{Label: "Log-Menu", Sort: 1200},

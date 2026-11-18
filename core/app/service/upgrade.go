@@ -89,6 +89,9 @@ func NewIUpgradeService() IUpgradeService {
 }
 
 func (u *UpgradeService) SearchUpgrade() (*dto.UpgradeInfo, error) {
+	if global.IsForkBuild() { // fork: official updates are disabled, see GitHub > Fork Updates
+		return &dto.UpgradeInfo{}, nil
+	}
 	if global.CONF.Base.IsOffline {
 		return &dto.UpgradeInfo{}, nil
 	}
@@ -144,6 +147,9 @@ func (u *UpgradeService) LoadNotes(req dto.Upgrade) (string, error) {
 }
 
 func (u *UpgradeService) Upgrade(req dto.Upgrade) error {
+	if global.IsForkBuild() { // fork: never install stock 1Panel over a fork build
+		return buserr.New("ErrForkOfficialUpgrade")
+	}
 	global.LOG.Info("start to upgrade now...")
 	itemArch, err := loadArch()
 	if err != nil {
