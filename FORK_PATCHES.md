@@ -50,6 +50,6 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
 
 ## Upstream workflows
 
-`sync2gitee.yml`, `issue-translator.yml` and `add-labels-for-pr.yml` are **disabled in the Actions UI**
-of the fork (not edited), so they never conflict. The sync job keeps the fork's `.github/workflows`
-as-is when merging upstream.
+`sync2gitee.yml`, `issue-translator.yml` and `add-labels-for-pr.yml` are **deleted** in the fork.
+The sync job always keeps the fork's `.github/workflows` as on `main` (it also resolves a
+modify/delete conflict when upstream edits one of the deleted files).

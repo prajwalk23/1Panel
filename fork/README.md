@@ -15,7 +15,6 @@ Licence: GPL-3.0, same as upstream. Source for every release is this repository.
 | Branch | Content | Written by |
 |---|---|---|
 | `main` | upstream stable tag + fork code. Default branch. | PRs and the sync job |
-| `dev-v2` | pure mirror of upstream `dev-v2`, for reference only | sync job, fast-forward only |
 | `sync/upstream-<tag>` | upstream tag that did not merge cleanly | sync job (PR into `main`) |
 
 `main` is based on upstream **stable tags only** (first base: `v2.5.1`). Unreleased upstream code
@@ -25,12 +24,11 @@ and its database migrations never reach `main`.
 
 Runs daily and on demand:
 
-1. Fast-forwards `dev-v2` from upstream.
-2. Finds the newest upstream stable tag (`v2.X.Y`). Stops if `main` already contains it.
-3. Merges the tag into `main`, keeping the fork's `.github/workflows`.
+1. Finds the newest upstream stable tag (`v2.X.Y`). Stops if `main` already contains it.
+2. Merges the tag into `main`, keeping the fork's `.github/workflows`.
    - Clean merge: pushed to `main`. Nothing is built or deployed.
    - Conflict: pushes the tag as `sync/upstream-<tag>` and opens a PR. `main` is not touched.
-4. Never force-pushes, resets or rebases.
+3. Never force-pushes, resets or rebases.
 
 Resolve a conflict PR locally: `git fetch origin && git switch main && git merge origin/sync/upstream-<tag>`,
 fix the files listed in `FORK_PATCHES.md`, commit, push.
@@ -53,9 +51,7 @@ fix the files listed in `FORK_PATCHES.md`, commit, push.
 4. Create a fine-grained personal access token for this repository with **Contents**, **Workflows**
    and **Pull requests** set to read and write. Save it as the repository secret `SYNC_TOKEN`.
    The default Actions token cannot push upstream commits that touch workflow files.
-5. Disable the upstream workflows `sync2gitee`, `issue-translator` and `add-labels-for-pr`
-   (Actions tab, select the workflow, "..." menu, Disable workflow).
-6. Keep the repository public, so panels can download releases without a token.
+5. Keep the repository public, so panels can download releases without a token.
 
 ## Installing on a server that runs official 1Panel
 

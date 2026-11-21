@@ -31,7 +31,7 @@ const githubRouter = {
                 {
                     path: 'logs',
                     name: 'GithubLogs',
-                    component: () => import('@/views/github/logs/index.vue'),
+                    component: () => import('@/views/github/runs/index.vue'),
                     hidden: true,
                     meta: { activeMenu: '/github', title: 'github.logs', adminOnly: true },
                 },

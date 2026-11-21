@@ -1,6 +1,6 @@
 # fork: keeps the fork in step with upstream 1Panel without ever overwriting fork code.
-# - dev-v2: fast-forward mirror of upstream dev-v2 (reference only)
-# - main:   merges the newest upstream *stable* tag; clean merge is pushed, a conflict opens a PR
+# main merges the newest upstream *stable* tag; a clean merge is pushed, a conflict opens a PR.
+# The fork's .github/workflows are always kept as they are on main.
 # Never force-pushes, resets or rebases. See fork/README.md.
 name: Sync upstream
 
@@ -23,7 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       UPSTREAM_URL: https://github.com/1Panel-dev/1Panel.git
-      MIRROR_BRANCH: dev-v2
       MAIN_BRANCH: main
     steps:
       - name: Check token
@@ -46,20 +45,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git remote add upstream "${UPSTREAM_URL}"
-          git fetch --no-tags upstream "+refs/heads/${MIRROR_BRANCH}:refs/remotes/upstream/${MIRROR_BRANCH}"
           # Upstream tags go to their own namespace so they never mix with fork tags (v2.5.1.1 ...).
           git fetch --no-tags upstream "+refs/tags/*:refs/upstream-tags/*"
-          git fetch --no-tags origin "+refs/heads/${MIRROR_BRANCH}:refs/remotes/origin/${MIRROR_BRANCH}" || true
-
-      - name: Mirror dev-v2 (fast-forward only)
-        run: |
-          if git rev-parse --verify -q "refs/remotes/origin/${MIRROR_BRANCH}" >/dev/null; then
-            if ! git merge-base --is-ancestor "refs/remotes/origin/${MIRROR_BRANCH}" "refs/remotes/upstream/${MIRROR_BRANCH}"; then
-              echo "::warning::Fork ${MIRROR_BRANCH} has commits that are not in upstream. Mirror not updated."
-              exit 0
-            fi
-          fi
-          git push origin "refs/remotes/upstream/${MIRROR_BRANCH}:refs/heads/${MIRROR_BRANCH}"
 
       - name: Merge newest upstream stable tag
         env:
@@ -85,9 +72,26 @@ jobs:
             exit 0
           fi
 
+          keep_fork_workflows() {
+            # Workflow files stay exactly as on main (also removes ones upstream adds or changes).
+            git rm -r -f -q --ignore-unmatch -- .github/workflows
+            git checkout HEAD -- .github/workflows
+          }
+
+          merged=0
           if git merge --no-ff --no-commit "${TAG_SHA}"; then
-            # Keep the fork's workflow files exactly as they are on main.
-            git restore --source=HEAD --staged --worktree -- .github/workflows
+            merged=1
+          else
+            # A conflict only inside .github/workflows (for example upstream edits a workflow
+            # the fork deleted) is not a real conflict: the fork's version wins.
+            others="$(git diff --name-only --diff-filter=U | grep -v '^\.github/workflows/' || true)"
+            if [ -z "${others}" ] && [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+              merged=1
+            fi
+          fi
+
+          if [ "${merged}" = "1" ]; then
+            keep_fork_workflows
             git commit -m "chore(sync): merge upstream ${TAG}"
             git push origin "HEAD:refs/heads/${MAIN_BRANCH}"
             echo "::notice::Merged upstream ${TAG} into ${MAIN_BRANCH}."
