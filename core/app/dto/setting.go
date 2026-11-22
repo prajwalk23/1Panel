@@ -62,6 +62,7 @@ type SettingInfo struct {
 
 type SettingBaseInfo struct {
 	SystemVersion       string `json:"systemVersion"`
+	ForkVersion         string `json:"forkVersion"` // fork: full fork build, for example v2.5.1.3
 	DeveloperMode       string `json:"developerMode"`
 	UpgradeBackupCopies string `json:"upgradeBackupCopies"`
 

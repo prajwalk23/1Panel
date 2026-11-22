@@ -76,6 +76,7 @@ export namespace Setting {
     }
     export interface SettingBaseInfo {
         systemVersion: string;
+        forkVersion?: string; // fork: full fork build, for example v2.5.1.3
         developerMode: string;
         upgradeBackupCopies: string;
 

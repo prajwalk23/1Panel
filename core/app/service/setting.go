@@ -180,6 +180,7 @@ func (u *SettingService) GetSettingBaseInfo() (*dto.SettingBaseInfo, error) {
 	}
 
 	info.ProxyEnabled = info.ProxyType == "http" || info.ProxyType == "https" || info.ProxyType == "socks5"
+	info.ForkVersion = global.ForkVersion // fork
 
 	return &info, err
 }

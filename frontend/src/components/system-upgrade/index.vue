@@ -56,7 +56,7 @@ const upgradeVersion = ref();
 
 const search = async () => {
     const res = await getSettingBaseInfo();
-    version.value = res.data.systemVersion;
+    version.value = res.data.forkVersion || res.data.systemVersion; // fork: show the full fork build
 };
 
 const getVersionLog = () => {
