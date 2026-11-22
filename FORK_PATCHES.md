@@ -21,6 +21,15 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `core/app/service/upgrade.go` | fork block at the top of `SearchUpgrade` (answers from the fork releases) and `Upgrade` (hands over to the fork updater) | re-add both blocks |
 | `core/i18n/i18n.go` | `Init()` also loads `lang/github/*.yaml` via `loadGithubLangFiles()` | re-add the call |
 | `frontend/src/lang/index.ts` | messages pass through `withGithubMessages()` | re-wrap both places |
+| `agent/init/migration/migrate.go` | also `migrations.AddRuntimeGithubFields,` appended | keep ours **last** |
+| `agent/app/model/runtime.go` | `GitMode`/`GitCloneURL`/`GitBranch`/`GitKeyID`/`GitUpdateStrategy` columns on `Runtime` | re-add the 5 fields |
+| `agent/app/dto/request/runtime.go`, `agent/app/dto/response/runtime.go` | git source fields on `RuntimeCreate`/`RuntimeUpdate`/`RuntimeDTO` | re-add the fields |
+| `agent/app/service/runtime.go` | `validateRuntimeGit`/`applyRuntimeGitFrom*` on create+update, clone in `executeRuntimeCreateTask`, pull before recreate, code-dir existence check relaxed for git | re-add the calls |
+| `agent/app/service/runtime_utils.go` | `runtimeGitPullIfEnabled` before restart | re-add the line |
+| `frontend/src/api/interface/runtime.ts` | git fields on `RuntimeCreate`/`RuntimeUpdate`/`RuntimeDTO` | re-add the fields |
+| `frontend/src/views/website/runtime/{python,node,java,go,dotnet}/operate/index.vue` | `<GitConfig>` component + init/get mapping | re-add the component and 5 mapped fields |
+| `frontend/src/views/website/runtime/{python,node,java,go,dotnet}/index.vue` | `GitHub` tag on rows when `gitMode === 'git'` | re-add the tag |
+| `frontend/src/lang/modules/en.ts`, `zh.ts` | `runtime.git*` keys | re-add the keys |
 
 Every edit is marked with a `// fork:` comment so `git grep "fork:"` finds them all.
 
@@ -39,7 +48,9 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
 - Agent: `agent/utils/github/`, `agent/app/model/github.go`, `agent/app/dto/github.go`,
   `agent/app/repo/github.go`, `agent/app/service/github*.go`, `agent/app/api/v2/github.go`,
   `agent/router/ro_github.go`, `agent/init/migration/migrations/github*.go`, `agent/i18n/lang/github/`,
-  `agent/i18n/github.go`
+  `agent/i18n/github.go`, `agent/app/service/runtime_github.go`,
+  `agent/init/migration/migrations/runtime_github.go`
+- Frontend: `frontend/src/views/website/runtime/components/git/index.vue`
 - Core: `core/global/fork.go`, `core/utils/github/`, `core/app/service/github_update.go`,
   `core/app/dto/github.go`, `core/app/api/v2/github_update.go`, `core/router/ro_github.go`,
   `core/init/migration/migrations/github_menu.go`, `core/init/migration/helper/github_menu.go`,

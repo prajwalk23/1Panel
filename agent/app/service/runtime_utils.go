@@ -828,6 +828,7 @@ func removePHPIniExt(filePath, extensionName string) error {
 }
 
 func restartRuntime(runtime *model.Runtime) (err error) {
+	runtimeGitPullIfEnabled(runtime) // fork: pull latest code before restart
 	if err = runComposeCmdWithLog(constant.RuntimeDown, runtime.GetComposePath(), runtime.GetLogPath()); err != nil {
 		return
 	}

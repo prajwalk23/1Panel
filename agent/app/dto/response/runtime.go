@@ -32,6 +32,13 @@ type RuntimeDTO struct {
 	ContainerStatus string                 `json:"containerStatus"`
 	Container       string                 `json:"container"`
 	Remark          string                 `json:"remark"`
+
+	// fork: optional GitHub source of the runtime.
+	GitMode           string `json:"gitMode"`
+	GitCloneURL       string `json:"gitCloneURL"`
+	GitBranch         string `json:"gitBranch"`
+	GitKeyID          uint   `json:"gitKeyID"`
+	GitUpdateStrategy string `json:"gitUpdateStrategy"`
 }
 
 type PackageScripts struct {
@@ -56,6 +63,13 @@ func NewRuntimeDTO(runtime model.Runtime) RuntimeDTO {
 		Path:        runtime.GetPath(),
 		Container:   runtime.ContainerName,
 		Remark:      runtime.Remark,
+
+		// fork: GitHub source
+		GitMode:           runtime.GitMode,
+		GitCloneURL:       runtime.GitCloneURL,
+		GitBranch:         runtime.GitBranch,
+		GitKeyID:          runtime.GitKeyID,
+		GitUpdateStrategy: runtime.GitUpdateStrategy,
 	}
 }
 

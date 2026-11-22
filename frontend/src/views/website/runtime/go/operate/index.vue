@@ -40,6 +40,7 @@
                     {{ $t('runtime.goHelper') }}
                 </span>
             </el-form-item>
+            <GitConfig v-model="runtime" :mode="mode" />
             <el-form-item :label="$t('app.containerName')" prop="params.CONTAINER_NAME">
                 <el-input v-model.trim="runtime.params['CONTAINER_NAME']"></el-input>
             </el-form-item>
@@ -63,6 +64,7 @@
 import NodeConfig from '../../components/node-config.vue';
 import AppConfig from '@/views/website/runtime/app/index.vue';
 import FileList from '@/components/file-list/index.vue';
+import GitConfig from '@/views/website/runtime/components/git/index.vue';
 
 import { App } from '@/api/interface/app';
 import { Runtime } from '@/api/interface/runtime';
@@ -103,6 +105,7 @@ const initData = (type: string) => ({
     volumes: [],
     remark: '',
     extraHosts: [],
+    gitMode: 'none',
 });
 let runtime = reactive<Runtime.RuntimeCreate>(initData('go'));
 const rules = ref<any>({
@@ -213,6 +216,11 @@ const getRuntime = async (id: number) => {
             codeDir: data.codeDir,
             port: data.port,
             remark: data.remark,
+            gitMode: data.gitMode,
+            gitCloneURL: data.gitCloneURL,
+            gitBranch: data.gitBranch,
+            gitKeyID: data.gitKeyID,
+            gitUpdateStrategy: data.gitUpdateStrategy,
         });
         runtime.exposedPorts = data.exposedPorts || [];
         runtime.environments = data.environments || [];

@@ -5486,6 +5486,22 @@ const message = {
         concurrency: 'Concurrency Scheme',
         loadStatus: 'Load Status',
         extraHosts: 'Host mapping',
+        gitSource: 'Source from GitHub',
+        gitSourceHelper:
+            'Clone the code directory from a GitHub repository. The code directory must be empty on the first create; restarts and updates pull the latest code automatically.',
+        gitCloneURL: 'Repository URL',
+        gitCloneURLHelper: 'https://github.com/owner/repo.git or git@github.com:owner/repo.git',
+        gitCloneURLRequired: 'Please enter the repository URL',
+        gitBranch: 'Branch',
+        gitKey: 'Deploy key',
+        gitKeyShared: 'Use the shared key',
+        gitKeyHelper:
+            'SSH clones need a deploy key. The shared key of the GitHub settings is used by default.',
+        gitUpdateStrategy: 'Update strategy',
+        gitFFOnly: 'Fast-forward only',
+        gitReset: 'Reset and overwrite',
+        gitUpdateStrategyHelper:
+            'Fast-forward keeps local changes and fails on conflicts; reset discards local changes.',
     },
     process: {
         pid: 'Process ID',

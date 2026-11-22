@@ -31,6 +31,15 @@
                             <el-text type="primary" class="cursor-pointer" @click="openDetail(row)">
                                 {{ row.name }}
                             </el-text>
+                            <el-tag
+                                v-if="row.gitMode === 'git'"
+                                size="small"
+                                type="info"
+                                class="ml-2"
+                                :title="row.gitCloneURL"
+                            >
+                                GitHub
+                            </el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('runtime.codeDir')" prop="codeDir" min-width="120px">

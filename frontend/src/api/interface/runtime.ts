@@ -51,6 +51,12 @@ export namespace Runtime {
         volumes?: Volume[];
         extraHosts?: ExtraHost[];
         container: string;
+        // fork: optional GitHub source
+        gitMode?: string;
+        gitCloneURL?: string;
+        gitBranch?: string;
+        gitKeyID?: number;
+        gitUpdateStrategy?: string;
     }
 
     export interface RuntimeCreate {
@@ -74,6 +80,12 @@ export namespace Runtime {
         volumes?: Volume[];
         extraHosts?: ExtraHost[];
         remark?: string;
+        // fork: optional GitHub source
+        gitMode?: string;
+        gitCloneURL?: string;
+        gitBranch?: string;
+        gitKeyID?: number;
+        gitUpdateStrategy?: string;
     }
 
     export interface ExposedPort {
@@ -108,6 +120,12 @@ export namespace Runtime {
         version?: string;
         rebuild?: boolean;
         install?: boolean;
+        // fork: optional GitHub source
+        gitMode?: string;
+        gitCloneURL?: string;
+        gitBranch?: string;
+        gitKeyID?: number;
+        gitUpdateStrategy?: string;
     }
 
     export interface RuntimeDelete {

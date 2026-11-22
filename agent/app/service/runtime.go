@@ -139,6 +139,9 @@ func (r *RuntimeService) Create(create request.RuntimeCreate) (*model.Runtime, e
 	if exist != nil {
 		return nil, buserr.New("ErrNameIsExist")
 	}
+	if err := validateRuntimeGit(create); err != nil { // fork: GitHub source
+		return nil, err
+	}
 	fileOp := files.NewFileOp()
 
 	runtimeDir := path.Join(global.Dir.RuntimeDir, create.Type)
@@ -183,7 +186,7 @@ func (r *RuntimeService) Create(create request.RuntimeCreate) (*model.Runtime, e
 			return nil, err
 		}
 	case constant.RuntimeNode, constant.RuntimeJava, constant.RuntimeGo, constant.RuntimePython, constant.RuntimeDotNet:
-		if !fileOp.Stat(create.CodeDir) {
+		if !runtimeGitRequested(create) && !fileOp.Stat(create.CodeDir) { // fork: a git source may create the dir
 			return nil, buserr.New("ErrPathNotFound")
 		}
 		for _, export := range create.ExposedPorts {
@@ -224,6 +227,7 @@ func (r *RuntimeService) Create(create request.RuntimeCreate) (*model.Runtime, e
 		Remark:        create.Remark,
 		Status:        runtimeCreateInitialStatus(create),
 	}
+	applyRuntimeGitFromCreate(runtime, create) // fork: GitHub source
 	if err := runtimeRepo.Create(context.Background(), runtime); err != nil {
 		return nil, err
 	}
@@ -275,6 +279,11 @@ func executeRuntimeCreateTask(create request.RuntimeCreate, runtime *model.Runti
 	}
 	if err != nil {
 		return markRuntimeCreateFailed(runtime, err)
+	}
+	if runtimeGitEnabled(runtime) { // fork: clone the code directory from GitHub
+		if _, err = runtimeGitCloneRepo(context.Background(), runtime, taskItem); err != nil {
+			return markRuntimeCreateFailed(runtime, err)
+		}
 	}
 	if err = runtimeRepo.Save(runtime); err != nil {
 		return err
@@ -657,6 +666,9 @@ func (r *RuntimeService) Update(req request.RuntimeUpdate) (err error) {
 		return runtimeRepo.Save(runtime)
 	}
 	oldRuntime := *runtime
+	if err := validateRuntimeGitFields(req.GitMode, req.GitCloneURL, req.GitBranch, req.CodeDir); err != nil { // fork: GitHub source
+		return err
+	}
 	appDetail, err := getRuntimeUpdateAppDetail(runtime, req)
 	if err != nil {
 		return err
@@ -785,6 +797,7 @@ func (r *RuntimeService) Update(req request.RuntimeUpdate) (err error) {
 		runtime.Port = strings.Join(hostPorts, ",")
 		runtime.Status = constant.StatusReCreating
 		runtime.ContainerName = req.Params["CONTAINER_NAME"].(string)
+		applyRuntimeGitFromUpdate(runtime, req) // fork: GitHub source
 		if err = runtimeRepo.Save(runtime); err != nil {
 			return err
 		}
@@ -793,6 +806,7 @@ func (r *RuntimeService) Update(req request.RuntimeUpdate) (err error) {
 				global.LOG.Errorf("prepare runtime [%s] update failed: %v", runtime.Name, err)
 				return
 			}
+			runtimeGitPullIfEnabled(runtime) // fork: pull latest code before recreate
 			reCreateRuntime(runtime)
 		}()
 	}

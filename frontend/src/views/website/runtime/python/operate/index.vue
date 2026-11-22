@@ -19,6 +19,7 @@
                 <el-input :disabled="mode === 'edit'" v-model="runtime.name"></el-input>
             </el-form-item>
             <DirConfig v-model="runtime" :mode="mode" :scriptHelper="$t('runtime.pythonHelper')" />
+            <GitConfig v-model="runtime" :mode="mode" />
             <AppConfig v-model="runtime" :mode="mode" appKey="python" />
             <el-form-item :label="$t('app.containerName')" prop="params.CONTAINER_NAME">
                 <el-input v-model.trim="runtime.params['CONTAINER_NAME']"></el-input>
@@ -42,6 +43,7 @@
 import NodeConfig from '../../components/node-config.vue';
 import AppConfig from '@/views/website/runtime/app/index.vue';
 import DirConfig from '@/views/website/runtime/components/dir/index.vue';
+import GitConfig from '@/views/website/runtime/components/git/index.vue';
 
 import { App } from '@/api/interface/app';
 import { Runtime } from '@/api/interface/runtime';
@@ -81,6 +83,7 @@ const initData = (type: string) => ({
     extraHosts: [],
     volumes: [],
     remark: '',
+    gitMode: 'none',
 });
 let runtime = reactive<Runtime.RuntimeCreate>(initData('python'));
 const rules = ref<any>({
@@ -177,6 +180,11 @@ const getRuntime = async (id: number) => {
             codeDir: data.codeDir,
             port: data.port,
             remark: data.remark,
+            gitMode: data.gitMode,
+            gitCloneURL: data.gitCloneURL,
+            gitBranch: data.gitBranch,
+            gitKeyID: data.gitKeyID,
+            gitUpdateStrategy: data.gitUpdateStrategy,
         });
         runtime.exposedPorts = data.exposedPorts || [];
         runtime.environments = data.environments || [];

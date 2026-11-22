@@ -24,6 +24,13 @@ type Runtime struct {
 	CodeDir       string `json:"codeDir"`
 	ContainerName string `json:"containerName"`
 	Remark        string `json:"remark"`
+
+	// fork: optional GitHub source (clone/pull the code directory from a repo).
+	GitMode           string `gorm:"default:none" json:"gitMode"`
+	GitCloneURL       string `json:"gitCloneURL"`
+	GitBranch         string `gorm:"default:main" json:"gitBranch"`
+	GitKeyID          uint   `json:"gitKeyID"`
+	GitUpdateStrategy string `gorm:"default:ff-only" json:"gitUpdateStrategy"`
 }
 
 func (r *Runtime) GetComposePath() string {

@@ -30,6 +30,11 @@ const (
 	GithubStatusFailed   = "failed"
 	GithubStatusCanceled = "canceled"
 	GithubStatusSkipped  = "skipped"
+
+	// Git source of a runtime (fork). "none" means the code directory is managed
+	// by hand; "git" clones and pulls from GitCloneURL.
+	RuntimeGitModeNone = "none"
+	RuntimeGitModeGit  = "git"
 )
 
 type GithubProjectSearch struct {

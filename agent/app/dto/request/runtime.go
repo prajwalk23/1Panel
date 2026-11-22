@@ -25,6 +25,13 @@ type RuntimeCreate struct {
 
 	Params map[string]interface{} `json:"params"`
 	NodeConfig
+
+	// fork: optional GitHub source of the runtime.
+	GitMode           string `json:"gitMode"`
+	GitCloneURL       string `json:"gitCloneURL"`
+	GitBranch         string `json:"gitBranch"`
+	GitKeyID          uint   `json:"gitKeyID"`
+	GitUpdateStrategy string `json:"gitUpdateStrategy"`
 }
 
 type NodeConfig struct {
@@ -78,6 +85,13 @@ type RuntimeUpdate struct {
 
 	Params map[string]interface{} `json:"params"`
 	NodeConfig
+
+	// fork: optional GitHub source of the runtime.
+	GitMode           string `json:"gitMode"`
+	GitCloneURL       string `json:"gitCloneURL"`
+	GitBranch         string `json:"gitBranch"`
+	GitKeyID          uint   `json:"gitKeyID"`
+	GitUpdateStrategy string `json:"gitUpdateStrategy"`
 }
 
 type NodePackageReq struct {
