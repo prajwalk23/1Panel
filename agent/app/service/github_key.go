@@ -116,10 +116,7 @@ func (g *GithubService) ListKeyOptions() ([]dto.GithubKeyOption, error) {
 	}
 	options := make([]dto.GithubKeyOption, 0, len(keys))
 	for _, key := range keys {
-		if key.Type == dto.GithubKeyTypeProject {
-			continue
-		}
-		options = append(options, dto.GithubKeyOption{ID: key.ID, Name: key.Name, Type: key.Type, Fingerprint: key.Fingerprint})
+		options = append(options, dto.GithubKeyOption{ID: key.ID, Name: key.Name, Type: key.Type, Fingerprint: key.Fingerprint, PublicKey: key.PublicKey})
 	}
 	return options, nil
 }

@@ -11,7 +11,7 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | File | Change | On conflict |
 |---|---|---|
 | `agent/router/common.go` | `&GithubRouter{},` appended to `commonGroups()` | keep upstream list, re-append our line |
-| `agent/init/migration/migrate.go` | `migrations.AddGithubTables,` appended to `agentDBMigrations()` | keep upstream entries, keep ours **last** (order only matters for new installs; IDs are unique) |
+| `agent/init/migration/migrate.go` | `migrations.AddGithubTables,` and `migrations.AddGithubScripts,` appended to `agentDBMigrations()` | keep upstream entries, keep ours **last** (order only matters for new installs; IDs are unique) |
 | `agent/init/business/business.go` | `go service.StartGithubWebhookListener()` in `Init()` | re-add the line |
 | `agent/i18n/i18n.go` | `Init()` also loads `lang/github/*.yaml` via `loadGithubLangFiles()` | re-add the call |
 | `core/router/common.go` | `&GithubRouter{},` appended to `commonGroups()` | re-append our line |
@@ -37,7 +37,7 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
 
 - Agent: `agent/utils/github/`, `agent/app/model/github.go`, `agent/app/dto/github.go`,
   `agent/app/repo/github.go`, `agent/app/service/github*.go`, `agent/app/api/v2/github.go`,
-  `agent/router/ro_github.go`, `agent/init/migration/migrations/github.go`, `agent/i18n/lang/github/`,
+  `agent/router/ro_github.go`, `agent/init/migration/migrations/github*.go`, `agent/i18n/lang/github/`,
   `agent/i18n/github.go`
 - Core: `core/global/fork.go`, `core/utils/github/`, `core/app/service/github_update.go`,
   `core/app/dto/github.go`, `core/app/api/v2/github_update.go`, `core/router/ro_github.go`,

@@ -9,7 +9,7 @@ export const searchGithubProjects = (params: Github.ProjectSearch) => {
     return http.post<ResPage<Github.ProjectInfo>>(`/github/projects/search`, params);
 };
 export const createGithubProject = (params: Github.ProjectOperate) => {
-    return http.post<Github.ProjectSecret>(`/github/projects`, params, TimeoutEnum.T_60S);
+    return http.post<Github.ProjectInfo>(`/github/projects`, params, TimeoutEnum.T_60S);
 };
 export const updateGithubProject = (params: Github.ProjectOperate) => {
     return http.post(`/github/projects/update`, params, TimeoutEnum.T_60S);
@@ -20,8 +20,8 @@ export const deleteGithubProject = (id: number) => {
 export const updateGithubProjectStatus = (id: number, enabled: boolean) => {
     return http.post(`/github/projects/status`, { id: id, enabled: enabled });
 };
-export const deployGithubProject = (id: number) => {
-    return http.post(`/github/projects/deploy`, { id: id });
+export const deployGithubProject = (id: number, scriptID = 0) => {
+    return http.post(`/github/projects/deploy`, { id: id, scriptID: scriptID });
 };
 export const cancelGithubDeploy = (id: number) => {
     return http.post(`/github/projects/cancel`, { id: id });
@@ -29,8 +29,27 @@ export const cancelGithubDeploy = (id: number) => {
 export const regenerateGithubSecret = (id: number) => {
     return http.post<Github.ProjectSecret>(`/github/projects/secret/regenerate`, { id: id });
 };
+export const configureGithubWebhook = (params: Github.WebhookConfig) => {
+    return http.post<Github.ProjectSecret>(`/github/projects/webhook/config`, params, TimeoutEnum.T_60S);
+};
 export const loadGithubWebhook = (id: number) => {
     return http.post<Github.WebhookInfo>(`/github/projects/webhook`, { id: id });
+};
+
+export const listGithubScripts = (projectID: number) => {
+    return http.post<Array<Github.ScriptInfo>>(`/github/scripts/list`, { projectID: projectID });
+};
+export const createGithubScript = (params: Github.ScriptOperate) => {
+    return http.post<Github.ScriptInfo>(`/github/scripts`, params);
+};
+export const updateGithubScript = (params: Github.ScriptOperate) => {
+    return http.post(`/github/scripts/update`, params);
+};
+export const deleteGithubScript = (id: number) => {
+    return http.post(`/github/scripts/del`, { id: id });
+};
+export const listGithubSystemUsers = () => {
+    return http.get<Array<string>>(`/github/users`);
 };
 
 export const searchGithubLogs = (params: Github.LogSearch) => {
@@ -65,8 +84,8 @@ export const loadGithubSetting = () => {
 export const updateGithubSetting = (params: Github.Setting) => {
     return http.post(`/github/settings/update`, params, TimeoutEnum.T_60S);
 };
-export const listGithubDomains = () => {
-    return http.get<Array<Github.DomainOption>>(`/github/domains`);
+export const checkGithubRepo = (params: Github.RepoCheck) => {
+    return http.post<Github.RepoCheckInfo>(`/github/repos/check`, params, TimeoutEnum.T_60S);
 };
 
 export const loadForkInfo = () => {

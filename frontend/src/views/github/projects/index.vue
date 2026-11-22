@@ -59,6 +59,13 @@
                             </el-button>
                         </template>
                     </el-table-column>
+                    <el-table-column :label="$t('github.webhook')" min-width="100">
+                        <template #default="{ row }">
+                            <el-tag :type="row.webhookEnabled ? 'success' : 'info'">
+                                {{ row.webhookEnabled ? $t('github.on') : $t('github.off') }}
+                            </el-tag>
+                        </template>
+                    </el-table-column>
                     <el-table-column :label="$t('github.status')" min-width="110">
                         <template #default="{ row }">
                             <el-tag v-if="row.running" type="warning">{{ $t('github.running') }}</el-tag>
@@ -95,8 +102,9 @@
         </LayoutContent>
 
         <OpDialog ref="opRef" @search="search" @submit="onSubmitDelete()" />
-        <OperateDrawer ref="drawerRef" @search="search" @created="onCreated" />
+        <OperateDrawer ref="drawerRef" @search="search" />
         <WebhookDialog ref="webhookRef" @search="search" />
+        <DeployDialog ref="deployRef" @search="search" />
     </div>
 </template>
 
@@ -111,13 +119,13 @@ import { Github } from '@/api/interface/github';
 import {
     cancelGithubDeploy,
     deleteGithubProject,
-    deployGithubProject,
     loadGithubSetting,
     searchGithubProjects,
     updateGithubProjectStatus,
 } from '@/api/modules/github';
 import OperateDrawer from '@/views/github/projects/operate.vue';
 import WebhookDialog from '@/views/github/projects/webhook.vue';
+import DeployDialog from '@/views/github/projects/deploy.vue';
 import { formatTime, shortCommit, statusLabel, statusType } from '@/views/github/helper';
 import { useRouter } from 'vue-router';
 
@@ -134,6 +142,7 @@ const paginationConfig = reactive({
 const opRef = ref();
 const drawerRef = ref();
 const webhookRef = ref();
+const deployRef = ref();
 const deleteID = ref(0);
 let timer: ReturnType<typeof setInterval> | undefined;
 
@@ -173,10 +182,6 @@ const onOpenDrawer = (row?: Github.ProjectInfo) => {
     drawerRef.value.acceptParams(row);
 };
 
-const onCreated = (secret: Github.ProjectSecret) => {
-    webhookRef.value.acceptParams(secret.id, secret);
-};
-
 const onChangeStatus = async (row: Github.ProjectInfo) => {
     try {
         await updateGithubProjectStatus(row.id, row.enabled);
@@ -187,15 +192,7 @@ const onChangeStatus = async (row: Github.ProjectInfo) => {
 };
 
 const onDeploy = (row: Github.ProjectInfo) => {
-    ElMessageBox.confirm(i18n.global.t('github.deployHelper', [row.name]), i18n.global.t('github.deployNow'), {
-        confirmButtonText: i18n.global.t('commons.button.confirm'),
-        cancelButtonText: i18n.global.t('commons.button.cancel'),
-        type: 'info',
-    }).then(async () => {
-        await deployGithubProject(row.id);
-        MsgSuccess(i18n.global.t('github.deployStarted'));
-        search();
-    });
+    deployRef.value.acceptParams(row.id, row.name);
 };
 
 const onCancel = (row: Github.ProjectInfo) => {
@@ -242,6 +239,7 @@ const buttons = [
     },
     {
         label: i18n.global.t('github.webhook'),
+        disabled: (row: Github.ProjectInfo) => !row.webhookEnabled,
         click: (row: Github.ProjectInfo) => webhookRef.value.acceptParams(row.id),
     },
     {

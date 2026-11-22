@@ -33,30 +33,9 @@
                     </el-col>
                 </el-row>
 
-                <el-form-item :label="$t('github.defaultDomain')">
-                    <el-select v-model="domainSelection" filterable clearable class="w-full">
-                        <el-option value="" :label="$t('github.none')" />
-                        <el-option
-                            v-for="item in domains"
-                            :key="domainValue(item.websiteID, item.domain)"
-                            :value="domainValue(item.websiteID, item.domain)"
-                            :label="item.domain"
-                        >
-                            <span>{{ item.domain }}</span>
-                            <span class="text-xs text-gray-400 ml-2">{{ item.alias }}</span>
-                            <el-tag size="small" class="ml-2" :type="item.https ? 'success' : 'warning'">
-                                {{ item.https ? 'HTTPS' : 'HTTP' }}
-                            </el-tag>
-                            <el-tag v-if="item.hookProxy" size="small" type="info" class="ml-1">
-                                {{ $t('github.hookProxySet') }}
-                            </el-tag>
-                        </el-option>
-                    </el-select>
-                    <span class="input-help">{{ $t('github.defaultDomainHelper') }}</span>
-                </el-form-item>
-                <el-form-item v-if="!form.defaultWebsiteID" :label="$t('github.customBaseURL')" prop="customBaseURL">
-                    <el-input v-model.trim="form.customBaseURL" placeholder="https://hooks.example.com" />
-                    <span class="input-help">{{ $t('github.customBaseURLHelper') }}</span>
+                <el-form-item :label="$t('github.webhookDomain')" prop="webhookDomain">
+                    <el-input v-model.trim="form.webhookDomain" placeholder="hooks.example.com" />
+                    <span class="input-help">{{ $t('github.webhookDomainHelper') }}</span>
                 </el-form-item>
 
                 <el-row :gutter="20">
@@ -74,17 +53,6 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-form-item :label="$t('github.sharedKey')">
-                    <el-select v-model="form.sharedKeyID" class="w-full">
-                        <el-option :value="0" :label="$t('github.none')" />
-                        <el-option
-                            v-for="item in sharedKeys"
-                            :key="item.id"
-                            :value="item.id"
-                            :label="item.name + ' (' + item.fingerprint + ')'"
-                        />
-                    </el-select>
-                </el-form-item>
                 <el-form-item>
                     <el-button v-permission v-node-admin type="primary" :disabled="loading" @click="onSave">
                         {{ $t('commons.button.save') }}
@@ -96,42 +64,27 @@
 </template>
 
 <script lang="ts" setup>
-// fork: GitHub section settings (listener, default webhook domain, shared key).
-import { computed, onMounted, reactive, ref } from 'vue';
+// fork: GitHub section settings (listener, webhook domain, deploy shell).
+import { onMounted, reactive, ref } from 'vue';
 import { ElForm } from 'element-plus';
 import i18n from '@/lang';
 import { Rules } from '@/global/form-rules';
 import { MsgSuccess } from '@/utils/message';
 import { Github } from '@/api/interface/github';
-import { listGithubDomains, listGithubKeyOptions, loadGithubSetting, updateGithubSetting } from '@/api/modules/github';
-import { domainValue, parseDomainValue } from '@/views/github/helper';
+import { loadGithubSetting, updateGithubSetting } from '@/api/modules/github';
 
 type FormInstance = InstanceType<typeof ElForm>;
 
 const loading = ref(false);
 const formRef = ref<FormInstance>();
 const info = ref<Github.SettingInfo>();
-const domains = ref<Github.DomainOption[]>([]);
-const keys = ref<Github.KeyOption[]>([]);
 const form = reactive<Github.Setting>({
     webhookPort: 19090,
     webhookBind: '127.0.0.1',
     defaultShell: 'bash',
     logRetention: 50,
-    defaultWebsiteID: 0,
-    defaultDomain: '',
-    customBaseURL: '',
+    webhookDomain: '',
     sharedKeyID: 0,
-});
-
-const sharedKeys = computed(() => keys.value.filter((item) => item.type === 'shared'));
-const domainSelection = computed({
-    get: () => domainValue(form.defaultWebsiteID, form.defaultDomain),
-    set: (value: string) => {
-        const parsed = parseDomainValue(value || '');
-        form.defaultWebsiteID = parsed.websiteID;
-        form.defaultDomain = parsed.domain;
-    },
 });
 
 const checkBind = (rule: any, value: string, callback: any) => {
@@ -142,9 +95,9 @@ const checkBind = (rule: any, value: string, callback: any) => {
     }
     callback();
 };
-const checkBaseURL = (rule: any, value: string, callback: any) => {
-    if (value && !/^https?:\/\/[^\s/]+/.test(value)) {
-        callback(new Error(i18n.global.t('github.customURLHelper')));
+const checkWebhookDomain = (rule: any, value: string, callback: any) => {
+    if (value && !/^(https?:\/\/)?[A-Za-z0-9]([A-Za-z0-9.-]*[A-Za-z0-9])?(:\d{1,5})?\/?$/.test(value)) {
+        callback(new Error(i18n.global.t('github.webhookDomainHelper')));
         return;
     }
     callback();
@@ -153,28 +106,20 @@ const rules = reactive({
     webhookBind: [{ validator: checkBind, trigger: 'blur', required: true }],
     webhookPort: [Rules.requiredInput],
     defaultShell: [Rules.requiredSelect],
-    customBaseURL: [{ validator: checkBaseURL, trigger: 'blur' }],
+    webhookDomain: [{ validator: checkWebhookDomain, trigger: 'blur' }],
 });
 
 const load = async () => {
     loading.value = true;
     try {
-        const [settingRes, domainRes, keyRes] = await Promise.all([
-            loadGithubSetting(),
-            listGithubDomains(),
-            listGithubKeyOptions(),
-        ]);
+        const settingRes = await loadGithubSetting();
         info.value = settingRes.data;
-        domains.value = domainRes.data || [];
-        keys.value = keyRes.data || [];
         Object.assign(form, {
             webhookPort: settingRes.data.webhookPort,
             webhookBind: settingRes.data.webhookBind,
             defaultShell: settingRes.data.defaultShell,
             logRetention: settingRes.data.logRetention,
-            defaultWebsiteID: settingRes.data.defaultWebsiteID,
-            defaultDomain: settingRes.data.defaultDomain,
-            customBaseURL: settingRes.data.customBaseURL,
+            webhookDomain: settingRes.data.webhookDomain,
             sharedKeyID: settingRes.data.sharedKeyID,
         });
     } finally {
@@ -188,7 +133,7 @@ const onSave = async () => {
         if (!valid) return;
         loading.value = true;
         try {
-            await updateGithubSetting({ ...form, customBaseURL: form.defaultWebsiteID ? '' : form.customBaseURL });
+            await updateGithubSetting({ ...form });
             MsgSuccess(i18n.global.t('commons.msg.operationSuccess'));
         } finally {
             loading.value = false;

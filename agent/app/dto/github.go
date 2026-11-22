@@ -14,9 +14,9 @@ const (
 	GithubKeyTypeShared  = "shared"
 	GithubKeyTypeCustom  = "custom"
 
-	GithubDomainDefault = "default"
-	GithubDomainWebsite = "website"
-	GithubDomainCustom  = "custom"
+	// Webhook mode of a project. The public URL always comes from the GitHub settings.
+	GithubDomainDefault = "default" // webhook on
+	GithubDomainNone    = "none"    // webhook off, deploy by hand
 
 	GithubStrategyFFOnly = "ff-only"
 	GithubStrategyReset  = "reset"
@@ -44,17 +44,48 @@ type GithubProjectOperate struct {
 	Repo           string `json:"repo" validate:"max=256"`
 	Branch         string `json:"branch" validate:"required,max=200"`
 	ProjectPath    string `json:"projectPath" validate:"required,max=1024"`
-	DeployCommand  string `json:"deployCommand" validate:"max=65535"`
-	UpdateStrategy string `json:"updateStrategy" validate:"required,oneof=ff-only reset"`
-	RunAsUser      string `json:"runAsUser" validate:"max=64"`
+	DeployCommand  string `json:"deployCommand" validate:"max=65535"` // seeds the default script when creating
+	UpdateStrategy string `json:"updateStrategy" validate:"omitempty,oneof=ff-only reset"`
 	Timeout        int    `json:"timeout" validate:"min=0,max=86400"`
 	KeyMode        string `json:"keyMode" validate:"required,oneof=project shared custom none"`
 	KeyID          uint   `json:"keyID"`
-	DomainMode     string `json:"domainMode" validate:"required,oneof=default website custom"`
-	WebsiteID      uint   `json:"websiteID"`
-	Domain         string `json:"domain" validate:"max=256"`
-	CustomURL      string `json:"customURL" validate:"max=1024"`
 	Enabled        bool   `json:"enabled"`
+}
+
+// GithubProjectDeploy runs a project now. ScriptID 0 means the script the webhook is linked to.
+type GithubProjectDeploy struct {
+	ID       uint `json:"id" validate:"required"`
+	ScriptID uint `json:"scriptID"`
+}
+
+// GithubWebhookConfig turns the webhook of a project on or off and links it to one script.
+type GithubWebhookConfig struct {
+	ID       uint `json:"id" validate:"required"`
+	Enabled  bool `json:"enabled"`
+	ScriptID uint `json:"scriptID"`
+}
+
+type GithubScriptList struct {
+	ProjectID uint `json:"projectID" validate:"required"`
+}
+
+type GithubScriptOperate struct {
+	ID        uint   `json:"id"`
+	ProjectID uint   `json:"projectID" validate:"required"`
+	Name      string `json:"name" validate:"required,max=128"`
+	Content   string `json:"content" validate:"max=65535"`
+	RunAsUser string `json:"runAsUser" validate:"max=64"`
+}
+
+type GithubScriptInfo struct {
+	ID        uint      `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	ProjectID uint      `json:"projectID"`
+	Name      string    `json:"name"`
+	Content   string    `json:"content"`
+	RunAsUser string    `json:"runAsUser"`
+	IsDefault bool      `json:"isDefault"`
+	Linked    bool      `json:"linked"`
 }
 
 type GithubProjectStatus struct {
@@ -63,32 +94,28 @@ type GithubProjectStatus struct {
 }
 
 type GithubProjectInfo struct {
-	ID             uint      `json:"id"`
-	CreatedAt      time.Time `json:"createdAt"`
-	Name           string    `json:"name"`
-	Repo           string    `json:"repo"`
-	CloneURL       string    `json:"cloneURL"`
-	Branch         string    `json:"branch"`
-	ProjectPath    string    `json:"projectPath"`
-	DeployCommand  string    `json:"deployCommand"`
-	UpdateStrategy string    `json:"updateStrategy"`
-	RunAsUser      string    `json:"runAsUser"`
-	Timeout        int       `json:"timeout"`
-	KeyMode        string    `json:"keyMode"`
-	KeyID          uint      `json:"keyID"`
-	KeyName        string    `json:"keyName"`
-	PublicKey      string    `json:"publicKey"`
-	DomainMode     string    `json:"domainMode"`
-	WebsiteID      uint      `json:"websiteID"`
-	Domain         string    `json:"domain"`
-	CustomURL      string    `json:"customURL"`
-	Enabled        bool      `json:"enabled"`
-	LastStatus     string    `json:"lastStatus"`
-	LastRunAt      time.Time `json:"lastRunAt"`
-	LastCommit     string    `json:"lastCommit"`
-	Running        bool      `json:"running"`
-	WebhookURL     string    `json:"webhookURL"`
-	WebhookHTTPS   bool      `json:"webhookHTTPS"`
+	ID              uint      `json:"id"`
+	CreatedAt       time.Time `json:"createdAt"`
+	Name            string    `json:"name"`
+	Repo            string    `json:"repo"`
+	CloneURL        string    `json:"cloneURL"`
+	Branch          string    `json:"branch"`
+	ProjectPath     string    `json:"projectPath"`
+	UpdateStrategy  string    `json:"updateStrategy"`
+	Timeout         int       `json:"timeout"`
+	KeyMode         string    `json:"keyMode"`
+	KeyID           uint      `json:"keyID"`
+	KeyName         string    `json:"keyName"`
+	PublicKey       string    `json:"publicKey"`
+	WebhookEnabled  bool      `json:"webhookEnabled"`
+	WebhookScriptID uint      `json:"webhookScriptID"`
+	Enabled         bool      `json:"enabled"`
+	LastStatus      string    `json:"lastStatus"`
+	LastRunAt       time.Time `json:"lastRunAt"`
+	LastCommit      string    `json:"lastCommit"`
+	Running         bool      `json:"running"`
+	WebhookURL      string    `json:"webhookURL"`
+	WebhookHTTPS    bool      `json:"webhookHTTPS"`
 }
 
 // GithubProjectSecret is the only response that contains a webhook secret.
@@ -100,11 +127,14 @@ type GithubProjectSecret struct {
 }
 
 type GithubWebhookInfo struct {
+	Enabled     bool   `json:"enabled"`
+	ScriptID    uint   `json:"scriptID"`
+	ScriptName  string `json:"scriptName"`
 	URL         string `json:"url"`
 	HTTPS       bool   `json:"https"`
 	ContentType string `json:"contentType"`
 	Events      string `json:"events"`
-	ProxyReady  bool   `json:"proxyReady"`
+	ProxyPass   string `json:"proxyPass"`
 	Listener    string `json:"listener"`
 	Message     string `json:"message"`
 }
@@ -167,17 +197,16 @@ type GithubKeyOption struct {
 	Name        string `json:"name"`
 	Type        string `json:"type"`
 	Fingerprint string `json:"fingerprint"`
+	PublicKey   string `json:"publicKey"`
 }
 
 type GithubSetting struct {
-	WebhookPort      int    `json:"webhookPort" validate:"required,min=1,max=65535"`
-	WebhookBind      string `json:"webhookBind" validate:"required,max=64"`
-	DefaultShell     string `json:"defaultShell" validate:"required,oneof=bash sh"`
-	LogRetention     int    `json:"logRetention" validate:"min=1,max=10000"`
-	DefaultWebsiteID uint   `json:"defaultWebsiteID"`
-	DefaultDomain    string `json:"defaultDomain" validate:"max=256"`
-	CustomBaseURL    string `json:"customBaseURL" validate:"max=1024"`
-	SharedKeyID      uint   `json:"sharedKeyID"`
+	WebhookPort   int    `json:"webhookPort" validate:"required,min=1,max=65535"`
+	WebhookBind   string `json:"webhookBind" validate:"required,max=64"`
+	DefaultShell  string `json:"defaultShell" validate:"required,oneof=bash sh"`
+	LogRetention  int    `json:"logRetention" validate:"min=1,max=10000"`
+	WebhookDomain string `json:"webhookDomain" validate:"max=1024"`
+	SharedKeyID   uint   `json:"sharedKeyID"`
 }
 
 type GithubSettingInfo struct {
@@ -188,12 +217,16 @@ type GithubSettingInfo struct {
 	GitInstalled    bool   `json:"gitInstalled"`
 }
 
-type GithubDomainOption struct {
-	WebsiteID     uint   `json:"websiteID"`
-	Alias         string `json:"alias"`
-	PrimaryDomain string `json:"primaryDomain"`
-	Domain        string `json:"domain"`
-	Port          int    `json:"port"`
-	HTTPS         bool   `json:"https"`
-	HookProxy     bool   `json:"hookProxy"`
+// GithubRepoCheck asks whether a repository can be reached with the chosen key.
+type GithubRepoCheck struct {
+	CloneURL string `json:"cloneURL" validate:"required,max=512"`
+	KeyMode  string `json:"keyMode" validate:"required,oneof=project shared custom none"`
+	KeyID    uint   `json:"keyID"`
+}
+
+type GithubRepoCheckInfo struct {
+	OK            bool     `json:"ok"`
+	Message       string   `json:"message"`
+	DefaultBranch string   `json:"defaultBranch"`
+	Branches      []string `json:"branches"`
 }

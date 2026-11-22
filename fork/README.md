@@ -2,10 +2,11 @@
 
 This fork of [1Panel](https://github.com/1Panel-dev/1Panel) adds a **GitHub** item to the sidebar:
 
-- Projects: connect a repo and branch to a folder on the server, with a deploy command
-- Per-project SSH deploy keys (ed25519), an optional shared key, or your own key
-- Push-to-deploy through a GitHub webhook, with a choice of domain for the webhook URL
-- "Pull now", deploy logs, cancel
+- Projects: connect a repo and branch to a folder on the server. The repository is checked with the chosen SSH key and its branches are listed
+- Named SSH keys (ed25519) that you create in the form and add to the repository as deploy keys, or your own imported key
+- Deploy scripts per project: several scripts, one default, each with its own run-as user
+- Optional push-to-deploy webhook, set up when editing a project and linked to exactly one script
+- "Pull now" (any script), deploy logs, cancel
 - Fork Updates: update the panel from this fork's GitHub Releases
 
 Licence: GPL-3.0, same as upstream. Source for every release is this repository.
@@ -76,12 +77,14 @@ Later updates: GitHub > Fork Updates > Update. It uses the panel's own backup an
 
 ## Webhook setup
 
-1. Install OpenResty and create (or pick) a website with HTTPS for the webhook domain.
-2. GitHub > Settings: choose the default webhook domain. The panel adds a `/github-hook/` reverse proxy
-   location to that website, pointing at the local listener (`127.0.0.1:19090` by default).
-3. Create a project. Copy the webhook URL and secret it shows (the secret is shown once).
+The webhook is optional and is configured when **editing** a project.
+
+1. GitHub > Settings: type the webhook domain (for example `hooks.example.com`). It must not be the domain
+   of a website in this panel (saving fails if it is), and it must point to this server.
+2. Make that domain reach the local listener (`127.0.0.1:19090` by default) with a reverse proxy. The
+   webhook dialog shows the nginx `location ^~ /github-hook/ { proxy_pass ...; }` block to copy.
+3. Edit the project, turn the webhook on and pick the one script it runs. The webhook dialog shows the
+   payload URL and the secret (the secret is shown once; regenerate it if lost).
 4. On GitHub: repo Settings, Webhooks, Add webhook. Payload URL = the URL, content type
    `application/json`, secret = the secret, event = "Just the push event".
-5. For SSH clone URLs, add the project's public key under repo Settings, Deploy keys.
-
-A project can override the domain, or use a custom URL when the hook is exposed some other way.
+5. For SSH repositories, add the project's public key under repo Settings, Deploy keys.

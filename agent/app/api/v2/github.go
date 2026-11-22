@@ -36,7 +36,7 @@ func (b *BaseApi) SearchGithubProjects(c *gin.Context) {
 // @Summary Create GitHub project
 // @Accept json
 // @Param request body dto.GithubProjectOperate true "request"
-// @Success 200 {object} dto.GithubProjectSecret
+// @Success 200 {object} dto.GithubProjectInfo
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /github/projects [post]
@@ -120,17 +120,17 @@ func (b *BaseApi) UpdateGithubProjectStatus(c *gin.Context) {
 // @Tags GitHub
 // @Summary Deploy GitHub project now
 // @Accept json
-// @Param request body dto.OperateByID true "request"
+// @Param request body dto.GithubProjectDeploy true "request"
 // @Success 200
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /github/projects/deploy [post]
 func (b *BaseApi) DeployGithubProject(c *gin.Context) {
-	var req dto.OperateByID
+	var req dto.GithubProjectDeploy
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
 		return
 	}
-	if err := githubService.Deploy(req.ID); err != nil {
+	if err := githubService.Deploy(req); err != nil {
 		helper.InternalServer(c, err)
 		return
 	}
@@ -395,13 +395,137 @@ func (b *BaseApi) UpdateGithubSetting(c *gin.Context) {
 }
 
 // @Tags GitHub
-// @Summary List website domains for the webhook
-// @Success 200 {array} dto.GithubDomainOption
+// @Summary Check that a repository can be reached with the chosen key
+// @Accept json
+// @Param request body dto.GithubRepoCheck true "request"
+// @Success 200 {object} dto.GithubRepoCheckInfo
 // @Security ApiKeyAuth
 // @Security Timestamp
-// @Router /github/domains [get]
-func (b *BaseApi) ListGithubDomains(c *gin.Context) {
-	data, err := githubService.ListDomains()
+// @Router /github/repos/check [post]
+func (b *BaseApi) CheckGithubRepo(c *gin.Context) {
+	var req dto.GithubRepoCheck
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	data, err := githubService.CheckRepo(req)
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, data)
+}
+
+// @Tags GitHub
+// @Summary Turn the webhook of a project on or off and link it to a script
+// @Accept json
+// @Param request body dto.GithubWebhookConfig true "request"
+// @Success 200 {object} dto.GithubProjectSecret
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/projects/webhook/config [post]
+func (b *BaseApi) ConfigureGithubWebhook(c *gin.Context) {
+	var req dto.GithubWebhookConfig
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	data, err := githubService.ConfigureWebhook(req)
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, data)
+}
+
+// @Tags GitHub
+// @Summary List deploy scripts of a project
+// @Accept json
+// @Param request body dto.GithubScriptList true "request"
+// @Success 200 {array} dto.GithubScriptInfo
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/scripts/list [post]
+func (b *BaseApi) ListGithubScripts(c *gin.Context) {
+	var req dto.GithubScriptList
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	data, err := githubService.ListScripts(req)
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, data)
+}
+
+// @Tags GitHub
+// @Summary Create deploy script
+// @Accept json
+// @Param request body dto.GithubScriptOperate true "request"
+// @Success 200 {object} dto.GithubScriptInfo
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/scripts [post]
+func (b *BaseApi) CreateGithubScript(c *gin.Context) {
+	var req dto.GithubScriptOperate
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	data, err := githubService.CreateScript(req)
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, data)
+}
+
+// @Tags GitHub
+// @Summary Update deploy script
+// @Accept json
+// @Param request body dto.GithubScriptOperate true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/scripts/update [post]
+func (b *BaseApi) UpdateGithubScript(c *gin.Context) {
+	var req dto.GithubScriptOperate
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	if err := githubService.UpdateScript(req); err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.Success(c)
+}
+
+// @Tags GitHub
+// @Summary Delete deploy script
+// @Accept json
+// @Param request body dto.OperateByID true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/scripts/del [post]
+func (b *BaseApi) DeleteGithubScript(c *gin.Context) {
+	var req dto.OperateByID
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	if err := githubService.DeleteScript(req.ID); err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.Success(c)
+}
+
+// @Tags GitHub
+// @Summary List system users a script can run as
+// @Success 200 {array} string
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/users [get]
+func (b *BaseApi) ListGithubSystemUsers(c *gin.Context) {
+	data, err := githubService.ListSystemUsers()
 	if err != nil {
 		helper.InternalServer(c, err)
 		return

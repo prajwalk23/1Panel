@@ -19,7 +19,8 @@ type GithubProject struct {
 	KeyMode string `gorm:"not null;default:project" json:"keyMode"`
 	KeyID   uint   `json:"keyID"`
 
-	WebhookSecret string `gorm:"type:text" json:"-"`
+	WebhookSecret   string `gorm:"type:text" json:"-"`
+	WebhookScriptID uint   `json:"webhookScriptID"` // the one script the webhook runs
 
 	DomainMode string `gorm:"not null;default:default" json:"domainMode"`
 	WebsiteID  uint   `json:"websiteID"`
@@ -30,6 +31,17 @@ type GithubProject struct {
 	LastStatus string    `json:"lastStatus"`
 	LastRunAt  time.Time `json:"lastRunAt"`
 	LastCommit string    `json:"lastCommit"`
+}
+
+// GithubScript is a named deploy script of a project. A project has several; one is the
+// default and the webhook is linked to exactly one of them.
+type GithubScript struct {
+	BaseModel
+	ProjectID uint   `gorm:"index;not null" json:"projectID"`
+	Name      string `gorm:"not null" json:"name"`
+	Content   string `gorm:"type:text" json:"content"`
+	RunAsUser string `json:"runAsUser"`
+	IsDefault bool   `json:"isDefault"`
 }
 
 type GithubKey struct {

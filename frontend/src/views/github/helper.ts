@@ -59,15 +59,3 @@ export const formatDuration = (start: string, end: string): string => {
     const minutes = Math.floor(seconds / 60);
     return `${minutes}m ${seconds % 60}s`;
 };
-
-export const domainValue = (websiteID: number, domain: string): string => {
-    return websiteID ? `${websiteID}|${domain || ''}` : '';
-};
-
-export const parseDomainValue = (value: string): { websiteID: number; domain: string } => {
-    if (!value) {
-        return { websiteID: 0, domain: '' };
-    }
-    const idx = value.indexOf('|');
-    return { websiteID: Number(value.substring(0, idx)) || 0, domain: value.substring(idx + 1) };
-};

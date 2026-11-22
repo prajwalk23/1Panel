@@ -19,6 +19,12 @@ type IGithubRepo interface {
 	UpdateProject(id uint, vars map[string]interface{}) error
 	DeleteProject(opts ...DBOption) error
 
+	GetScript(opts ...DBOption) (model.GithubScript, error)
+	ListScripts(opts ...DBOption) ([]model.GithubScript, error)
+	CreateScript(script *model.GithubScript) error
+	UpdateScript(id uint, vars map[string]interface{}) error
+	DeleteScript(opts ...DBOption) error
+
 	GetKey(opts ...DBOption) (model.GithubKey, error)
 	ListKeys(opts ...DBOption) ([]model.GithubKey, error)
 	PageKeys(page, size int, opts ...DBOption) (int64, []model.GithubKey, error)
@@ -86,6 +92,30 @@ func (g *GithubRepo) UpdateProject(id uint, vars map[string]interface{}) error {
 
 func (g *GithubRepo) DeleteProject(opts ...DBOption) error {
 	return githubApplyOpts(global.DB, opts).Delete(&model.GithubProject{}).Error
+}
+
+func (g *GithubRepo) GetScript(opts ...DBOption) (model.GithubScript, error) {
+	var item model.GithubScript
+	err := githubApplyOpts(global.DB, opts).First(&item).Error
+	return item, err
+}
+
+func (g *GithubRepo) ListScripts(opts ...DBOption) ([]model.GithubScript, error) {
+	var items []model.GithubScript
+	err := githubApplyOpts(global.DB.Model(&model.GithubScript{}), opts).Order("is_default desc, id asc").Find(&items).Error
+	return items, err
+}
+
+func (g *GithubRepo) CreateScript(script *model.GithubScript) error {
+	return global.DB.Create(script).Error
+}
+
+func (g *GithubRepo) UpdateScript(id uint, vars map[string]interface{}) error {
+	return global.DB.Model(&model.GithubScript{}).Where("id = ?", id).Updates(vars).Error
+}
+
+func (g *GithubRepo) DeleteScript(opts ...DBOption) error {
+	return githubApplyOpts(global.DB, opts).Delete(&model.GithubScript{}).Error
 }
 
 func (g *GithubRepo) GetKey(opts ...DBOption) (model.GithubKey, error) {

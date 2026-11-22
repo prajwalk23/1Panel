@@ -1,14 +1,12 @@
 package service
 
-// fork: GitHub section - projects, settings, webhook domains and the hook reverse proxy.
+// fork: GitHub section - projects, settings and the webhook address.
 
 import (
 	"crypto/rand"
 	"encoding/hex"
-	"encoding/json"
 	"net"
 	"net/url"
-	"os/user"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -17,33 +15,26 @@ import (
 	"time"
 
 	"github.com/1Panel-dev/1Panel/agent/app/dto"
-	"github.com/1Panel-dev/1Panel/agent/app/dto/request"
 	"github.com/1Panel-dev/1Panel/agent/app/model"
 	"github.com/1Panel-dev/1Panel/agent/app/repo"
 	"github.com/1Panel-dev/1Panel/agent/buserr"
-	"github.com/1Panel-dev/1Panel/agent/constant"
 	"github.com/1Panel-dev/1Panel/agent/global"
 	"github.com/1Panel-dev/1Panel/agent/utils/cmd"
 	"github.com/1Panel-dev/1Panel/agent/utils/encrypt"
-	"github.com/1Panel-dev/1Panel/agent/utils/files"
 	githubutil "github.com/1Panel-dev/1Panel/agent/utils/github"
 )
 
 var githubRepo = repo.NewIGithubRepo()
 
 const (
-	githubHookProxyName = "github-hook"
-	githubHookPath      = "/github-hook/"
+	githubHookPath = "/github-hook/"
 
 	githubSettingPort          = "GithubWebhookPort"
 	githubSettingBind          = "GithubWebhookBind"
 	githubSettingShell         = "GithubDefaultShell"
 	githubSettingRetention     = "GithubLogRetention"
-	githubSettingWebsiteID     = "GithubDefaultWebsiteID"
-	githubSettingDomain        = "GithubDefaultDomain"
-	githubSettingCustomBaseURL = "GithubCustomBaseURL"
+	githubSettingWebhookDomain = "GithubCustomBaseURL" // typed webhook domain (key kept from the first schema)
 	githubSettingSharedKeyID   = "GithubSharedKeyID"
-	githubSettingHookSites     = "GithubHookSites"
 
 	githubDefaultPort      = 19090
 	githubDefaultTimeout   = 600
@@ -56,14 +47,21 @@ type GithubService struct{}
 
 type IGithubService interface {
 	SearchProjects(req dto.GithubProjectSearch) (int64, []dto.GithubProjectInfo, error)
-	CreateProject(req dto.GithubProjectOperate) (*dto.GithubProjectSecret, error)
+	CreateProject(req dto.GithubProjectOperate) (*dto.GithubProjectInfo, error)
 	UpdateProject(req dto.GithubProjectOperate) error
 	DeleteProject(id uint) error
 	UpdateProjectStatus(req dto.GithubProjectStatus) error
 	RegenerateSecret(id uint) (*dto.GithubProjectSecret, error)
 	LoadWebhookInfo(id uint) (*dto.GithubWebhookInfo, error)
-	Deploy(id uint) error
+	ConfigureWebhook(req dto.GithubWebhookConfig) (*dto.GithubProjectSecret, error)
+	Deploy(req dto.GithubProjectDeploy) error
 	Cancel(id uint) error
+
+	ListScripts(req dto.GithubScriptList) ([]dto.GithubScriptInfo, error)
+	CreateScript(req dto.GithubScriptOperate) (*dto.GithubScriptInfo, error)
+	UpdateScript(req dto.GithubScriptOperate) error
+	DeleteScript(id uint) error
+	ListSystemUsers() ([]string, error)
 
 	SearchLogs(req dto.GithubLogSearch) (int64, []dto.GithubLogInfo, error)
 	CleanLogs(req dto.GithubLogClean) error
@@ -77,7 +75,7 @@ type IGithubService interface {
 
 	LoadSetting() (*dto.GithubSettingInfo, error)
 	UpdateSetting(req dto.GithubSetting) error
-	ListDomains() ([]dto.GithubDomainOption, error)
+	CheckRepo(req dto.GithubRepoCheck) (*dto.GithubRepoCheckInfo, error)
 }
 
 func NewIGithubService() IGithubService {
@@ -99,7 +97,7 @@ func (g *GithubService) SearchProjects(req dto.GithubProjectSearch) (int64, []dt
 	return total, list, nil
 }
 
-func (g *GithubService) CreateProject(req dto.GithubProjectOperate) (*dto.GithubProjectSecret, error) {
+func (g *GithubService) CreateProject(req dto.GithubProjectOperate) (*dto.GithubProjectInfo, error) {
 	if existing, _ := githubRepo.GetProject(repo.WithByName(strings.TrimSpace(req.Name))); existing.ID != 0 {
 		return nil, buserr.New("ErrGithubNameExist")
 	}
@@ -107,38 +105,33 @@ func (g *GithubService) CreateProject(req dto.GithubProjectOperate) (*dto.Github
 	if err := githubApplyProject(&project, req); err != nil {
 		return nil, err
 	}
-	setting := loadGithubSetting()
+	// The webhook is configured later, when editing the project.
+	project.DomainMode = dto.GithubDomainNone
 
 	createdKeyID := uint(0)
 	if project.KeyMode == dto.GithubKeyModeProject {
-		key, err := githubCreateKeyRecord(project.Name, dto.GithubKeyTypeProject, nil)
+		keyID, created, err := githubPickProjectKey(project.Name, req.KeyID, 0)
 		if err != nil {
 			return nil, err
 		}
-		project.KeyID = key.ID
-		createdKeyID = key.ID
-	}
-	secret, err := githubNewSecret()
-	if err != nil {
-		return nil, err
-	}
-	if project.WebhookSecret, err = encrypt.StringEncrypt(secret); err != nil {
-		return nil, err
-	}
-
-	if project.DomainMode == dto.GithubDomainWebsite {
-		if err := githubEnsureHookProxy(project.WebsiteID, setting); err != nil {
-			githubDropKey(createdKeyID)
-			return nil, err
+		project.KeyID = keyID
+		if created {
+			createdKeyID = keyID
 		}
 	}
 	if err := githubRepo.CreateProject(&project); err != nil {
 		githubDropKey(createdKeyID)
 		return nil, err
 	}
-	githubSyncHookProxiesQuiet(setting)
-	info := githubProjectInfo(project, setting)
-	return &dto.GithubProjectSecret{ID: project.ID, Secret: secret, WebhookURL: info.WebhookURL, PublicKey: info.PublicKey}, nil
+	// The default script starts with the deploy command from the form.
+	project.DeployCommand = req.DeployCommand
+	if _, err := githubEnsureDefaultScript(&project); err != nil {
+		return nil, err
+	}
+	project.DeployCommand = ""
+	_ = githubRepo.UpdateProject(project.ID, map[string]interface{}{"deploy_command": ""})
+	info := githubProjectInfo(project, loadGithubSetting())
+	return &info, nil
 }
 
 func (g *GithubService) UpdateProject(req dto.GithubProjectOperate) error {
@@ -154,23 +147,19 @@ func (g *GithubService) UpdateProject(req dto.GithubProjectOperate) error {
 		return err
 	}
 
-	setting := loadGithubSetting()
-	if project.DomainMode == dto.GithubDomainWebsite {
-		if err := githubEnsureHookProxy(project.WebsiteID, setting); err != nil {
-			return err
-		}
-	}
 	createdKeyID := uint(0)
 	if project.KeyMode == dto.GithubKeyModeProject {
-		if oldKeyMode == dto.GithubKeyModeProject && oldKeyID != 0 {
-			project.KeyID = oldKeyID
-		} else {
-			key, err := githubCreateKeyRecord(project.Name, dto.GithubKeyTypeProject, nil)
-			if err != nil {
-				return err
-			}
-			project.KeyID = key.ID
-			createdKeyID = key.ID
+		current := uint(0)
+		if oldKeyMode == dto.GithubKeyModeProject {
+			current = oldKeyID
+		}
+		keyID, created, err := githubPickProjectKey(project.Name, req.KeyID, current)
+		if err != nil {
+			return err
+		}
+		project.KeyID = keyID
+		if created {
+			createdKeyID = keyID
 		}
 	}
 	if err := githubRepo.SaveProject(&project); err != nil {
@@ -180,7 +169,6 @@ func (g *GithubService) UpdateProject(req dto.GithubProjectOperate) error {
 	if oldKeyMode == dto.GithubKeyModeProject && oldKeyID != 0 && project.KeyID != oldKeyID {
 		githubDropKey(oldKeyID)
 	}
-	githubSyncHookProxiesQuiet(setting)
 	return nil
 }
 
@@ -198,10 +186,10 @@ func (g *GithubService) DeleteProject(id uint) error {
 	}
 	logs, _ := githubRepo.ListLogs(githubRepo.WithByProjectID(id))
 	githubDeleteLogs(logs)
+	_ = githubRepo.DeleteScript(githubRepo.WithByProjectID(id))
 	if project.KeyMode == dto.GithubKeyModeProject {
 		githubDropKey(project.KeyID)
 	}
-	githubSyncHookProxiesQuiet(loadGithubSetting())
 	return nil
 }
 
@@ -240,6 +228,8 @@ func (g *GithubService) LoadWebhookInfo(id uint) (*dto.GithubWebhookInfo, error)
 	setting := loadGithubSetting()
 	target := githubResolveTarget(project, setting)
 	info := &dto.GithubWebhookInfo{
+		Enabled:     project.DomainMode != dto.GithubDomainNone,
+		ScriptID:    project.WebhookScriptID,
 		URL:         target.URL,
 		HTTPS:       target.HTTPS,
 		ContentType: "application/json",
@@ -250,12 +240,9 @@ func (g *GithubService) LoadWebhookInfo(id uint) (*dto.GithubWebhookInfo, error)
 	if running {
 		info.Listener = addr
 	}
-	if target.WebsiteID != 0 {
-		if website, err := websiteRepo.GetFirst(repo.WithByID(target.WebsiteID)); err == nil {
-			info.ProxyReady = githubHookProxyExists(website)
-		}
-	} else {
-		info.ProxyReady = target.URL != ""
+	info.ProxyPass = githubProxyPass(setting)
+	if script, err := githubResolveScript(&project, 0); err == nil {
+		info.ScriptID, info.ScriptName = script.ID, script.Name
 	}
 	return info, nil
 }
@@ -285,16 +272,6 @@ func githubApplyProject(project *model.GithubProject, req dto.GithubProjectOpera
 	if err != nil {
 		return err
 	}
-	runAs := strings.TrimSpace(req.RunAsUser)
-	if runAs != "" {
-		if !githubUserPattern.MatchString(runAs) {
-			return buserr.New("ErrGithubInvalidUser")
-		}
-		if _, err := user.Lookup(runAs); err != nil {
-			return buserr.New("ErrGithubInvalidUser")
-		}
-	}
-
 	switch req.KeyMode {
 	case dto.GithubKeyModeShared:
 		setting := loadGithubSetting()
@@ -303,8 +280,9 @@ func githubApplyProject(project *model.GithubProject, req dto.GithubProjectOpera
 		}
 		project.KeyID = 0
 	case dto.GithubKeyModeCustom:
+		// "custom" means: use the key chosen by ID (generated or imported).
 		key, err := githubRepo.GetKey(repo.WithByID(req.KeyID))
-		if err != nil || key.Type != dto.GithubKeyTypeCustom {
+		if err != nil {
 			return buserr.New("ErrGithubKeyNotFound")
 		}
 		project.KeyID = key.ID
@@ -319,29 +297,6 @@ func githubApplyProject(project *model.GithubProject, req dto.GithubProjectOpera
 		return buserr.New("ErrGithubInvalidKeyMode")
 	}
 
-	switch req.DomainMode {
-	case dto.GithubDomainDefault:
-		project.WebsiteID, project.Domain, project.CustomURL = 0, "", ""
-	case dto.GithubDomainWebsite:
-		website, err := websiteRepo.GetFirst(repo.WithByID(req.WebsiteID))
-		if err != nil {
-			return buserr.New("ErrGithubWebsiteNotFound")
-		}
-		domain := strings.TrimSpace(req.Domain)
-		if domain != "" && githubFindDomain(website, domain) == nil {
-			return buserr.New("ErrGithubDomainNotFound")
-		}
-		project.WebsiteID, project.Domain, project.CustomURL = website.ID, domain, ""
-	case dto.GithubDomainCustom:
-		customURL := strings.TrimRight(strings.TrimSpace(req.CustomURL), "/")
-		if !githubValidBaseURL(customURL) {
-			return buserr.New("ErrGithubInvalidURL")
-		}
-		project.WebsiteID, project.Domain, project.CustomURL = 0, "", customURL
-	default:
-		return buserr.New("ErrGithubInvalidURL")
-	}
-
 	timeout := req.Timeout
 	if timeout <= 0 {
 		timeout = githubDefaultTimeout
@@ -351,42 +306,39 @@ func githubApplyProject(project *model.GithubProject, req dto.GithubProjectOpera
 	project.Repo = repoName
 	project.Branch = branch
 	project.ProjectPath = projectPath
-	project.DeployCommand = strings.ReplaceAll(req.DeployCommand, "\r\n", "\n")
 	project.UpdateStrategy = req.UpdateStrategy
-	project.RunAsUser = runAs
+	if project.UpdateStrategy == "" {
+		project.UpdateStrategy = dto.GithubStrategyFFOnly
+	}
 	project.Timeout = timeout
 	project.KeyMode = req.KeyMode
-	project.DomainMode = req.DomainMode
 	project.Enabled = req.Enabled
 	return nil
 }
 
 func githubProjectInfo(item model.GithubProject, setting dto.GithubSetting) dto.GithubProjectInfo {
 	info := dto.GithubProjectInfo{
-		ID:             item.ID,
-		CreatedAt:      item.CreatedAt,
-		Name:           item.Name,
-		Repo:           item.Repo,
-		CloneURL:       item.CloneURL,
-		Branch:         item.Branch,
-		ProjectPath:    item.ProjectPath,
-		DeployCommand:  item.DeployCommand,
-		UpdateStrategy: item.UpdateStrategy,
-		RunAsUser:      item.RunAsUser,
-		Timeout:        item.Timeout,
-		KeyMode:        item.KeyMode,
-		KeyID:          item.KeyID,
-		DomainMode:     item.DomainMode,
-		WebsiteID:      item.WebsiteID,
-		Domain:         item.Domain,
-		CustomURL:      item.CustomURL,
-		Enabled:        item.Enabled,
-		LastStatus:     item.LastStatus,
-		LastRunAt:      item.LastRunAt,
-		LastCommit:     item.LastCommit,
-		Running:        githubQueue.Running(item.ID),
+		ID:              item.ID,
+		CreatedAt:       item.CreatedAt,
+		Name:            item.Name,
+		Repo:            item.Repo,
+		CloneURL:        item.CloneURL,
+		Branch:          item.Branch,
+		ProjectPath:     item.ProjectPath,
+		UpdateStrategy:  item.UpdateStrategy,
+		Timeout:         item.Timeout,
+		KeyMode:         item.KeyMode,
+		KeyID:           item.KeyID,
+		WebhookEnabled:  item.DomainMode != dto.GithubDomainNone,
+		WebhookScriptID: item.WebhookScriptID,
+		Enabled:         item.Enabled,
+		LastStatus:      item.LastStatus,
+		LastRunAt:       item.LastRunAt,
+		LastCommit:      item.LastCommit,
+		Running:         githubQueue.Running(item.ID),
 	}
 	if key, err := githubProjectKey(item, setting); err == nil && key.ID != 0 {
+		info.KeyID = key.ID
 		info.KeyName = key.Name
 		info.PublicKey = key.PublicKey
 	}
@@ -461,14 +413,12 @@ func loadGithubSetting() dto.GithubSetting {
 		return def
 	}
 	setting := dto.GithubSetting{
-		WebhookPort:      atoi(githubSettingPort, githubDefaultPort),
-		WebhookBind:      get(githubSettingBind),
-		DefaultShell:     get(githubSettingShell),
-		LogRetention:     atoi(githubSettingRetention, githubDefaultRetention),
-		DefaultWebsiteID: uint(atoi(githubSettingWebsiteID, 0)),
-		DefaultDomain:    get(githubSettingDomain),
-		CustomBaseURL:    get(githubSettingCustomBaseURL),
-		SharedKeyID:      uint(atoi(githubSettingSharedKeyID, 0)),
+		WebhookPort:   atoi(githubSettingPort, githubDefaultPort),
+		WebhookBind:   get(githubSettingBind),
+		DefaultShell:  get(githubSettingShell),
+		LogRetention:  atoi(githubSettingRetention, githubDefaultRetention),
+		WebhookDomain: get(githubSettingWebhookDomain),
+		SharedKeyID:   uint(atoi(githubSettingSharedKeyID, 0)),
 	}
 	if setting.WebhookPort <= 0 || setting.WebhookPort > 65535 {
 		setting.WebhookPort = githubDefaultPort
@@ -513,21 +463,14 @@ func (g *GithubService) UpdateSetting(req dto.GithubSetting) error {
 			return buserr.New("ErrGithubKeyNotFound")
 		}
 	}
-	defaultDomain := strings.TrimSpace(req.DefaultDomain)
-	if req.DefaultWebsiteID != 0 {
-		website, err := websiteRepo.GetFirst(repo.WithByID(req.DefaultWebsiteID))
-		if err != nil {
-			return buserr.New("ErrGithubWebsiteNotFound")
-		}
-		if defaultDomain != "" && githubFindDomain(website, defaultDomain) == nil {
-			return buserr.New("ErrGithubDomainNotFound")
-		}
-	} else {
-		defaultDomain = ""
+	webhookDomain, err := githubNormalizeWebhookDomain(req.WebhookDomain)
+	if err != nil {
+		return err
 	}
-	customBase := strings.TrimRight(strings.TrimSpace(req.CustomBaseURL), "/")
-	if customBase != "" && !githubValidBaseURL(customBase) {
-		return buserr.New("ErrGithubInvalidURL")
+	if webhookDomain != "" && webhookDomain != old.WebhookDomain {
+		if err := githubCheckDomainFree(webhookDomain); err != nil {
+			return err
+		}
 	}
 
 	values := map[string]string{
@@ -535,21 +478,18 @@ func (g *GithubService) UpdateSetting(req dto.GithubSetting) error {
 		githubSettingBind:          bind,
 		githubSettingShell:         req.DefaultShell,
 		githubSettingRetention:     strconv.Itoa(req.LogRetention),
-		githubSettingWebsiteID:     strconv.Itoa(int(req.DefaultWebsiteID)),
-		githubSettingDomain:        defaultDomain,
-		githubSettingCustomBaseURL: customBase,
+		githubSettingWebhookDomain: webhookDomain,
 		githubSettingSharedKeyID:   strconv.Itoa(int(req.SharedKeyID)),
 	}
 	if err := settingRepo.UpdateValues(values); err != nil {
 		return err
 	}
-	setting := loadGithubSetting()
 	if listenerChanged {
 		if err := githubHook.restart(); err != nil {
 			global.LOG.Errorf("[github] restart webhook listener failed: %v", err)
 		}
 	}
-	return githubSyncHookProxies(setting)
+	return nil
 }
 
 func githubPortInUse(bind string, port int) bool {
@@ -561,246 +501,84 @@ func githubPortInUse(bind string, port int) bool {
 	return false
 }
 
-// ---------- domains and the hook reverse proxy ----------
-
-func (g *GithubService) ListDomains() ([]dto.GithubDomainOption, error) {
-	websites, err := websiteRepo.List()
-	if err != nil {
-		return nil, err
-	}
-	var options []dto.GithubDomainOption
-	for _, website := range websites {
-		hasProxy := githubHookProxyExists(website)
-		https := website.Protocol == constant.ProtocolHTTPS
-		if len(website.Domains) == 0 {
-			options = append(options, dto.GithubDomainOption{
-				WebsiteID: website.ID, Alias: website.Alias, PrimaryDomain: website.PrimaryDomain,
-				Domain: website.PrimaryDomain, HTTPS: https, HookProxy: hasProxy,
-			})
-			continue
-		}
-		for _, domain := range website.Domains {
-			options = append(options, dto.GithubDomainOption{
-				WebsiteID: website.ID, Alias: website.Alias, PrimaryDomain: website.PrimaryDomain,
-				Domain: domain.Domain, Port: domain.Port, HTTPS: https, HookProxy: hasProxy,
-			})
-		}
-	}
-	return options, nil
-}
+// ---------- webhook address ----------
 
 type githubTarget struct {
-	URL       string
-	HTTPS     bool
-	WebsiteID uint
-	Message   string
+	URL     string
+	HTTPS   bool
+	Message string
 }
 
-// githubResolveTarget works out the public webhook URL of a project.
-func githubResolveTarget(project model.GithubProject, setting dto.GithubSetting) githubTarget {
-	suffix := strings.TrimSuffix(githubHookPath, "/") + "/" + strconv.Itoa(int(project.ID))
-	websiteID, domain, base := uint(0), "", ""
-	switch project.DomainMode {
-	case dto.GithubDomainWebsite:
-		websiteID, domain = project.WebsiteID, project.Domain
-	case dto.GithubDomainCustom:
-		base = project.CustomURL
-	default:
-		if setting.DefaultWebsiteID != 0 {
-			websiteID, domain = setting.DefaultWebsiteID, setting.DefaultDomain
-		} else {
-			base = setting.CustomBaseURL
-		}
+// githubNormalizeWebhookDomain turns what the user typed (hooks.example.com or
+// https://hooks.example.com:8443) into scheme://host[:port]. Empty stays empty.
+func githubNormalizeWebhookDomain(raw string) (string, error) {
+	value := strings.TrimRight(strings.TrimSpace(raw), "/")
+	if value == "" {
+		return "", nil
 	}
-	if base != "" {
-		return githubTarget{URL: strings.TrimRight(base, "/") + suffix, HTTPS: strings.HasPrefix(base, "https://")}
+	if !strings.Contains(value, "://") {
+		value = "https://" + value
 	}
-	if websiteID == 0 {
-		return githubTarget{Message: "GithubNoDomain"}
+	u, err := url.Parse(value)
+	if err != nil || !githubValidBaseURL(value) || u.User != nil || (u.Path != "" && u.Path != "/") {
+		return "", buserr.New("ErrGithubInvalidURL")
 	}
-	website, err := websiteRepo.GetFirst(repo.WithByID(websiteID))
+	host := strings.ToLower(u.Hostname())
+	if host == "" || strings.ContainsAny(host, " _") {
+		return "", buserr.New("ErrGithubInvalidURL")
+	}
+	if u.Port() != "" {
+		host = net.JoinHostPort(host, u.Port())
+	}
+	return u.Scheme + "://" + host, nil
+}
+
+// githubCheckDomainFree fails when a 1Panel website already serves this host, because
+// a website with that name would answer the webhook requests instead of the listener.
+func githubCheckDomainFree(base string) error {
+	u, err := url.Parse(base)
 	if err != nil {
-		return githubTarget{Message: "ErrGithubWebsiteNotFound"}
+		return buserr.New("ErrGithubInvalidURL")
 	}
-	domains, _ := websiteDomainRepo.GetBy(websiteDomainRepo.WithWebsiteId(website.ID))
-	website.Domains = domains
-	host, port := website.PrimaryDomain, 0
-	if item := githubFindDomain(website, domain); item != nil {
-		host, port = item.Domain, item.Port
-	} else if item := githubFindDomain(website, website.PrimaryDomain); item != nil {
-		port = item.Port
-	}
-	https := website.Protocol == constant.ProtocolHTTPS
-	scheme := "http"
-	if https {
-		scheme = "https"
-	}
-	hostPort := host
-	if !https && port != 0 && port != 80 {
-		hostPort = net.JoinHostPort(host, strconv.Itoa(port))
-	}
-	return githubTarget{URL: scheme + "://" + hostPort + suffix, HTTPS: https, WebsiteID: website.ID}
-}
-
-func githubFindDomain(website model.Website, domain string) *model.WebsiteDomain {
-	if domain == "" {
+	host := strings.ToLower(u.Hostname())
+	if host == "" || net.ParseIP(host) != nil {
 		return nil
 	}
-	for i := range website.Domains {
-		if strings.EqualFold(website.Domains[i].Domain, domain) {
-			return &website.Domains[i]
-		}
+	websites, err := websiteRepo.List()
+	if err != nil {
+		return err
 	}
-	if len(website.Domains) == 0 {
-		domains, _ := websiteDomainRepo.GetBy(websiteDomainRepo.WithWebsiteId(website.ID))
-		for i := range domains {
-			if strings.EqualFold(domains[i].Domain, domain) {
-				return &domains[i]
+	for _, website := range websites {
+		if strings.EqualFold(website.PrimaryDomain, host) {
+			return buserr.WithName("ErrGithubDomainIsWebsite", host)
+		}
+		for _, item := range website.Domains {
+			if strings.EqualFold(item.Domain, host) {
+				return buserr.WithName("ErrGithubDomainIsWebsite", host)
 			}
 		}
 	}
 	return nil
 }
 
-func githubHookProxyFiles(website model.Website) (string, string) {
-	dir := GetSitePath(website, SiteProxyDir)
-	return path.Join(dir, githubHookProxyName+".conf"), path.Join(dir, githubHookProxyName+".bak")
+// githubResolveTarget works out the public webhook URL of a project. The domain
+// always comes from the GitHub settings.
+func githubResolveTarget(project model.GithubProject, setting dto.GithubSetting) githubTarget {
+	if project.DomainMode == dto.GithubDomainNone {
+		return githubTarget{}
+	}
+	if setting.WebhookDomain == "" {
+		return githubTarget{Message: "GithubNoDomain"}
+	}
+	suffix := strings.TrimSuffix(githubHookPath, "/") + "/" + strconv.Itoa(int(project.ID))
+	return githubTarget{URL: setting.WebhookDomain + suffix, HTTPS: strings.HasPrefix(setting.WebhookDomain, "https://")}
 }
 
-func githubHookProxyExists(website model.Website) bool {
-	conf, _ := githubHookProxyFiles(website)
-	return files.NewFileOp().Stat(conf)
-}
-
-// githubWantedHookSites returns the websites that must carry the /github-hook/ proxy.
-func githubWantedHookSites(setting dto.GithubSetting) map[uint]bool {
-	wanted := map[uint]bool{}
-	if setting.DefaultWebsiteID != 0 {
-		wanted[setting.DefaultWebsiteID] = true
-	}
-	projects, _ := githubRepo.ListProjects()
-	for _, project := range projects {
-		if project.DomainMode == dto.GithubDomainWebsite && project.WebsiteID != 0 {
-			wanted[project.WebsiteID] = true
-		}
-	}
-	return wanted
-}
-
-func githubLoadHookSites() map[uint]bool {
-	sites := map[uint]bool{}
-	raw, _ := settingRepo.GetValueByKey(githubSettingHookSites)
-	var ids []uint
-	if raw != "" && json.Unmarshal([]byte(raw), &ids) == nil {
-		for _, id := range ids {
-			sites[id] = true
-		}
-	}
-	return sites
-}
-
-func githubSaveHookSites(sites map[uint]bool) {
-	ids := make([]uint, 0, len(sites))
-	for id := range sites {
-		ids = append(ids, id)
-	}
-	data, _ := json.Marshal(ids)
-	if err := settingRepo.UpdateOrCreate(githubSettingHookSites, string(data)); err != nil {
-		global.LOG.Errorf("[github] save hook sites failed: %v", err)
-	}
-}
-
-// githubSyncHookProxies adds or updates the hook proxy on every wanted website
-// and removes it from websites the panel added it to earlier but no longer needs.
-func githubSyncHookProxies(setting dto.GithubSetting) error {
-	wanted := githubWantedHookSites(setting)
-	managed := githubLoadHookSites()
-	var firstErr error
-	for id := range wanted {
-		if err := githubEnsureHookProxy(id, setting); err != nil {
-			if firstErr == nil {
-				firstErr = err
-			}
-			continue
-		}
-		managed[id] = true
-	}
-	for id := range managed {
-		if wanted[id] {
-			continue
-		}
-		if err := githubRemoveHookProxy(id); err != nil {
-			global.LOG.Errorf("[github] remove hook proxy from website %d failed: %v", id, err)
-			continue
-		}
-		delete(managed, id)
-	}
-	githubSaveHookSites(managed)
-	return firstErr
-}
-
-// githubSyncHookProxiesQuiet is used after project changes: a broken website
-// elsewhere must not block saving a project, so errors are only logged.
-func githubSyncHookProxiesQuiet(setting dto.GithubSetting) {
-	if err := githubSyncHookProxies(setting); err != nil {
-		global.LOG.Errorf("[github] sync hook proxies failed: %v", err)
-	}
-}
-
+// githubProxyPass is where a reverse proxy must send /github-hook/ requests.
 func githubProxyPass(setting dto.GithubSetting) string {
 	host := setting.WebhookBind
 	if ip := net.ParseIP(host); ip == nil || ip.IsUnspecified() {
 		host = "127.0.0.1"
 	}
 	return "http://" + net.JoinHostPort(host, strconv.Itoa(setting.WebhookPort))
-}
-
-func githubEnsureHookProxy(websiteID uint, setting dto.GithubSetting) error {
-	website, err := websiteRepo.GetFirst(repo.WithByID(websiteID))
-	if err != nil {
-		return buserr.New("ErrGithubWebsiteNotFound")
-	}
-	if _, err := getAppInstallByKey(constant.AppOpenresty); err != nil {
-		return buserr.New("ErrGithubNoOpenresty")
-	}
-	websiteService := NewIWebsiteService()
-	conf, bak := githubHookProxyFiles(website)
-	fileOp := files.NewFileOp()
-	if !fileOp.Stat(conf) && fileOp.Stat(bak) {
-		if err := websiteService.OperateProxy(request.WebsiteProxyConfig{ID: website.ID, Operate: "enable", Name: githubHookProxyName}); err != nil {
-			return err
-		}
-	}
-	operate := "create"
-	if fileOp.Stat(conf) {
-		if content, err := fileOp.GetContent(conf); err == nil &&
-			strings.Contains(string(content), "proxy_pass "+githubProxyPass(setting)+";") &&
-			strings.Contains(string(content), githubHookPath) {
-			return nil
-		}
-		operate = "edit"
-	}
-	return websiteService.OperateProxy(request.WebsiteProxyConfig{
-		ID:        website.ID,
-		Operate:   operate,
-		Enable:    true,
-		Name:      githubHookProxyName,
-		Modifier:  "^~",
-		Match:     githubHookPath,
-		ProxyPass: githubProxyPass(setting),
-		ProxyHost: "$host",
-	})
-}
-
-func githubRemoveHookProxy(websiteID uint) error {
-	website, err := websiteRepo.GetFirst(repo.WithByID(websiteID))
-	if err != nil {
-		return nil
-	}
-	conf, bak := githubHookProxyFiles(website)
-	fileOp := files.NewFileOp()
-	if !fileOp.Stat(conf) && !fileOp.Stat(bak) {
-		return nil
-	}
-	return NewIWebsiteService().DeleteProxy(request.WebsiteProxyDel{ID: website.ID, Name: githubHookProxyName})
 }

@@ -52,6 +52,7 @@ type githubDeployReq struct {
 	Commit     string
 	Pusher     string
 	DeliveryID string
+	ScriptID   uint // 0: the script the webhook is linked to
 }
 
 // ---------- listener ----------
@@ -74,6 +75,7 @@ func StartGithubWebhookListener() {
 		global.LOG.Errorf("[github] enforce key permissions failed: %v", err)
 	}
 	githubFailInterrupted()
+	githubDropOrphanKeys()
 	if err := githubHook.restart(); err != nil {
 		global.LOG.Errorf("[github] start webhook listener failed: %v", err)
 	}
@@ -197,6 +199,10 @@ func handleGithubHook(w http.ResponseWriter, r *http.Request) {
 		githubWriteJSON(w, http.StatusUnauthorized, "invalid signature", nil)
 		return
 	}
+	if project.DomainMode == dto.GithubDomainNone {
+		githubWriteJSON(w, http.StatusForbidden, "webhook is turned off for this project", nil)
+		return
+	}
 	if !project.Enabled {
 		githubWriteJSON(w, http.StatusForbidden, "project disabled", nil)
 		return
@@ -248,12 +254,15 @@ func handleGithubHook(w http.ResponseWriter, r *http.Request) {
 
 // ---------- queue ----------
 
-func (g *GithubService) Deploy(id uint) error {
-	project, err := githubRepo.GetProject(repo.WithByID(id))
+func (g *GithubService) Deploy(req dto.GithubProjectDeploy) error {
+	project, err := githubRepo.GetProject(repo.WithByID(req.ID))
 	if err != nil {
 		return buserr.New("ErrRecordNotFound")
 	}
-	_, err = githubSubmit(project, githubDeployReq{Trigger: dto.GithubTriggerManual, Ref: "refs/heads/" + project.Branch})
+	if _, err := githubResolveScript(&project, req.ScriptID); err != nil {
+		return err
+	}
+	_, err = githubSubmit(project, githubDeployReq{Trigger: dto.GithubTriggerManual, Ref: "refs/heads/" + project.Branch, ScriptID: req.ScriptID})
 	return err
 }
 
@@ -375,9 +384,15 @@ func runGithubDeploy(ctx context.Context, projectID uint, req githubDeployReq) {
 		headCommit = commit
 		return err
 	}, nil, 0, timeout+time.Minute)
-	if strings.TrimSpace(project.DeployCommand) != "" {
+	script, scriptErr := githubResolveScript(&project, req.ScriptID)
+	if scriptErr != nil {
+		githubCloseTask(deployTask, scriptErr)
+		finish(dto.GithubStatusFailed, scriptErr.Error(), "")
+		return
+	}
+	if githubScriptHasCommands(script.Content) {
 		deployTask.AddSubTaskWithAliasAndOps("GithubStepDeploy", func(t *task.Task) error {
-			return githubRunCommand(ctx, t, project, setting, req, headCommit, timeout)
+			return githubRunScript(ctx, t, project, script, setting, req, headCommit, timeout)
 		}, nil, 0, timeout+time.Minute)
 	}
 
@@ -464,11 +479,6 @@ func githubSyncRepo(ctx context.Context, t *task.Task, project model.GithubProje
 			}
 		}
 	}
-	if project.RunAsUser != "" {
-		if err := githubChownTree(ctx, t, project.RunAsUser, dir); err != nil {
-			return "", err
-		}
-	}
 	head, err := githubGitQuiet(ctx, dir, env, "rev-parse", "HEAD")
 	if err != nil {
 		return "", err
@@ -490,7 +500,7 @@ func githubChownTree(ctx context.Context, t *task.Task, userName, dir string) er
 	return cmd.NewCommandMgr(cmd.WithTask(*t), cmd.WithContext(ctx), cmd.WithTimeout(5*time.Minute)).Run("chown", "-R", owner, dir)
 }
 
-func githubRunCommand(ctx context.Context, t *task.Task, project model.GithubProject, setting dto.GithubSetting, req githubDeployReq, headCommit string, timeout time.Duration) error {
+func githubRunScript(ctx context.Context, t *task.Task, project model.GithubProject, script model.GithubScript, setting dto.GithubSetting, req githubDeployReq, headCommit string, timeout time.Duration) error {
 	shell := setting.DefaultShell
 	if !cmd.Which(shell) {
 		shell = "sh"
@@ -506,15 +516,19 @@ func githubRunCommand(ctx context.Context, t *task.Task, project model.GithubPro
 		"DEPLOY_COMMIT=" + commit,
 		"DEPLOY_TRIGGER=" + req.Trigger,
 		"DEPLOY_PATH=" + project.ProjectPath,
+		"DEPLOY_SCRIPT=" + script.Name,
 	}
-	name, args := shell, []string{"-c", project.DeployCommand}
-	if project.RunAsUser != "" {
+	name, args := shell, []string{"-c", script.Content}
+	if script.RunAsUser != "" {
 		if !cmd.Which("runuser") {
 			return buserr.New("ErrGithubRunuserNotFound")
 		}
-		name, args = "runuser", append([]string{"-u", project.RunAsUser, "--", shell}, args...)
+		if err := githubChownTree(ctx, t, script.RunAsUser, project.ProjectPath); err != nil {
+			return err
+		}
+		name, args = "runuser", append([]string{"-u", script.RunAsUser, "--", shell}, args...)
 	}
-	t.Logf("%s: %s (%s)", i18n.GetMsgByKey("GithubStepDeploy"), shell, project.ProjectPath)
+	t.Logf("%s: %s, %s (%s)", i18n.GetMsgByKey("GithubStepDeploy"), script.Name, shell, project.ProjectPath)
 	mgr := cmd.NewCommandMgr(cmd.WithTask(*t), cmd.WithContext(ctx), cmd.WithTimeout(timeout), cmd.WithWorkDir(project.ProjectPath), cmd.WithEnv(env...))
 	return mgr.Run(name, args...)
 }

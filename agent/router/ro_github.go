@@ -22,6 +22,13 @@ func (s *GithubRouter) InitRouter(Router *gin.RouterGroup) {
 		githubRouter.POST("/projects/cancel", baseApi.CancelGithubDeploy)
 		githubRouter.POST("/projects/secret/regenerate", baseApi.RegenerateGithubSecret)
 		githubRouter.POST("/projects/webhook", baseApi.LoadGithubWebhook)
+		githubRouter.POST("/projects/webhook/config", baseApi.ConfigureGithubWebhook)
+
+		githubRouter.POST("/scripts/list", baseApi.ListGithubScripts)
+		githubRouter.POST("/scripts", baseApi.CreateGithubScript)
+		githubRouter.POST("/scripts/update", baseApi.UpdateGithubScript)
+		githubRouter.POST("/scripts/del", baseApi.DeleteGithubScript)
+		githubRouter.GET("/users", baseApi.ListGithubSystemUsers)
 
 		githubRouter.POST("/logs/search", baseApi.SearchGithubLogs)
 		githubRouter.POST("/logs/clean", baseApi.CleanGithubLogs)
@@ -35,6 +42,6 @@ func (s *GithubRouter) InitRouter(Router *gin.RouterGroup) {
 
 		githubRouter.GET("/settings", baseApi.LoadGithubSetting)
 		githubRouter.POST("/settings/update", baseApi.UpdateGithubSetting)
-		githubRouter.GET("/domains", baseApi.ListGithubDomains)
+		githubRouter.POST("/repos/check", baseApi.CheckGithubRepo)
 	}
 }

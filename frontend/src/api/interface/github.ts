@@ -3,7 +3,6 @@ import { ReqPage } from '.';
 
 export namespace Github {
     export type KeyMode = 'project' | 'shared' | 'custom' | 'none';
-    export type DomainMode = 'default' | 'website' | 'custom';
     export type UpdateStrategy = 'ff-only' | 'reset';
 
     export interface ProjectSearch extends ReqPage {
@@ -16,20 +15,17 @@ export namespace Github {
         repo: string;
         branch: string;
         projectPath: string;
-        deployCommand: string;
-        updateStrategy: UpdateStrategy;
-        runAsUser: string;
+        deployCommand?: string; // seeds the default script when creating
+        updateStrategy?: UpdateStrategy;
         timeout: number;
         keyMode: KeyMode;
         keyID: number;
-        domainMode: DomainMode;
-        websiteID: number;
-        domain: string;
-        customURL: string;
         enabled: boolean;
     }
     export interface ProjectInfo extends ProjectOperate {
         id: number;
+        webhookEnabled: boolean;
+        webhookScriptID: number;
         createdAt: string;
         keyName: string;
         publicKey: string;
@@ -47,11 +43,14 @@ export namespace Github {
         publicKey: string;
     }
     export interface WebhookInfo {
+        scriptID: number;
+        scriptName: string;
         url: string;
         https: boolean;
         contentType: string;
         events: string;
-        proxyReady: boolean;
+        enabled: boolean;
+        proxyPass: string;
         listener: string;
         message: string;
     }
@@ -95,6 +94,30 @@ export namespace Github {
         name: string;
         type: string;
         fingerprint: string;
+        publicKey: string;
+    }
+
+    export interface ScriptInfo {
+        id: number;
+        createdAt: string;
+        projectID: number;
+        name: string;
+        content: string;
+        runAsUser: string;
+        isDefault: boolean;
+        linked: boolean;
+    }
+    export interface ScriptOperate {
+        id?: number;
+        projectID: number;
+        name: string;
+        content: string;
+        runAsUser: string;
+    }
+    export interface WebhookConfig {
+        id: number;
+        enabled: boolean;
+        scriptID: number;
     }
 
     export interface Setting {
@@ -102,9 +125,7 @@ export namespace Github {
         webhookBind: string;
         defaultShell: string;
         logRetention: number;
-        defaultWebsiteID: number;
-        defaultDomain: string;
-        customBaseURL: string;
+        webhookDomain: string;
         sharedKeyID: number;
     }
     export interface SettingInfo extends Setting {
@@ -113,14 +134,16 @@ export namespace Github {
         listenerError: string;
         gitInstalled: boolean;
     }
-    export interface DomainOption {
-        websiteID: number;
-        alias: string;
-        primaryDomain: string;
-        domain: string;
-        port: number;
-        https: boolean;
-        hookProxy: boolean;
+    export interface RepoCheck {
+        cloneURL: string;
+        keyMode: KeyMode;
+        keyID: number;
+    }
+    export interface RepoCheckInfo {
+        ok: boolean;
+        message: string;
+        defaultBranch: string;
+        branches: string[];
     }
 
     export interface ForkInfo {
