@@ -1,9 +1,8 @@
-# fork: builds and tests the fork on every push and PR to main.
+# fork: builds and tests pull requests into main (for example upstream sync PRs) and manual runs.
+# Releases run the same tests inside release.yml, so a tag push is built only once.
 name: Fork CI
 
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:

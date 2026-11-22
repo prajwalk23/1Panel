@@ -121,10 +121,18 @@ jobs:
       - name: Build frontend
         run: make build_frontend
 
-      - name: Build binaries
+      - name: Unit tests and vet (fork packages)
         run: |
           set -euo pipefail
           bash agent/utils/vm/helper/prepare.sh
+          (cd agent && go test ./utils/github/...)
+          (cd core && go test ./utils/github/... && go test ./init/migration/migrations/ -run TestAddGithubMenu)
+          (cd agent && go vet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...)
+          (cd core && go vet ./utils/github/... ./app/... ./router/... ./global/... ./init/migration/... ./i18n/...)
+
+      - name: Build binaries
+        run: |
+          set -euo pipefail
           core_ldflags="-s -w -X github.com/1Panel-dev/1Panel/core/global.ForkVersion=${TAG} -X github.com/1Panel-dev/1Panel/core/global.ForkRepo=${GITHUB_REPOSITORY}"
           for arch in ${ARCHES}; do
             (cd core && CGO_ENABLED=0 GOOS=linux GOARCH="${arch}" go build -trimpath -ldflags "${core_ldflags}" -o "../build/${arch}/1panel-core" ./cmd/server)
