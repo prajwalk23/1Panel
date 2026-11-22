@@ -35,9 +35,14 @@ DATA_DIR="${INSTALL_DIR}/1panel"
 BACKUP_ROOT="${DATA_DIR}/fork-backup"
 PANEL_VERSION="$(ctl_value ORIGINAL_VERSION)"
 
+use_systemd() {
+    # No pipes here: with "set -o pipefail" a "systemctl ... | grep -q" can fail with SIGPIPE.
+    [ -d /run/systemd/system ] && command -v systemctl >/dev/null 2>&1 && systemctl cat 1panel-core >/dev/null 2>&1
+}
+
 service_ctl() {
     local action="$1"
-    if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^1panel-core'; then
+    if use_systemd; then
         # shellcheck disable=SC2086
         systemctl "${action}" ${SERVICES}
     elif command -v rc-service >/dev/null 2>&1; then
@@ -47,13 +52,32 @@ service_ctl() {
     fi
 }
 
-services_active() {
-    if command -v systemctl >/dev/null 2>&1 && systemctl list-unit-files 2>/dev/null | grep -q '^1panel-core'; then
-        # shellcheck disable=SC2086
-        systemctl is-active --quiet ${SERVICES}
-    else
-        pgrep -f "${BIN_DIR}/1panel-core" >/dev/null && pgrep -f "${BIN_DIR}/1panel-agent" >/dev/null
-    fi
+# Prints one PID per running service, empty if one of them is not running.
+service_pids() {
+    local svc pid out=""
+    for svc in ${SERVICES}; do
+        if use_systemd; then
+            systemctl is-active --quiet "${svc}" || return 0
+            pid="$(systemctl show -p MainPID --value "${svc}" 2>/dev/null || true)"
+        else
+            pid="$(pgrep -x "${svc}" | head -n1 || true)"
+        fi
+        { [ -n "${pid}" ] && [ "${pid}" != "0" ]; } || return 0
+        out="${out}${svc}=${pid} "
+    done
+    printf '%s' "${out}"
+}
+
+# The panel must be running with the same processes after 10 seconds, so a crash loop
+# (the services restart themselves) is not mistaken for a healthy start.
+panel_stable() {
+    local first second
+    sleep 5
+    first="$(service_pids)"
+    [ -n "${first}" ] || return 1
+    sleep 5
+    second="$(service_pids)"
+    [ -n "${second}" ] && [ "${first}" = "${second}" ]
 }
 
 detect_arch() {
@@ -138,9 +162,8 @@ install_release() {
         restore "${backup}" no
         die "installation of ${tag} failed and was rolled back"
     fi
-    sleep 5
-    if ! services_active; then
-        log "the panel did not stay up, rolling back"
+    if ! panel_stable; then
+        log "the panel did not stay up, rolling back. Logs: journalctl -u 1panel-core -u 1panel-agent -n 80"
         restore "${backup}" no
         die "installation of ${tag} failed and was rolled back"
     fi
