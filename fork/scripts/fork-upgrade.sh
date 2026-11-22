@@ -16,6 +16,10 @@ BIN_DIR="/usr/local/bin"
 CTL="${BIN_DIR}/1pctl"
 SERVICES="1panel-core 1panel-agent"
 
+TMP_DIR=""
+cleanup() { [ -z "${TMP_DIR}" ] || rm -rf "${TMP_DIR}"; }
+trap cleanup EXIT
+
 log() { printf '[fork] %s\n' "$*"; }
 die() { printf '[fork] ERROR: %s\n' "$*" >&2; exit 1; }
 
@@ -122,12 +126,12 @@ install_release() {
     if [ "${PANEL_VERSION}" != "${base}" ] && [ "${FORK_FORCE:-}" != "1" ]; then
         die "this panel runs ${PANEL_VERSION:-unknown}, but ${tag} is built on ${base}. Update the panel to ${base} first (or set FORK_FORCE=1 if you know what you are doing)."
     fi
-    local arch file url tmp pkg backup
+    local arch file url pkg backup
     arch="$(detect_arch)"
     file="1panel-${tag}-linux-${arch}.tar.gz"
     url="https://github.com/${REPO}/releases/download/${tag}"
-    tmp="$(mktemp -d)"
-    trap 'rm -rf "${tmp}"' EXIT
+    TMP_DIR="$(mktemp -d)"
+    local tmp="${TMP_DIR}"
 
     log "downloading ${file} from ${REPO}"
     curl -fsSL --retry 3 -o "${tmp}/checksums.txt" "${url}/checksums.txt" || die "cannot download checksums.txt for ${tag}"
