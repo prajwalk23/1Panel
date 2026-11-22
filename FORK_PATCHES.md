@@ -17,7 +17,7 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `core/router/common.go` | `&GithubRouter{},` appended to `commonGroups()` | re-append our line |
 | `core/init/migration/migrate.go` | `migrations.AddGithubMenu,` appended | keep ours last |
 | `core/init/migration/helper/menu.go` | `GitHub-Menu` entry in `LoadMenus()` and `MenuSort()` | re-add the entries |
-| `core/app/service/upgrade.go` | fork guard at the top of `SearchUpgrade` and `Upgrade` | re-add both guards |
+| `core/app/service/upgrade.go` | fork block at the top of `SearchUpgrade` (answers from the fork releases) and `Upgrade` (hands over to the fork updater) | re-add both blocks |
 | `core/i18n/i18n.go` | `Init()` also loads `lang/github/*.yaml` via `loadGithubLangFiles()` | re-add the call |
 | `frontend/src/lang/index.ts` | messages pass through `withGithubMessages()` | re-wrap both places |
 
