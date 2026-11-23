@@ -4642,7 +4642,7 @@ const message = {
         renewSSL: 'Renew',
         renewHelper: 'Are you sure to renew the certificate? ',
         renewSuccess: 'Renew certificate',
-        enableHTTPS: 'Enable',
+        enableHTTPS: 'Enable HTTPS',
         aliasHelper: 'Alias is the directory name of the website',
         lastBackupAt: 'last backup time',
         null: 'none',
