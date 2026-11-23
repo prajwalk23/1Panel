@@ -76,6 +76,21 @@ func validateRuntimeGit(create request.RuntimeCreate) error {
 }
 
 func validateRuntimeGitFields(mode, cloneURL, branch, codeDir string) error {
+	if err := validateGitSource(mode, cloneURL, branch); err != nil {
+		return err
+	}
+	trimmed := strings.TrimSpace(mode)
+	if trimmed == "" || trimmed == dto.RuntimeGitModeNone {
+		return nil
+	}
+	if strings.TrimSpace(codeDir) == "" {
+		return buserr.New("ErrPathNotFound")
+	}
+	return nil
+}
+
+// validateGitSource rejects an unusable git source before any work starts.
+func validateGitSource(mode, cloneURL, branch string) error {
 	mode = strings.TrimSpace(mode)
 	if mode == "" || mode == dto.RuntimeGitModeNone {
 		return nil
@@ -92,27 +107,53 @@ func validateRuntimeGitFields(mode, cloneURL, branch, codeDir string) error {
 	if !githubutil.ValidBranch(branch) {
 		return buserr.New("ErrGithubInvalidBranch")
 	}
-	if strings.TrimSpace(codeDir) == "" {
-		return buserr.New("ErrPathNotFound")
-	}
 	return nil
 }
 
-// resolveRuntimeGitKey returns the SSH key used to reach the repository. A key
-// chosen on the runtime wins; otherwise the shared key of the GitHub settings is
-// used. Public (https) clones do not need a key.
-func resolveRuntimeGitKey(runtime *model.Runtime) (model.GithubKey, error) {
-	if runtime.GitKeyID != 0 {
-		return githubRepo.GetKey(repo.WithByID(runtime.GitKeyID))
+// applyWebsiteGit copies the git source of a create request onto a website.
+func applyWebsiteGit(website *model.Website, create request.WebsiteCreate) {
+	mode := strings.TrimSpace(create.GitMode)
+	if mode == "" {
+		mode = dto.RuntimeGitModeNone
+	}
+	branch := strings.TrimSpace(create.GitBranch)
+	if branch == "" {
+		branch = "main"
+	}
+	strategy := create.GitUpdateStrategy
+	if strategy != dto.GithubStrategyReset {
+		strategy = dto.GithubStrategyFFOnly
+	}
+	website.GitMode = mode
+	website.GitCloneURL = strings.TrimSpace(create.GitCloneURL)
+	website.GitBranch = branch
+	website.GitKeyID = create.GitKeyID
+	website.GitUpdateStrategy = strategy
+	if mode == dto.RuntimeGitModeNone {
+		website.GitCloneURL = ""
+		website.GitKeyID = 0
+	}
+}
+
+// resolveGitKey returns the SSH key for a clone: a specific key wins, otherwise
+// the shared key of the GitHub settings is used. Public (https) clones need none.
+func resolveGitKey(keyID uint, cloneURL string) (model.GithubKey, error) {
+	if keyID != 0 {
+		return githubRepo.GetKey(repo.WithByID(keyID))
 	}
 	setting := loadGithubSetting()
 	if setting.SharedKeyID != 0 {
 		return githubRepo.GetKey(repo.WithByID(setting.SharedKeyID))
 	}
-	if githubutil.IsSSHCloneURL(runtime.GitCloneURL) {
+	if githubutil.IsSSHCloneURL(cloneURL) {
 		return model.GithubKey{}, buserr.New("ErrGithubKeyRequired")
 	}
 	return model.GithubKey{}, nil
+}
+
+// resolveRuntimeGitKey returns the SSH key used to reach the runtime repository.
+func resolveRuntimeGitKey(runtime *model.Runtime) (model.GithubKey, error) {
+	return resolveGitKey(runtime.GitKeyID, runtime.GitCloneURL)
 }
 
 func runtimeGitEnv(key model.GithubKey) []string {
@@ -123,9 +164,9 @@ func runtimeGitEnv(key model.GithubKey) []string {
 	return env
 }
 
-// runtimeGitRun runs one git command. Output goes to the task when there is one,
-// otherwise it is appended to the runtime log file.
-func runtimeGitRun(ctx context.Context, runtime *model.Runtime, t *task.Task, workDir string, env []string, args ...string) (string, error) {
+// gitRun runs one git command. Output goes to the task when there is one, else
+// to logPath when given.
+func gitRun(ctx context.Context, logPath string, t *task.Task, workDir string, env []string, args ...string) (string, error) {
 	full := append([]string{"-c", "safe.directory=*"}, args...)
 	opts := []cmd.Option{
 		cmd.WithContext(ctx),
@@ -135,27 +176,21 @@ func runtimeGitRun(ctx context.Context, runtime *model.Runtime, t *task.Task, wo
 	}
 	if t != nil {
 		opts = append(opts, cmd.WithTask(*t))
-	} else {
-		opts = append(opts, cmd.WithOutputFile(runtime.GetLogPath()))
+	} else if logPath != "" {
+		opts = append(opts, cmd.WithOutputFile(logPath))
 	}
 	mgr := cmd.NewCommandMgr(opts...)
 	out, err := mgr.RunWithStdout("git", full...)
 	return strings.TrimSpace(out), err
 }
 
-// runtimeGitSync clones the repository into the runtime code directory the first
-// time and updates the checkout on later runs. It returns the resulting HEAD.
-func runtimeGitSync(ctx context.Context, runtime *model.Runtime, t *task.Task) (string, error) {
+// gitSyncCheckout clones dir from cloneURL the first time and updates the
+// checkout on later runs. It returns the resulting HEAD.
+func gitSyncCheckout(ctx context.Context, logPath string, t *task.Task, dir, cloneURL, branch, strategy string, key model.GithubKey) (string, error) {
 	if !cmd.Which("git") {
 		return "", buserr.New("ErrGithubGitNotFound")
 	}
-	key, err := resolveRuntimeGitKey(runtime)
-	if err != nil {
-		return "", err
-	}
 	env := runtimeGitEnv(key)
-	dir := runtime.CodeDir
-	branch := runtime.GitBranch
 	if branch == "" {
 		branch = "main"
 	}
@@ -169,37 +204,37 @@ func runtimeGitSync(ctx context.Context, runtime *model.Runtime, t *task.Task) (
 		if err := os.MkdirAll(parent, 0o755); err != nil {
 			return "", err
 		}
-		if _, err := runtimeGitRun(ctx, runtime, t, parent, env, "clone", "--branch", branch, "--single-branch", "--", runtime.GitCloneURL, dir); err != nil {
+		if _, err := gitRun(ctx, logPath, t, parent, env, "clone", "--branch", branch, "--single-branch", "--", cloneURL, dir); err != nil {
 			return "", err
 		}
 	} else {
-		if current, _ := runtimeGitRun(ctx, runtime, t, dir, env, "remote", "get-url", "origin"); current != runtime.GitCloneURL {
-			if _, err := runtimeGitRun(ctx, runtime, t, dir, env, "remote", "set-url", "origin", runtime.GitCloneURL); err != nil {
+		if current, _ := gitRun(ctx, logPath, t, dir, env, "remote", "get-url", "origin"); current != cloneURL {
+			if _, err := gitRun(ctx, logPath, t, dir, env, "remote", "set-url", "origin", cloneURL); err != nil {
 				return "", err
 			}
 		}
 		refspec := fmt.Sprintf("+refs/heads/%s:refs/remotes/origin/%s", branch, branch)
-		if _, err := runtimeGitRun(ctx, runtime, t, dir, env, "fetch", "--prune", "origin", refspec); err != nil {
+		if _, err := gitRun(ctx, logPath, t, dir, env, "fetch", "--prune", "origin", refspec); err != nil {
 			return "", err
 		}
 		remoteRef := "origin/" + branch
-		if current, _ := runtimeGitRun(ctx, runtime, t, dir, env, "rev-parse", "--abbrev-ref", "HEAD"); current != branch {
-			if _, err := runtimeGitRun(ctx, runtime, t, dir, env, "checkout", "-B", branch, remoteRef); err != nil {
+		if current, _ := gitRun(ctx, logPath, t, dir, env, "rev-parse", "--abbrev-ref", "HEAD"); current != branch {
+			if _, err := gitRun(ctx, logPath, t, dir, env, "checkout", "-B", branch, remoteRef); err != nil {
 				return "", err
 			}
 		}
-		if runtime.GitUpdateStrategy == dto.GithubStrategyReset {
-			if _, err := runtimeGitRun(ctx, runtime, t, dir, env, "reset", "--hard", remoteRef); err != nil {
+		if strategy == dto.GithubStrategyReset {
+			if _, err := gitRun(ctx, logPath, t, dir, env, "reset", "--hard", remoteRef); err != nil {
 				return "", err
 			}
 		} else {
-			if _, err := runtimeGitRun(ctx, runtime, t, dir, env, "merge", "--ff-only", remoteRef); err != nil {
+			if _, err := gitRun(ctx, logPath, t, dir, env, "merge", "--ff-only", remoteRef); err != nil {
 				return "", err
 			}
 		}
 	}
 
-	head, err := runtimeGitRun(ctx, runtime, t, dir, env, "rev-parse", "HEAD")
+	head, err := gitRun(ctx, logPath, t, dir, env, "rev-parse", "HEAD")
 	if err != nil {
 		return "", err
 	}
@@ -207,6 +242,36 @@ func runtimeGitSync(ctx context.Context, runtime *model.Runtime, t *task.Task) (
 		return "", nil
 	}
 	return head, nil
+}
+
+// runtimeGitSync clones the repository into the runtime code directory the first
+// time and updates the checkout on later runs. It returns the resulting HEAD.
+func runtimeGitSync(ctx context.Context, runtime *model.Runtime, t *task.Task) (string, error) {
+	key, err := resolveRuntimeGitKey(runtime)
+	if err != nil {
+		return "", err
+	}
+	return gitSyncCheckout(ctx, runtime.GetLogPath(), t, runtime.CodeDir, runtime.GitCloneURL, runtime.GitBranch, runtime.GitUpdateStrategy, key)
+}
+
+// websiteGitEnabled reports whether a PHP website clones its code from GitHub.
+func websiteGitEnabled(website *model.Website) bool {
+	return website != nil && website.GitMode != "" && website.GitMode != dto.RuntimeGitModeNone
+}
+
+// websiteGitClone clones or updates the website repository into its index dir.
+func websiteGitClone(website *model.Website) error {
+	key, err := resolveGitKey(website.GitKeyID, website.GitCloneURL)
+	if err != nil {
+		return err
+	}
+	dir := GetSitePath(*website, SiteIndexDir)
+	commit, err := gitSyncCheckout(context.Background(), "", nil, dir, website.GitCloneURL, website.GitBranch, website.GitUpdateStrategy, key)
+	if err != nil {
+		return err
+	}
+	global.LOG.Infof("website [%s] git clone ok, HEAD %s", website.Alias, commit)
+	return nil
 }
 
 // runtimeGitCloneRepo is the create-task entry point: it fails the task on error.

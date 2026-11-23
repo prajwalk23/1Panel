@@ -176,6 +176,7 @@
                     >
                         {{ $t('website.runtimePortWarn') }}
                     </el-text>
+                    <GitConfig v-if="website.runtimeType === 'php'" v-model="website" mode="create" />
                 </div>
 
                 <el-divider content-position="left" v-if="website.type !== 'stream'">
@@ -447,6 +448,7 @@ import Check from '../check/index.vue';
 import GroupSelect from '@/views/website/website/components/group/index.vue';
 import WebsiteSSL from '@/views/website/website/components/website-ssl/index.vue';
 import LoadBalanceForm from '@/views/website/website/config/basic/load-balance/form/index.vue';
+import GitConfig from '@/views/website/runtime/components/git/index.vue';
 
 import { App } from '@/api/interface/app';
 import { searchApp, getAppInstalled } from '@/api/modules/app';
@@ -546,6 +548,7 @@ const initData = () => ({
     name: '',
     algorithm: '',
     servers: [],
+    gitMode: 'none',
 });
 const website = ref(initData());
 const rules = ref<any>({

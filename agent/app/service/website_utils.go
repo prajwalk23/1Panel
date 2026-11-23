@@ -456,7 +456,11 @@ func createWebsiteFolder(website *model.Website, runtime *model.Runtime, created
 		}
 	}
 	if website.Type == constant.Static || (website.Type == constant.Runtime && runtime.Type == constant.RuntimePHP) {
-		if err := createIndexFile(website, runtime, created); err != nil {
+		if websiteGitEnabled(website) { // fork: the repository supplies the site files
+			if err := websiteGitClone(website); err != nil {
+				return err
+			}
+		} else if err := createIndexFile(website, runtime, created); err != nil {
 			return err
 		}
 	}

@@ -110,6 +110,12 @@ export namespace Website {
         name: string;
         algorithm: string;
         servers: NginxUpstreamServer[];
+        // fork: optional GitHub source (PHP runtime sites only)
+        gitMode?: string;
+        gitCloneURL?: string;
+        gitBranch?: string;
+        gitKeyID?: number;
+        gitUpdateStrategy?: string;
     }
 
     export interface WebSiteUpdateReq {

@@ -30,6 +30,13 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `frontend/src/views/website/runtime/{python,node,java,go,dotnet}/operate/index.vue` | `<GitConfig>` component + init/get mapping | re-add the component and 5 mapped fields |
 | `frontend/src/views/website/runtime/{python,node,java,go,dotnet}/index.vue` | `GitHub` tag on rows when `gitMode === 'git'` | re-add the tag |
 | `frontend/src/lang/modules/en.ts`, `zh.ts` | `runtime.git*` keys | re-add the keys |
+| `agent/app/model/website.go` | git source columns on `Website` | re-add the 5 fields |
+| `agent/app/dto/request/website.go` | git fields on `WebsiteCreate` | re-add the fields |
+| `agent/app/service/website.go` | validate + apply the git source for PHP runtime sites | re-add the calls |
+| `agent/app/service/website_utils.go` | clone the repo instead of the default index file for git PHP sites | re-add the branch |
+| `frontend/src/api/interface/website.ts` | git fields on `WebSiteCreateReq` | re-add the fields |
+| `frontend/src/views/website/website/create/index.vue` | `<GitConfig>` shown for the PHP runtime type | re-add the component |
+| `frontend/src/lang/modules/en.ts` | `enableHTTPS` label "Enable HTTPS" | re-apply the label |
 
 Every edit is marked with a `// fork:` comment so `git grep "fork:"` finds them all.
 
@@ -49,7 +56,8 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
   `agent/app/repo/github.go`, `agent/app/service/github*.go`, `agent/app/api/v2/github.go`,
   `agent/router/ro_github.go`, `agent/init/migration/migrations/github*.go`, `agent/i18n/lang/github/`,
   `agent/i18n/github.go`, `agent/app/service/runtime_github.go`,
-  `agent/init/migration/migrations/runtime_github.go`
+  `agent/init/migration/migrations/runtime_github.go`,
+  `agent/init/migration/migrations/website_github.go`
 - Frontend: `frontend/src/views/website/runtime/components/git/index.vue`
 - Core: `core/global/fork.go`, `core/utils/github/`, `core/app/service/github_update.go`,
   `core/app/dto/github.go`, `core/app/api/v2/github_update.go`, `core/router/ro_github.go`,

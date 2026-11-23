@@ -41,6 +41,13 @@ type WebsiteCreate struct {
 	DataBaseConfig
 	SSLConfig
 	StreamConfig
+
+	// fork: optional GitHub source of a PHP website.
+	GitMode           string `json:"gitMode"`
+	GitCloneURL       string `json:"gitCloneURL"`
+	GitBranch         string `json:"gitBranch"`
+	GitKeyID          uint   `json:"gitKeyID"`
+	GitUpdateStrategy string `json:"gitUpdateStrategy"`
 }
 
 type StreamConfig struct {

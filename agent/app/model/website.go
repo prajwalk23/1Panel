@@ -39,6 +39,13 @@ type Website struct {
 
 	StreamPorts string `json:"streamPorts"`
 
+	// fork: optional GitHub source of a PHP website (cloned into the site index dir).
+	GitMode           string `gorm:"default:none" json:"gitMode"`
+	GitCloneURL       string `json:"gitCloneURL"`
+	GitBranch         string `gorm:"default:main" json:"gitBranch"`
+	GitKeyID          uint   `json:"gitKeyID"`
+	GitUpdateStrategy string `gorm:"default:ff-only" json:"gitUpdateStrategy"`
+
 	Domains    []WebsiteDomain `json:"domains" gorm:"-:migration"`
 	WebsiteSSL WebsiteSSL      `json:"webSiteSSL" gorm:"-:migration"`
 }

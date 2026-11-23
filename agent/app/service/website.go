@@ -502,6 +502,10 @@ func (w WebsiteService) CreateWebsite(create request.WebsiteCreate) (err error) 
 
 		switch runtime.Type {
 		case constant.RuntimePHP:
+			if err := validateGitSource(create.GitMode, create.GitCloneURL, create.GitBranch); err != nil { // fork: GitHub source
+				return err
+			}
+			applyWebsiteGit(website, create) // fork: GitHub source
 			if runtime.Resource == constant.ResourceAppstore {
 				if !checkImageLike(nil, runtime.Image) {
 					return buserr.WithName("ErrImageNotExist", runtime.Name)
