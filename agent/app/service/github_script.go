@@ -34,46 +34,9 @@ func githubScriptHasCommands(content string) bool {
 	return false
 }
 
-// githubEnsureDefaultScript returns the default script of a project and creates it when
-// missing (new projects, and projects made before scripts existed). It also links the
-// webhook to it when no script is linked yet.
-func githubEnsureDefaultScript(project *model.GithubProject) (model.GithubScript, error) {
-	scripts, err := githubRepo.ListScripts(githubRepo.WithByProjectID(project.ID))
-	if err != nil {
-		return model.GithubScript{}, err
-	}
-	var def model.GithubScript
-	for _, item := range scripts {
-		if item.IsDefault {
-			def = item
-			break
-		}
-	}
-	if def.ID == 0 {
-		content := strings.ReplaceAll(project.DeployCommand, "\r\n", "\n")
-		if strings.TrimSpace(content) == "" {
-			content = githubDefaultScriptTemplate
-		}
-		name := githubDefaultScriptName
-		for _, item := range scripts {
-			if item.Name == name {
-				name = githubDefaultScriptName + "-1"
-			}
-		}
-		def = model.GithubScript{ProjectID: project.ID, Name: name, Content: content, RunAsUser: project.RunAsUser, IsDefault: true}
-		if err := githubRepo.CreateScript(&def); err != nil {
-			return model.GithubScript{}, err
-		}
-	}
-	if project.WebhookScriptID == 0 {
-		project.WebhookScriptID = def.ID
-		_ = githubRepo.UpdateProject(project.ID, map[string]interface{}{"webhook_script_id": def.ID})
-	}
-	return def, nil
-}
-
 // githubResolveScript picks the script to run: the requested one, else the one the
-// webhook is linked to, else the default.
+// webhook is linked to, else the default. A project without scripts pulls and does
+// nothing else, so an empty script is a valid answer.
 func githubResolveScript(project *model.GithubProject, scriptID uint) (model.GithubScript, error) {
 	if scriptID != 0 {
 		script, err := githubRepo.GetScript(repo.WithByID(scriptID), githubRepo.WithByProjectID(project.ID))
@@ -87,7 +50,19 @@ func githubResolveScript(project *model.GithubProject, scriptID uint) (model.Git
 			return script, nil
 		}
 	}
-	return githubEnsureDefaultScript(project)
+	scripts, err := githubRepo.ListScripts(githubRepo.WithByProjectID(project.ID))
+	if err != nil {
+		return model.GithubScript{}, nil
+	}
+	for _, item := range scripts {
+		if item.IsDefault {
+			return item, nil
+		}
+	}
+	if len(scripts) > 0 {
+		return scripts[0], nil
+	}
+	return model.GithubScript{}, nil
 }
 
 func githubScriptInfo(script model.GithubScript, linkedID uint) dto.GithubScriptInfo {
@@ -126,9 +101,6 @@ func (g *GithubService) ListScripts(req dto.GithubScriptList) ([]dto.GithubScrip
 	if err != nil {
 		return nil, buserr.New("ErrRecordNotFound")
 	}
-	if _, err := githubEnsureDefaultScript(&project); err != nil {
-		return nil, err
-	}
 	scripts, err := githubRepo.ListScripts(githubRepo.WithByProjectID(project.ID))
 	if err != nil {
 		return nil, err
@@ -153,17 +125,20 @@ func (g *GithubService) CreateScript(req dto.GithubScriptOperate) (*dto.GithubSc
 	if err != nil {
 		return nil, err
 	}
-	if _, err := githubEnsureDefaultScript(&project); err != nil {
-		return nil, err
-	}
 	if existing, _ := githubRepo.GetScript(githubRepo.WithByProjectID(project.ID), repo.WithByName(name)); existing.ID != 0 {
 		return nil, buserr.New("ErrGithubNameExist")
+	}
+	scripts, _ := githubRepo.ListScripts(githubRepo.WithByProjectID(project.ID))
+	content := strings.ReplaceAll(req.Content, "\r\n", "\n")
+	if strings.TrimSpace(content) == "" {
+		content = githubDefaultScriptTemplate
 	}
 	script := model.GithubScript{
 		ProjectID: project.ID,
 		Name:      name,
-		Content:   strings.ReplaceAll(req.Content, "\r\n", "\n"),
+		Content:   content,
 		RunAsUser: runAs,
+		IsDefault: len(scripts) == 0,
 	}
 	if err := githubRepo.CreateScript(&script); err != nil {
 		return nil, err
@@ -208,12 +183,8 @@ func (g *GithubService) DeleteScript(id uint) error {
 	}
 	project, err := githubRepo.GetProject(repo.WithByID(script.ProjectID))
 	if err == nil && project.WebhookScriptID == script.ID {
-		// The webhook falls back to the default script.
-		def, ensureErr := githubEnsureDefaultScript(&project)
-		if ensureErr != nil {
-			return ensureErr
-		}
-		_ = githubRepo.UpdateProject(project.ID, map[string]interface{}{"webhook_script_id": def.ID})
+		// The webhook keeps working and only pulls until another script is linked.
+		_ = githubRepo.UpdateProject(project.ID, map[string]interface{}{"webhook_script_id": 0})
 	}
 	return githubRepo.DeleteScript(repo.WithByID(id))
 }

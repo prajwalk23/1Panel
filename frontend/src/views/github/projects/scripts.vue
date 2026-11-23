@@ -110,6 +110,10 @@ const rules = reactive({
     name: [Rules.requiredInput],
 });
 
+// Same template the backend uses when a script is created without content.
+const defaultScriptTemplate =
+    '# Runs in the project folder after every pull.\n# Variables: $DEPLOY_COMMIT $DEPLOY_BRANCH $DEPLOY_TRIGGER $DEPLOY_PATH $DEPLOY_REPO $DEPLOY_SCRIPT\n';
+
 const load = async () => {
     loading.value = true;
     try {
@@ -137,6 +141,12 @@ const onOpenForm = (row?: Github.ScriptInfo) => {
     Object.assign(form, emptyForm(), { projectID: projectID.value });
     if (row) {
         Object.assign(form, { id: row.id, name: row.name, content: row.content, runAsUser: row.runAsUser });
+    } else {
+        // A new script starts from the default template so it can be edited and saved.
+        form.content = defaultScriptTemplate;
+        if (scripts.value.length === 0) {
+            form.name = 'default';
+        }
     }
     formVisible.value = true;
 };

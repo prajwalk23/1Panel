@@ -49,7 +49,7 @@ type GithubProjectOperate struct {
 	Repo           string `json:"repo" validate:"max=256"`
 	Branch         string `json:"branch" validate:"required,max=200"`
 	ProjectPath    string `json:"projectPath" validate:"required,max=1024"`
-	DeployCommand  string `json:"deployCommand" validate:"max=65535"` // seeds the default script when creating
+	DeployCommand  string `json:"deployCommand" validate:"max=65535"` // legacy: scripts are now created on demand
 	UpdateStrategy string `json:"updateStrategy" validate:"omitempty,oneof=ff-only reset"`
 	Timeout        int    `json:"timeout" validate:"min=0,max=86400"`
 	KeyMode        string `json:"keyMode" validate:"required,oneof=project shared custom none"`

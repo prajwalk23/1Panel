@@ -104,16 +104,6 @@
                 </el-input>
                 <span class="input-help">{{ $t('github.projectPathHelper') }}</span>
             </el-form-item>
-            <el-form-item v-if="!form.id" :label="$t('github.deployCommand')" prop="deployCommand">
-                <el-input
-                    v-model="form.deployCommand"
-                    type="textarea"
-                    :rows="5"
-                    class="font-mono"
-                    placeholder="npm ci && npm run build"
-                />
-                <span class="input-help">{{ $t('github.deployCommandCreateHelper') }}</span>
-            </el-form-item>
             <el-form-item :label="$t('github.timeout')" prop="timeout">
                 <el-input-number v-model="form.timeout" :min="30" :max="86400" :step="60" />
             </el-form-item>
@@ -228,7 +218,6 @@ const emptyForm = (): Github.ProjectOperate => ({
     repo: '',
     branch: '',
     projectPath: '',
-    deployCommand: '',
     updateStrategy: 'ff-only',
     timeout: 600,
     keyMode: 'none',

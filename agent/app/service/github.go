@@ -123,13 +123,6 @@ func (g *GithubService) CreateProject(req dto.GithubProjectOperate) (*dto.Github
 		githubDropKey(createdKeyID)
 		return nil, err
 	}
-	// The default script starts with the deploy command from the form.
-	project.DeployCommand = req.DeployCommand
-	if _, err := githubEnsureDefaultScript(&project); err != nil {
-		return nil, err
-	}
-	project.DeployCommand = ""
-	_ = githubRepo.UpdateProject(project.ID, map[string]interface{}{"deploy_command": ""})
 	info := githubProjectInfo(project, loadGithubSetting())
 	return &info, nil
 }
