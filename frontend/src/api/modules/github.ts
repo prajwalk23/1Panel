@@ -87,10 +87,3 @@ export const updateGithubSetting = (params: Github.Setting) => {
 export const checkGithubRepo = (params: Github.RepoCheck) => {
     return http.post<Github.RepoCheckInfo>(`/github/repos/check`, params, TimeoutEnum.T_60S);
 };
-
-export const loadForkInfo = () => {
-    return http.get<Github.ForkInfo>(`/core/github/fork/info`);
-};
-export const forkUpgrade = (version: string) => {
-    return http.post(`/core/github/fork/upgrade`, { version: version });
-};

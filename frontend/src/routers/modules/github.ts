@@ -43,13 +43,6 @@ const githubRouter = {
                     meta: { activeMenu: '/github', title: 'github.keys', adminOnly: true },
                 },
                 {
-                    path: 'updates',
-                    name: 'GithubUpdates',
-                    component: () => import('@/views/github/updates/index.vue'),
-                    hidden: true,
-                    meta: { activeMenu: '/github', title: 'github.updates', adminOnly: true },
-                },
-                {
                     path: 'settings',
                     name: 'GithubSettings',
                     component: () => import('@/views/github/settings/index.vue'),

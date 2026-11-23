@@ -145,22 +145,4 @@ export namespace Github {
         defaultBranch: string;
         branches: string[];
     }
-
-    export interface ForkInfo {
-        isForkBuild: boolean;
-        panelVersion: string;
-        forkVersion: string;
-        forkRepo: string;
-        latestVersion: string;
-        latestBase: string;
-        hasUpdate: boolean;
-        baseChange: boolean;
-        releaseName: string;
-        releaseNote: string;
-        releaseURL: string;
-        publishedAt: string;
-        arch: string;
-        assetReady: boolean;
-        systemStatus: string;
-    }
 }

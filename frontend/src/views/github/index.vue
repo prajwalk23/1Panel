@@ -15,7 +15,6 @@ const buttons = [
     { label: i18n.global.t('github.projects'), path: '/github/projects' },
     { label: i18n.global.t('github.logs'), path: '/github/logs' },
     { label: i18n.global.t('github.keys'), path: '/github/keys' },
-    { label: i18n.global.t('github.updates'), path: '/github/updates' },
     { label: i18n.global.t('github.settings'), path: '/github/settings' },
 ];
 </script>
