@@ -7930,6 +7930,14 @@ const message = {
                 'Yeni bir panel sürümü algılandığında bir kez uyarı gönder (işlenmezse ertesi gün tekrar gönderilir)',
             avgRule:
                 '{0} dakika içinde ortalama {1} kullanımı {2}%’yi aşarsa, uyarı tetiklenir, günde {3} kez gönderilir',
+            memorySustained: 'Server Memory Sustained Alert',
+            memorySustainedTitle: 'Sustained High Memory Usage Alert',
+            memorySustainedUseExceed: 'Memory usage threshold',
+            memorySustainedUseExceedHelper:
+                'Alert when memory usage stays at or above this value for the whole duration. Any dip below it restarts the timer.',
+            memorySustainedName: 'Memory',
+            sustainedDuration: 'Sustained for',
+            sustainedRule: 'Usage stays at or above {1}% for {0} minutes, triggers alert, sends {2} times per day',
             diskRule:
                 '{0} bağlama dizini için disk kullanımı {1}{2}’yi aşarsa, uyarı tetiklenir, günde {3} kez gönderilir',
             allDiskRule: 'Disk kullanımı {0}{1}’yi aşarsa, uyarı tetiklenir, günde {2} kez gönderilir',

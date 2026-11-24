@@ -117,7 +117,6 @@ func agentDBMigrations() []*gormigrate.Migration {
 		migrations.AddContainerImageCheckUpdates,
 		migrations.AddCronjobURLItems,
 		migrations.AddModelQuickJump,
-		migrations.MigrateVMDatabase,
 		migrations.UpdateModelServicesQuickJumpRouter,
 		migrations.AddAgentAccountVerificationResult,
 		migrations.AddGPUGroup,
@@ -125,6 +124,8 @@ func agentDBMigrations() []*gormigrate.Migration {
 		migrations.AddGithubScripts,       // fork: keep last
 		migrations.AddRuntimeGithubFields, // fork: keep last
 		migrations.AddWebsiteGithubFields, // fork: keep last
+		migrations.DisableGPUMonitor,      // fork: keep last
+		migrations.AddForkCleanCronjobs,   // fork: keep last
 	}
 }
 
@@ -154,6 +155,7 @@ func migrateAlertDB(db *gorm.DB) error {
 		migrations.MigrateAlertLogTaskMethodConfigIDs,
 		migrations.AddAlertAuditUser,
 		migrations.AddAlertTaskDeliveryLogID,
+		migrations.AddMemorySustainedAlertType, // fork: keep last
 	})
 	return m.Migrate()
 }

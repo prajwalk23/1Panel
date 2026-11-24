@@ -37,6 +37,33 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `frontend/src/api/interface/website.ts` | git fields on `WebSiteCreateReq` | re-add the fields |
 | `frontend/src/views/website/website/create/index.vue` | `<GitConfig>` shown for the PHP runtime type | re-add the component |
 | `frontend/src/lang/modules/en.ts` | `enableHTTPS` label "Enable HTTPS" | re-apply the label |
+| `agent/utils/common/sqlite.go`, `core/utils/common/sqlite.go` | PRAGMAs moved into the DSN (`_pragma=`), `cache_size(-1024)`, `SetMaxOpenConns(2)` | keep ours |
+| `agent/cmd/server/main.go`, `core/cmd/server/main.go` | `debug.SetMemoryLimit(512 MiB)` unless `GOMEMLIMIT` is set | re-add the block |
+| `core/server/server.go` | MCP bridge + Docker prepare/sync only start when `mcp_settings.enabled` | re-add the `mcpEnabled` gates |
+| `core/init/hook/hook.go` | writes setting `PanelRunningVersion` (read by the agent `upgrade-rollback-clean` job) | re-add the block |
+| `agent/init/migration/migrate.go` | `DisableGPUMonitor`, `AddForkCleanCronjobs` appended; `AddMemorySustainedAlertType` appended to `migrateAlertDB`; `MigrateVMDatabase` removed | keep ours **last**, keep the VM entry removed |
+| `agent/app/service/cronjob_helper.go` | `handleSystemClean` switches on `forkCleanMode(cronjob.Config)` | re-add the switch |
+| `agent/app/service/alert_helper.go`, `agent/utils/alert/alert.go` | `memorySustained` in `resourceTypes`, `resetAlertState`, `resourceTask`, `getModuleName`, `GetAlertDetailContent` | re-add the cases |
+| `agent/i18n/lang/*.yaml` | `MemorySustainedAlert` after `ResourceAlert` | re-add the key |
+| `frontend/src/views/setting/alert/{dash/index,dash/task/index,log/index,setting/time-range/index}.vue`, `frontend/src/lang/modules/*.ts` | `memorySustained` alert type and `xpack.alert.memorySustained*` / `sustained*` keys | re-add the entries |
+| `core/init/migration/migrate.go` | `StripVMAndAIMenus` appended; `AddVirtualMachineMenu`, `MoveVirtualMachineMenuToXpack`, `MoveVirtualMachineMenuToTopLevel` removed | keep ours last, keep the VM entries removed |
+| `core/init/migration/migrations/init.go` | `AddVirtualMachineMenu` removed | keep it removed |
+| `core/init/migration/helper/menu.go` | `AI-Menu` and `VirtualMachine` removed from `LoadMenus()` / `MenuSort()` (VM) | keep them removed |
+| `agent/app/api/v2/entry.go`, `agent/app/service/entry.go`, `agent/router/common.go`, `agent/server/server.go`, `agent/utils/xpack/community.go`, `core/utils/xpack/community.go`, `core/init/router/proxy.go` | VM wiring removed (`vmService`, `vmRepo`, `VMRouter`, `kvm.Init`, `VMCountLimit`, `X-1Panel-VM-Limit`) | keep it removed |
+| `Makefile`, `.github/workflows/{fork-ci,release}.yml` | `prepare_vm_helper` / `prepare.sh` removed | keep it removed |
+| `frontend/src/views/app-store/installed/{detail,upgrade}/index.vue`, `views/terminal/terminal/index.vue`, `views/host/file-management/index.vue`, `views/host/monitor/export/index.vue`, `views/home/status/index.vue`, `views/log/operation/index.vue`, `utils/app.ts`, `package.json` | AI/GPU/VM references removed (GPU config, account sync, terminal AI setting, file AI search, GPU export, `GPUHistory` link, `/ai/...` jumps, `vms` log filter, `@novnc/novnc`) | keep them removed |
+
+## Removed upstream features
+
+- **VM / KVM**: `agent/utils/vm/`, `agent/init/kvm/`, `agent/app/{api/v2,dto,model,repo,service}/vm*.go`,
+  `agent/router/ro_vm.go`, `agent/init/migration/migrations/vm.go`, `core/init/migration/migrations/vm.go`,
+  `frontend/src/views/vm/`, `frontend/src/{routers,routers/modules,api/modules,api/interface,utils}/vm.ts`.
+- **AI UI**: `frontend/src/views/ai/`, `routers/modules/ai.ts`, `api/modules/{ai,model-chat,panel-mcp}.ts`,
+  `api/interface/panel-mcp.ts`, `utils/panel-mcp.ts`, `components/{model-chat,ai-model-list,agent-provider-label,agent-provider-logo}/`,
+  `views/terminal/setting/ai/`, `views/host/file-management/ai-search/`. The agent/core AI Go code is kept
+  (dormant). `api/interface/ai.ts` is kept because `api/interface/app.ts` and `utils/agent.ts` use its types;
+  `feishu-transition.vue` moved to `views/app-store/installed/upgrade/`.
+- On upstream sync, files deleted here and edited upstream show up as modify/delete conflicts: delete them again.
 
 Every edit is marked with a `// fork:` comment so `git grep "fork:"` finds them all.
 
@@ -65,6 +92,10 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
   `core/i18n/lang/github/`, `core/i18n/github.go`
 - Frontend: `frontend/src/routers/modules/github.ts`, `frontend/src/views/github/`,
   `frontend/src/api/modules/github.ts`, `frontend/src/api/interface/github.ts`, `frontend/src/lang/github/`
+- Memory / cleanup / alert: `agent/init/migration/migrations/fork_memory.go`,
+  `agent/app/service/{device_clean_auto,alert_mem_sustained}.go` (+ tests),
+  `core/init/migration/migrations/fork_menu_strip.go` (+ test),
+  `frontend/src/views/app-store/installed/upgrade/feishu-transition.vue`
 - Fork tooling: `.github/workflows/sync-upstream.yml`, `.github/workflows/fork-ci.yml`,
   `.github/workflows/release.yml`, `fork/`
 

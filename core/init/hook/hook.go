@@ -23,6 +23,13 @@ func Init() {
 		}
 		global.LOG.Infof("sync system version from installed package: %s -> %s", storedVersion, global.CONF.Base.Version)
 	}
+	// fork: publish the running version (full fork version when set) for the agent's
+	// upgrade-rollback-clean job; SystemVersion only holds the base version.
+	runningVersion := global.CONF.Base.Version
+	if global.IsForkBuild() {
+		runningVersion = global.ForkVersion
+	}
+	_ = settingRepo.UpdateOrCreate("PanelRunningVersion", runningVersion)
 	global.CONF.Conn.Port, _ = settingRepo.GetValueByKey("ServerPort")
 	global.CONF.Conn.Ipv6, _ = settingRepo.GetValueByKey("Ipv6")
 	global.CONF.Base.Edition, _ = settingRepo.GetValueByKey("Edition")

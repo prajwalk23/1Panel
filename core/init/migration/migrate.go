@@ -54,7 +54,6 @@ func coreMigrations() []*gormigrate.Migration {
 		migrations.AddAIProxyMenu,
 		migrations.AddSkillsHubMenu,
 		migrations.UpdateXpackSyncMenu,
-		migrations.AddVirtualMachineMenu,
 		migrations.UpdateXpackMenuSort,
 		migrations.AddOperationLogUser,
 		migrations.AddLoginLogUser,
@@ -66,18 +65,17 @@ func coreMigrations() []*gormigrate.Migration {
 		migrations.RepairXpackAppMenus,
 		migrations.UpdateFirewallMenuPath,
 		migrations.RemoveUpageHideMenu,
-		migrations.MoveVirtualMachineMenuToXpack,
 		migrations.AddAPIKeys,
 		migrations.AddOperationLogAPIKey,
 		migrations.UpdateAiMenuOrder,
 		migrations.UpdateAiMenuOrderV2,
 		migrations.AddPanelMCP,
 		migrations.AddAPIKeyDeletedAt,
-		migrations.MoveVirtualMachineMenuToTopLevel,
 		migrations.UpdateAiModelManagementMenus,
 		migrations.AddModelServicesMenu,
 		migrations.UpdateAiMenus,
 		migrations.MoveOpsReportMenuToAgent,
-		migrations.AddGithubMenu, // fork: keep last
+		migrations.AddGithubMenu,     // fork: keep last
+		migrations.StripVMAndAIMenus, // fork: keep last
 	}
 }

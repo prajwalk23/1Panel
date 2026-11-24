@@ -28,11 +28,6 @@
                                         <el-checkbox :label="$t('monitor.avgLoad')" value="load" />
                                         <el-checkbox :label="$t('monitor.disk') + ' I/O'" value="io" />
                                         <el-checkbox :label="$t('monitor.network')" value="network" />
-                                        <el-checkbox
-                                            v-if="gpuOptions.length > 0 || gpuOptionsFailed"
-                                            label="GPU"
-                                            value="gpu"
-                                        />
                                     </el-checkbox-group>
                                     <span class="input-help">{{ $t('monitor.exportMetricsHelper') }}</span>
                                 </div>
@@ -56,17 +51,6 @@
                                         :key="item"
                                         :label="item === 'all' ? $t('monitor.exportAggregate') : item"
                                         :value="item"
-                                    />
-                                </el-select>
-                            </el-form-item>
-                            <el-form-item v-if="form.params.includes('gpu')" label="GPU">
-                                <el-select v-model="form.gpuDevice" class="w-full">
-                                    <el-option :label="$t('monitor.exportAllDevices')" value="*" />
-                                    <el-option
-                                        v-for="item in gpuOptions"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value"
                                     />
                                 </el-select>
                             </el-form-item>
@@ -102,9 +86,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue';
 import { loadMonitor, getIOOptions, getNetworkOptions } from '@/api/modules/host';
-import { getGPUOptions, loadGPUMonitor } from '@/api/modules/ai';
 import { Host } from '@/api/interface/host';
-import { AI } from '@/api/interface/ai';
 import { shortcuts } from '@/utils/shortcuts';
 import { dateFormatForName } from '@/utils/date';
 import { exportMonitorTables, MonitorExportTable } from '@/utils/monitor-export';
@@ -119,10 +101,8 @@ const loading = ref(false);
 const timeRange = ref<[Date, Date]>([new Date(new Date().setHours(0, 0, 0, 0)), new Date()]);
 const ioOptions = ref<Array<string>>([]);
 const netOptions = ref<Array<string>>([]);
-const gpuOptions = ref<(AI.ChartHide & { value: string; label: string })[]>([]);
 const ioOptionsFailed = ref(false);
 const netOptionsFailed = ref(false);
-const gpuOptionsFailed = ref(false);
 
 // el-select treats '' as empty and renders the placeholder, so "all devices" uses '*' as a sentinel
 const ALL_DEVICES = '*';
@@ -131,7 +111,6 @@ const form = reactive({
     params: ['cpu', 'memory', 'load'] as Array<string>,
     io: ALL_DEVICES,
     network: ALL_DEVICES,
-    gpuDevice: ALL_DEVICES,
     format: 'csv',
 });
 
@@ -164,8 +143,6 @@ const tableLabel = (name: string): string => {
             return `${t('monitor.disk')} I/O`;
         case 'network':
             return t('monitor.network');
-        case 'gpu':
-            return 'GPU';
         default:
             return name;
     }
@@ -240,61 +217,10 @@ const buildNetworkTable = (datasets: Array<Host.MonitorData>): MonitorExportTabl
     };
 };
 
-const buildGPUTable = (datasets: Array<{ device: AI.ChartHide; data: AI.MonitorGPUData }>): MonitorExportTable => {
-    const rows = datasets
-        .flatMap(({ device, data }) =>
-            (data.date || []).map((date, i) => [
-                new Date(date),
-                device.productName,
-                device.deviceID || '',
-                !!device.legacy,
-                data.gpuValue?.[i],
-                data.temperatureValue?.[i],
-                data.powerUsed?.[i],
-                data.powerTotal?.[i],
-                data.memoryUsed?.[i],
-                data.memoryTotal?.[i],
-                data.speedValue?.[i],
-            ]),
-        )
-        .sort((a, b) => (a[0] as Date).getTime() - (b[0] as Date).getTime());
-    return {
-        name: 'gpu',
-        fields: [
-            'time',
-            'productName',
-            'deviceID',
-            'legacy',
-            'gpuUtil',
-            'temperature',
-            'powerDraw',
-            'powerLimit',
-            'memUsed',
-            'memTotal',
-            'fanSpeed',
-        ],
-        headers: [
-            t('commons.table.date'),
-            'GPU',
-            'GPU ID',
-            t('aiTools.gpu.legacyDevice'),
-            `${t('aiTools.gpu.gpuUtil')} (%)`,
-            `${t('aiTools.gpu.temperature')} (°C)`,
-            `${t('aiTools.gpu.powerUsage')} (W)`,
-            `${t('aiTools.gpu.powerLimit')} (W)`,
-            `${t('aiTools.gpu.memoryUsed')} (MiB)`,
-            `${t('aiTools.gpu.memoryTotal')} (MiB)`,
-            t('aiTools.gpu.fanSpeed'),
-        ],
-        rows,
-    };
-};
-
 const collectTables = async (): Promise<MonitorExportTable[]> => {
     const [startTime, endTime] = timeRange.value;
     const jobs: Promise<void>[] = [];
     const datasets: Array<Host.MonitorData> = [];
-    const gpuDatasets: Array<{ device: AI.ChartHide; data: AI.MonitorGPUData }> = [];
 
     const search = (param: string, io = 'all', network = 'all') =>
         loadMonitor({ param, io, network, startTime, endTime }, currentNode.value).then((res) => {
@@ -311,27 +237,6 @@ const collectTables = async (): Promise<MonitorExportTable[]> => {
     if (form.params.includes('network')) {
         jobs.push(search('network', 'all', form.network === ALL_DEVICES ? '' : form.network));
     }
-    if (form.params.includes('gpu')) {
-        const devices = gpuOptions.value.filter(
-            (device) => form.gpuDevice === ALL_DEVICES || device.value === form.gpuDevice,
-        );
-        for (const device of devices) {
-            jobs.push(
-                loadGPUMonitor(
-                    {
-                        deviceID: device.deviceID,
-                        productName: device.productName,
-                        legacy: device.legacy,
-                        startTime,
-                        endTime,
-                    },
-                    currentNode.value,
-                ).then((res) => {
-                    gpuDatasets.push({ device, data: res.data });
-                }),
-            );
-        }
-    }
     await Promise.all(jobs);
 
     const tables: MonitorExportTable[] = [];
@@ -343,9 +248,6 @@ const collectTables = async (): Promise<MonitorExportTable[]> => {
     }
     if (form.params.includes('network')) {
         tables.push(buildNetworkTable(datasets));
-    }
-    if (form.params.includes('gpu')) {
-        tables.push(buildGPUTable(gpuDatasets));
     }
     return tables;
 };
@@ -362,17 +264,8 @@ const onExport = async () => {
     loading.value = true;
     try {
         await optionsReady.value;
-        // retry only the lists that failed on mount; a stale but non-empty gpu list is still usable
+        // retry only the lists that failed on mount
         await loadOptions(true);
-        if (
-            form.params.includes('gpu') &&
-            form.gpuDevice === ALL_DEVICES &&
-            gpuOptionsFailed.value &&
-            gpuOptions.value.length === 0
-        ) {
-            MsgWarning(t('monitor.exportOptionsFailed', ['GPU']));
-            return;
-        }
         const tables = await collectTables();
         if (tables.every((table) => table.rows.length === 0)) {
             MsgWarning(t('commons.msg.noneData'));
@@ -417,20 +310,6 @@ const loadNetOptions = async () => {
     }
 };
 
-const loadGPUOptions = async () => {
-    try {
-        const res = await getGPUOptions(currentNode.value);
-        gpuOptions.value = (res.data?.supported ? res.data.chartHide || [] : []).map((device) => ({
-            ...device,
-            value: device.deviceID || `legacy:${device.productName}`,
-            label: `${device.productName} · ${device.deviceID || t('aiTools.gpu.legacyDevice')}`,
-        }));
-        gpuOptionsFailed.value = false;
-    } catch {
-        gpuOptionsFailed.value = true;
-    }
-};
-
 const loadOptions = async (onlyFailed = false) => {
     const jobs: Promise<void>[] = [];
     if (!onlyFailed || ioOptionsFailed.value) {
@@ -438,9 +317,6 @@ const loadOptions = async (onlyFailed = false) => {
     }
     if (!onlyFailed || netOptionsFailed.value) {
         jobs.push(loadNetOptions());
-    }
-    if (!onlyFailed || gpuOptionsFailed.value) {
-        jobs.push(loadGPUOptions());
     }
     await Promise.all(jobs);
 };

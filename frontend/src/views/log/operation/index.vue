@@ -30,7 +30,6 @@
                     <el-option :label="$t('logs.detail.databases')" value="databases" />
                     <el-option :label="$t('xpack.cluster.cluster')" value="cluster" />
                     <el-option :label="$t('logs.detail.containers')" value="containers" />
-                    <el-option :label="$t('logs.detail.vms')" value="vms" />
                     <el-option :label="$t('menu.system')" value="hosts" />
                     <el-option :label="$t('logs.detail.files')" value="files" />
                     <el-option :label="$t('logs.detail.cronjobs')" value="cronjobs" />

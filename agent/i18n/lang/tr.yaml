@@ -651,6 +651,7 @@ WebSiteAlert: 'Paneliniz {{ .node }}{{ .ip }}, {{ .num }} web sitesi {{ .day }} 
 SSLAlert: 'Paneliniz {{ .node }}{{ .ip }}, {{ .num }} SSL sertifikası {{ .day }} gün içinde süresi dolacak. Detaylar için paneline giriş yapın.'
 DiskUsedAlert: 'Paneliniz {{ .node }}{{ .ip }}, {{ .name }} diski kullanımı {{ .used }}''a ulaştı. Detaylar için paneline giriş yapın.'
 ResourceAlert: 'Paneliniz {{ .node }}{{ .ip }}, son {{ .time }} dakika içindeki ortalama {{ .name }} kullanım oranı {{ .used }}''dır. Detaylar için paneline giriş yapın.'
+MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
 PanelVersionAlert: 'Paneliniz {{ .node }}{{ .ip }}, en son panel sürümü yükseltme için mevcut. Detaylar için paneline giriş yapın.'
 PanelPwdExpirationAlert: 'Paneliniz {{ .node }}{{ .ip }}, panel şifresi {{ .day }} gün içinde süresi dolacak. Detaylar için paneline giriş yapın.'
 CommonAlert: 'Paneliniz {{ .node }}{{ .ip }}, {{ .msg }}. Detaylar için paneline giriş yapın.'

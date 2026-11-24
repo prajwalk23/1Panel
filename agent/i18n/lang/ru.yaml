@@ -651,6 +651,7 @@ WebSiteAlert: 'Ваш панель {{ .node }}{{ .ip }}, {{ .num }} веб-са�
 SSLAlert: 'Ваш панель {{ .node }}{{ .ip }}, {{ .num }} сертификатов SSL истечут через {{ .day }} дней. Войдите в панель для получения деталей.'
 DiskUsedAlert: 'Ваш панель {{ .node }}{{ .ip }}, использование диска {{ .name }} достигло {{ .used }}. Войдите в панель для получения деталей.'
 ResourceAlert: 'Ваш панель {{ .node }}{{ .ip }}, средний уровень использования {{ .name }} за {{ .time }} минут составляет {{ .used }}. Войдите в панель для получения деталей.'
+MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
 PanelVersionAlert: 'Ваш панель {{ .node }}{{ .ip }}, доступна последняя версия панели для обновления. Войдите в панель для получения деталей.'
 PanelPwdExpirationAlert: 'Ваш панель {{ .node }}{{ .ip }}, пароль панели истечет через {{ .day }} дней. Войдите в панель для получения деталей.'
 CommonAlert: 'Ваш панель {{ .node }}{{ .ip }}, {{ .msg }}. Войдите в панель для получения деталей.'

@@ -12,7 +12,6 @@ type BaseApi struct{}
 
 var (
 	gpuGroupService  = &service.GPUGroupService{}
-	vmService        = service.NewIVMService()
 	dashboardService = service.NewIDashboardService()
 
 	appService              = service.NewIAppService()

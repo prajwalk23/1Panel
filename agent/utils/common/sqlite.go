@@ -61,7 +61,10 @@ func GetDBWithPath(dbPath string) (*gorm.DB, error) {
 		}
 	}
 
-	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{
+	// fork: pragmas go in the DSN so every pooled connection gets them (db.Exec only reaches one),
+	// and cache_size is capped at 1 MiB per connection.
+	dsn := dbPath + "?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(5000)&_pragma=temp_store(MEMORY)&_pragma=cache_size(-1024)"
+	db, err := gorm.Open(sqlite.Open(dsn), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 		Logger:                                   newLogger(),
 	})
@@ -74,23 +77,11 @@ func GetDBWithPath(dbPath string) (*gorm.DB, error) {
 		return nil, err
 	}
 
-	sqlDB.SetMaxOpenConns(4)
+	sqlDB.SetMaxOpenConns(2) // fork: was 4
 	sqlDB.SetMaxIdleConns(1)
 	sqlDB.SetConnMaxLifetime(0)
 	sqlDB.SetConnMaxIdleTime(0)
 
-	if err := db.Exec("PRAGMA journal_mode = WAL;").Error; err != nil {
-		return nil, err
-	}
-	if err := db.Exec("PRAGMA synchronous = NORMAL;").Error; err != nil {
-		return nil, err
-	}
-	if err := db.Exec("PRAGMA busy_timeout = 5000;").Error; err != nil {
-		return nil, err
-	}
-	if err := db.Exec("PRAGMA temp_store = MEMORY;").Error; err != nil {
-		return nil, err
-	}
 	return db, nil
 }
 

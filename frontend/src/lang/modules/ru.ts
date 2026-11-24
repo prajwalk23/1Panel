@@ -7935,6 +7935,14 @@ const message = {
             panelUpdateRule:
                 'Отправить уведомление один раз при обнаружении новой версии панели (если не обработано, будет отправлено повторно на следующий день)',
             avgRule: 'Среднее использование {1} превышает {2}% в течение {0} минут, отправляется {3} раз в день',
+            memorySustained: 'Server Memory Sustained Alert',
+            memorySustainedTitle: 'Sustained High Memory Usage Alert',
+            memorySustainedUseExceed: 'Memory usage threshold',
+            memorySustainedUseExceedHelper:
+                'Alert when memory usage stays at or above this value for the whole duration. Any dip below it restarts the timer.',
+            memorySustainedName: 'Memory',
+            sustainedDuration: 'Sustained for',
+            sustainedRule: 'Usage stays at or above {1}% for {0} minutes, triggers alert, sends {2} times per day',
             diskRule: 'Использование диска для точки монтирования {0} превышает {1}{2}, отправляется {3} раз в день',
             allDiskRule: 'Использование диска превышает {0}{1}, отправляется {2} раз в день',
             cpuName: 'Процессор',

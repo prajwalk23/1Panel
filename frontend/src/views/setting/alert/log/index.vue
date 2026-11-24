@@ -134,6 +134,7 @@ const loadConfigMap = async () => {
 const resourceTypes = [
     'cpu',
     'memory',
+    'memorySustained',
     'load',
     'disk',
     'nodeException',
@@ -236,6 +237,7 @@ const formatMessage = (row: Alert.AlertDetail) => {
         panelUpdate: () => t('xpack.alert.panelUpdateTitle'),
         cpu: () => t('xpack.alert.cpuTitle'),
         memory: () => t('xpack.alert.memoryTitle'),
+        memorySustained: () => t('xpack.alert.memorySustainedTitle'),
         load: () => t('xpack.alert.loadTitle'),
         disk: () => {
             return row.project === 'all' ? t('xpack.alert.allDiskTitle') : t('xpack.alert.diskTitle', [row.project]);

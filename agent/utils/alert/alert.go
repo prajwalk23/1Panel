@@ -497,6 +497,8 @@ func GetAlertDetailContent(detail dto.AlertDetail, agentInfo *dto.AgentInfo) str
 		return i18n.GetMsgWithMap("ResourceAlert", map[string]interface{}{"time": getValueByIndex(params, "1"), "name": getValueByIndex(params, "2"), "used": getValueByIndex(params, "3"), "node": getNodeName(agentInfo), "ip": getNodeIp(agentInfo)})
 	case "load":
 		return i18n.GetMsgWithMap("ResourceAlert", map[string]interface{}{"time": getValueByIndex(params, "1"), "name": getValueByIndex(params, "2"), "used": getValueByIndex(params, "3"), "node": getNodeName(agentInfo), "ip": getNodeIp(agentInfo)})
+	case "memorySustained": // fork
+		return i18n.GetMsgWithMap("MemorySustainedAlert", map[string]interface{}{"time": getValueByIndex(params, "1"), "name": getValueByIndex(params, "2"), "used": getValueByIndex(params, "3"), "node": getNodeName(agentInfo), "ip": getNodeIp(agentInfo)})
 	case "disk":
 		return i18n.GetMsgWithMap("DiskUsedAlert", map[string]interface{}{"name": getValueByIndex(params, "1"), "used": getValueByIndex(params, "2"), "node": getNodeName(agentInfo), "ip": getNodeIp(agentInfo)})
 	case "cronJob":

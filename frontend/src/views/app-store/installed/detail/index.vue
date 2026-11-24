@@ -120,30 +120,6 @@
                         </div>
                     </div>
                 </component>
-                <GPUConfig v-if="showModelGPU" ref="gpuRef" v-model="paramModel.gpu" />
-                <details v-if="appKey === 'ollama'" ref="syncSectionRef" open class="form-section">
-                    <summary class="form-section-header">
-                        <span>{{ $t('aiTools.model.syncModelAccount') }}</span>
-                        <el-switch
-                            @click.stop
-                            @keydown.stop
-                            v-model="paramModel.syncModelAccount"
-                            :aria-label="$t('aiTools.model.syncModelAccount')"
-                            @change="(enabled) => enabled && syncSectionRef && (syncSectionRef.open = true)"
-                        />
-                    </summary>
-                    <div v-show="paramModel.syncModelAccount" class="form-section-body">
-                        <AccountAddress
-                            ref="accountRef"
-                            show-sync
-                            hide-sync-toggle
-                            :form="paramModel"
-                            :host-port="Number(paramModel.params.PANEL_APP_PORT_HTTP) || paramModel.httpPort"
-                            container-port="11434"
-                            :host-mode="paramModel.isHostMode"
-                        />
-                    </div>
-                </details>
                 <component
                     :is="appKey === 'ollama' ? 'details' : 'section'"
                     :open="appKey === 'ollama'"
@@ -227,7 +203,7 @@
         </div>
         <template #footer v-if="edit">
             <el-button @click="handleClose" :disabled="loading">{{ $t('commons.button.cancel') }}</el-button>
-            <el-button type="primary" :disabled="loading || gpuRef?.loading" @click="submit(paramForm)">
+            <el-button type="primary" :disabled="loading" @click="submit(paramForm)">
                 {{ $t('commons.button.confirm') }}
             </el-button>
         </template>
@@ -236,13 +212,11 @@
 </template>
 <script lang="ts" setup>
 import { expandInvalidFormSection } from '@/components/form-section';
-import AccountAddress from '@/views/ai/components/account-address/index.vue';
-import GPUConfig from '@/views/ai/components/gpu-config/index.vue';
 import Diff from '@/views/app-store/installed/upgrade/diff/index.vue';
 
 import { App } from '@/api/interface/app';
 import { getAppInstallParams, updateAppInstallParams, updateInstallConfig } from '@/api/modules/app';
-import { computed, nextTick, onBeforeUnmount, reactive, ref } from 'vue';
+import { onBeforeUnmount, reactive, ref } from 'vue';
 import { FormInstance } from 'element-plus';
 import { Rules, checkNumberRange } from '@/global/form-rules';
 import { MsgError, MsgSuccess } from '@/utils/message';
@@ -267,7 +241,6 @@ interface EditForm extends App.InstallParams {
     default: any;
 }
 
-const props = defineProps({ modelGPU: Boolean });
 const emit = defineEmits(['close']);
 const { currentNode, isMobile } = useGlobalStore();
 const open = ref(false);
@@ -297,10 +270,6 @@ const rules = reactive({
 });
 const appType = ref('');
 const appKey = ref('');
-const showModelGPU = computed(() => props.modelGPU && appKey.value === 'ollama');
-const accountRef = ref<InstanceType<typeof AccountAddress>>();
-const syncSectionRef = ref<HTMLDetailsElement>();
-const gpuRef = ref<InstanceType<typeof GPUConfig>>();
 const appConfigUpdate = ref<App.AppConfigUpdate>({
     installID: 0,
     webUI: '',
@@ -382,10 +351,6 @@ const editParam = async () => {
 
     edit.value = !edit.value;
     loadLimit();
-    if (edit.value && showModelGPU.value) {
-        await nextTick();
-        await gpuRef.value?.init(false);
-    }
 };
 
 const changeAllowPort = () => {
@@ -454,15 +419,6 @@ const get = async () => {
         }
         appType.value = res.data.type;
         appKey.value = res.data.appKey;
-        if (showModelGPU.value) {
-            paramModel.gpu = res.data.gpu || {
-                enabled: false,
-                mode: 'devices',
-                deviceIDs: [],
-                capabilities: ['gpu', 'utility', 'compute'],
-                error: i18n.global.t('aiTools.model.loadFailed'),
-            };
-        }
         paramModel.name = res.data.name;
         paramModel.httpPort = res.data.httpPort;
         paramModel.syncModelAccount = res.data.syncModelAccount;
@@ -478,7 +434,7 @@ const get = async () => {
 };
 
 const submit = async (formEl: FormInstance) => {
-    if (!formEl || loading.value || gpuRef.value?.loading) return;
+    if (!formEl || loading.value) return;
     const node = currentNode.value;
     const installId = paramData.value.id;
     await formEl.validate((valid) => {
@@ -490,11 +446,10 @@ const submit = async (formEl: FormInstance) => {
         }).then(async () => {
             if (!open.value || node !== currentNode.value || installId !== paramData.value.id) return;
             const submitModel: Record<string, any> = { installId, params: paramModel.params };
-            if (showModelGPU.value) submitModel.gpu = paramModel.gpu;
             if (appKey.value === 'ollama') {
                 submitModel.syncModelAccount = paramModel.syncModelAccount;
                 submitModel.modelAccountBaseURLType = paramModel.modelAccountBaseURLType;
-                submitModel.modelAccountBaseURL = accountRef.value.baseURL;
+                submitModel.modelAccountBaseURL = paramModel.modelAccountBaseURL;
             }
             const updateAdvanced =
                 appKey.value === 'ollama'

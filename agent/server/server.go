@@ -22,7 +22,6 @@ import (
 	"github.com/1Panel-dev/1Panel/agent/init/dir"
 	"github.com/1Panel-dev/1Panel/agent/init/firewall"
 	"github.com/1Panel-dev/1Panel/agent/init/hook"
-	"github.com/1Panel-dev/1Panel/agent/init/kvm"
 	"github.com/1Panel-dev/1Panel/agent/init/lang"
 	"github.com/1Panel-dev/1Panel/agent/init/log"
 	"github.com/1Panel-dev/1Panel/agent/init/migration"
@@ -111,7 +110,6 @@ func Start() {
 	hook.Init()
 	go firewall.Init()
 	InitOthers()
-	kvm.Init()
 
 	rootRouter := router.Routers()
 

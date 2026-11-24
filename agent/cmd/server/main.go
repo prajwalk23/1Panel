@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/1Panel-dev/1Panel/agent/cmd/server/cmd"
 	"os"
+	"runtime/debug"
 )
 
 // @title 1Panel
@@ -34,6 +35,9 @@ import (
 // @description - `1Panel-Timestamp` is the Unix timestamp of the current time in seconds.
 
 func main() {
+	if os.Getenv("GOMEMLIMIT") == "" { // fork: soft heap limit, overridable by env
+		debug.SetMemoryLimit(512 << 20)
+	}
 	if err := cmd.RootCmd.Execute(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

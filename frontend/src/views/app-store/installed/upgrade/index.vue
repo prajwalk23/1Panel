@@ -131,7 +131,7 @@ import CodemirrorPro from '@/components/codemirror-pro/index.vue';
 
 import { App } from '@/api/interface/app';
 import { AI } from '@/api/interface/ai';
-import FeishuTransition from '@/views/ai/agents/agent/config/tabs/channels/components/feishu-transition.vue';
+import FeishuTransition from './feishu-transition.vue';
 import { getAppInstallParams, getAppUpdateVersions, ignoreUpgrade, installedOp } from '@/api/modules/app';
 import { getAppStoreConfig } from '@/api/modules/setting';
 import { isOpenclawCurrentHTTPVersion, isOpenclawHTTPSWindowVersion } from '@/utils/agent';

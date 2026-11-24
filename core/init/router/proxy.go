@@ -126,10 +126,6 @@ func Proxy(policies ...agentProxyPolicy) gin.HandlerFunc {
 			}
 		}
 
-		if reqPath == "/api/v2/vms" || strings.HasPrefix(reqPath, "/api/v2/vms/") {
-			c.Request.Header.Set("X-1Panel-VM-Limit", strconv.Itoa(xpack.VMCountLimit(c)))
-		}
-
 		if reqPath == "/api/v2/hosts/terminal/local" && useLocalAgent {
 			proxyLocalAgent(c)
 			return

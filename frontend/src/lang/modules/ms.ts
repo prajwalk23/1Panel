@@ -7918,6 +7918,14 @@ const message = {
                 'Hantar satu amaran apabila versi panel baharu dikesan (jika tidak diurus, akan dihantar semula keesokan hari)',
             avgRule:
                 'Purata penggunaan {1} melebihi {2}% dalam {0} minit, mencetuskan amaran, dihantar {3} kali sehari',
+            memorySustained: 'Server Memory Sustained Alert',
+            memorySustainedTitle: 'Sustained High Memory Usage Alert',
+            memorySustainedUseExceed: 'Memory usage threshold',
+            memorySustainedUseExceedHelper:
+                'Alert when memory usage stays at or above this value for the whole duration. Any dip below it restarts the timer.',
+            memorySustainedName: 'Memory',
+            sustainedDuration: 'Sustained for',
+            sustainedRule: 'Usage stays at or above {1}% for {0} minutes, triggers alert, sends {2} times per day',
             diskRule:
                 'Penggunaan cakera untuk direktori {0} melebihi {1}{2}, mencetuskan amaran, dihantar {3} kali sehari',
             allDiskRule: 'Penggunaan cakera melebihi {0}{1}, mencetuskan amaran, dihantar {2} kali sehari',

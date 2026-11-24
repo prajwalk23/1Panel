@@ -7788,6 +7788,14 @@ const message = {
             panelUpdateRule:
                 '新しいパネルバージョンが検出されたときに1回アラートを送信（処理されない場合、翌日再送信）',
             avgRule: '{0} 分以内の平均 {1} 使用率が {2}% を超えるとアラートを発生させ、1日 {3} 回送信します',
+            memorySustained: 'Server Memory Sustained Alert',
+            memorySustainedTitle: 'Sustained High Memory Usage Alert',
+            memorySustainedUseExceed: 'Memory usage threshold',
+            memorySustainedUseExceedHelper:
+                'Alert when memory usage stays at or above this value for the whole duration. Any dip below it restarts the timer.',
+            memorySustainedName: 'Memory',
+            sustainedDuration: 'Sustained for',
+            sustainedRule: 'Usage stays at or above {1}% for {0} minutes, triggers alert, sends {2} times per day',
             diskRule: 'マウントディレクトリ{0}のディスク使用率が{1}{2}を超過するとアラートがトリガーされ、1日{3}回送信',
             allDiskRule: 'ディスク使用率が{0}{1}を超過するとアラートがトリガーされ、1日{2}回送信',
             cpuName: 'CPU',

@@ -7749,6 +7749,14 @@ const message = {
                 'هنگامی که نسخه جدید پنل شناسایی شد، یک بار هشدار ارسال کنید (در صورت عدم رسیدگی، روز بعد دوباره ارسال می‌شود)',
             avgRule:
                 'میانگین استفاده {1} در {0} دقیقه از {2}% بیشتر است، هشدار را فعال کرده و {3} بار در روز ارسال می‌کند',
+            memorySustained: 'Server Memory Sustained Alert',
+            memorySustainedTitle: 'Sustained High Memory Usage Alert',
+            memorySustainedUseExceed: 'Memory usage threshold',
+            memorySustainedUseExceedHelper:
+                'Alert when memory usage stays at or above this value for the whole duration. Any dip below it restarts the timer.',
+            memorySustainedName: 'Memory',
+            sustainedDuration: 'Sustained for',
+            sustainedRule: 'Usage stays at or above {1}% for {0} minutes, triggers alert, sends {2} times per day',
             diskRule:
                 'استفاده از دیسک برای دایرکتوری اتصال {0} از {1}{2} بیشتر است، هشدار را فعال کرده و {3} بار در روز ارسال می‌کند',
             allDiskRule: 'استفاده از دیسک از {0}{1} بیشتر است، هشدار را فعال کرده و {2} بار در روز ارسال می‌کند',

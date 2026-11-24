@@ -7810,6 +7810,14 @@ const message = {
             panelUpdateRule:
                 'Send an alert once when a new panel version is detected (if not handled, will resend the next day)',
             avgRule: 'Average {1} usage exceeds {2}% within {0} minutes, triggers alert, sends {3} times per day',
+            memorySustained: 'Server Memory Sustained Alert',
+            memorySustainedTitle: 'Sustained High Memory Usage Alert',
+            memorySustainedUseExceed: 'Memory usage threshold',
+            memorySustainedUseExceedHelper:
+                'Alert when memory usage stays at or above this value for the whole duration. Any dip below it restarts the timer.',
+            memorySustainedName: 'Memory',
+            sustainedDuration: 'Sustained for',
+            sustainedRule: 'Usage stays at or above {1}% for {0} minutes, triggers alert, sends {2} times per day',
             diskRule: 'Disk usage for mount directory {0} exceeds {1}{2}, triggers alert, sends {3} times per day',
             allDiskRule: 'Disk usage exceeds {0}{1}, triggers alert, sends {2} times per day',
             cpuName: ' CPU ',
