@@ -4510,6 +4510,12 @@ const message = {
         installWarn:
             'The external access is not checked, and it will make the application unable to access through external network. Continue?',
         showIgnore: 'View ignored applications',
+        upgradeSelected: 'Upgrade selected',
+        batchUpgradeHelper:
+            'Upgrade {0} selected application(s) to the latest version using the default upgrade settings. Continue?',
+        batchUpgradeSubmitted: '{0} upgrade task(s) submitted',
+        batchUpgradeResult:
+            '{0} upgrade task(s) submitted, {1} not submitted (upgrade OpenClaw with legacy Feishu config individually)',
         cancelIgnore: 'Cancel ignore',
         ignoreList: 'Ignored applications',
         appHelper: 'Go to application details page to learn installation instruction for some special applications.',

@@ -25,6 +25,26 @@
             <el-button @click="openIgnore" type="primary" plain v-if="mode === 'upgrade'">
                 {{ $t('app.showIgnore') }}
             </el-button>
+            <template v-if="mode === 'upgrade' && upgradableList.length > 0">
+                <el-checkbox
+                    class="ml-3"
+                    border
+                    :model-value="allSelected"
+                    :indeterminate="selectedIds.length > 0 && !allSelected"
+                    @change="toggleSelectAll"
+                >
+                    {{ $t('commons.button.selectAll') }}
+                </el-checkbox>
+                <el-button
+                    v-permission
+                    class="ml-3"
+                    type="primary"
+                    :disabled="selectedIds.length === 0"
+                    @click="onBatchUpgrade"
+                >
+                    {{ $t('app.upgradeSelected') }} ({{ selectedIds.length }})
+                </el-button>
+            </template>
         </template>
         <template #rightToolBar>
             <TableSearch @search="search()" v-model:searchName="searchReq.name" />
@@ -68,7 +88,15 @@
                             :md="24"
                             :lg="12"
                             :xl="12"
+                            class="select-col"
                         >
+                            <el-checkbox
+                                v-if="mode === 'upgrade'"
+                                class="select-box"
+                                :model-value="selectedIds.includes(installed.id)"
+                                :disabled="!isUpgradable(installed)"
+                                @change="(val: any) => toggleSelect(installed.id, !!val)"
+                            />
                             <AppCard
                                 :installed="installed"
                                 :mode="mode"
@@ -156,16 +184,24 @@ import ComposeLogs from '@/components/log/compose/index.vue';
 import IgnoreApp from '@/views/app-store/installed/ignore/create/index.vue';
 import TerminalDialog from '@/views/container/container/terminal/index.vue';
 
-import { searchAppInstalled, installedOp, appInstalledDeleteCheck, updateAppInstallSort } from '@/api/modules/app';
-import { toRef, onMounted, onUnmounted, reactive, ref, nextTick } from 'vue';
+import {
+    searchAppInstalled,
+    installedOp,
+    appInstalledDeleteCheck,
+    updateAppInstallSort,
+    getAppUpdateVersions,
+} from '@/api/modules/app';
+import { toRef, onMounted, onUnmounted, reactive, ref, nextTick, computed } from 'vue';
+import { v4 as uuidv4 } from 'uuid';
+import bus from '@/global/bus';
 import Sortable from 'sortablejs';
 import i18n from '@/lang';
 import { ElMessageBox } from 'element-plus';
 import { App } from '@/api/interface/app';
 import { jumpToPath } from '@/utils/router';
 import { useRouter } from 'vue-router';
-import { MsgSuccess } from '@/utils/message';
-import { getAgentSettingInfo } from '@/api/modules/setting';
+import { MsgSuccess, MsgWarning } from '@/utils/message';
+import { getAgentSettingInfo, getAppStoreConfig } from '@/api/modules/setting';
 import { routerToFileWithPath, routerToNameWithQuery } from '@/utils/router';
 import { useGlobalStore } from '@/composables/useGlobalStore';
 import { useOperateNodeContext } from '@/composables/useOperateNodeContext';
@@ -177,6 +213,7 @@ const data = ref<any>();
 const loading = ref(false);
 const syncLoading = ref(false);
 const sortMode = ref(false);
+const selectedIds = ref<number[]>([]);
 const sortContainer = ref();
 let sortableInstance: Sortable | null = null;
 let timer: NodeJS.Timer | null = null;
@@ -291,6 +328,97 @@ const favoriteInstall = (row: App.AppInstalled) => {
 
 const openIgnore = () => {
     ignoreRef.value.acceptParams();
+};
+
+const isUpgradable = (row: any) =>
+    (row.status === 'Running' || row.status === 'UpgradeErr') && row.appStatus !== 'TakeDown';
+
+const upgradableList = computed(() => (data.value || []).filter((row: any) => isUpgradable(row)));
+
+const allSelected = computed(
+    () =>
+        upgradableList.value.length > 0 && upgradableList.value.every((row: any) => selectedIds.value.includes(row.id)),
+);
+
+const toggleSelect = (id: number, checked: boolean) => {
+    selectedIds.value = checked
+        ? [...selectedIds.value.filter((item) => item !== id), id]
+        : selectedIds.value.filter((item) => item !== id);
+};
+
+const toggleSelectAll = (checked: any) => {
+    selectedIds.value = checked ? upgradableList.value.map((row: any) => row.id) : [];
+};
+
+const onBatchUpgrade = () => {
+    const items = upgradableList.value.filter((row: any) => selectedIds.value.includes(row.id));
+    if (items.length === 0) return;
+    ElMessageBox.confirm(
+        i18n.global.t('app.batchUpgradeHelper', [items.length]),
+        i18n.global.t('app.upgradeSelected'),
+        {
+            confirmButtonText: i18n.global.t('commons.button.confirm'),
+            cancelButtonText: i18n.global.t('commons.button.cancel'),
+            type: 'info',
+        },
+    ).then(() => batchUpgrade(items));
+};
+
+const batchUpgrade = async (items: any[]) => {
+    loading.value = true;
+    let success = 0;
+    const skipped: string[] = [];
+    const failed: string[] = [];
+    try {
+        const config = await getAppStoreConfig(currentNode.value);
+        const backup = config.data.upgradeBackup == 'Enable';
+        const deleteImage = config.data.upgradeDeleteImage == 'Enable';
+        for (const item of items) {
+            try {
+                // only openclaw needs the compose check, to detect legacy feishu config that requires manual confirm
+                const versions = await getAppUpdateVersions(
+                    { appInstallID: item.id, loadCompose: item.appKey === 'openclaw' },
+                    currentNode.value,
+                );
+                const target = versions.data?.[0];
+                if (!target || target.feishuLegacy) {
+                    skipped.push(item.name);
+                    continue;
+                }
+                await installedOp(
+                    {
+                        installId: item.id,
+                        operate: 'upgrade',
+                        detailId: target.detailId,
+                        backup: backup,
+                        pullImage: true,
+                        deleteImage: deleteImage,
+                        taskID: uuidv4(),
+                    },
+                    currentNode.value,
+                );
+                success++;
+            } catch (error) {
+                failed.push(item.name);
+            }
+        }
+    } catch (error) {
+        failed.push(...items.map((item) => item.name));
+    } finally {
+        loading.value = false;
+    }
+    selectedIds.value = [];
+    bus.emit('upgrade', true);
+    search();
+    if (skipped.length === 0 && failed.length === 0) {
+        MsgSuccess(i18n.global.t('app.batchUpgradeSubmitted', [success]));
+    } else {
+        MsgWarning(
+            i18n.global.t('app.batchUpgradeResult', [success, skipped.length + failed.length]) +
+                ': ' +
+                [...skipped, ...failed].join(', '),
+        );
+    }
 };
 
 const operate = async () => {
@@ -571,6 +699,18 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 @use '../index';
+
+.select-col {
+    position: relative;
+}
+
+.select-box {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    height: auto;
+}
 
 .d-button {
     .el-button + .el-button {

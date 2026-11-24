@@ -273,6 +273,8 @@ export namespace App {
         forceDelete?: boolean;
         deleteBackup?: boolean;
         deleteImage?: boolean;
+        backup?: boolean;
+        pullImage?: boolean;
         taskID?: string;
     }
 
