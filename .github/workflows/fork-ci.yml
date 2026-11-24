@@ -1,5 +1,5 @@
-# fork: builds and tests pull requests into main (for example upstream sync PRs) and manual runs.
-# Releases run the same tests inside release.yml, so a tag push is built only once.
+# fork: tests pull requests into main (for example upstream sync PRs) and manual runs. It does not build:
+# release.yml builds the frontend and the binaries when a tag is pushed, and runs the same tests.
 name: Fork CI
 
 on:
@@ -28,13 +28,6 @@ jobs:
             agent/go.sum
             core/go.sum
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Build frontend
-        run: make build_frontend
-
       - name: Unit tests (fork packages)
         run: |
           bash agent/utils/vm/helper/prepare.sh
@@ -45,9 +38,3 @@ jobs:
         run: |
           (cd agent && go vet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...)
           (cd core && go vet ./utils/github/... ./app/... ./router/... ./global/... ./init/migration/... ./i18n/...)
-
-      - name: Build binaries (linux/amd64)
-        run: |
-          (cd core && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags '-s -w' -o ../build/1panel-core ./cmd/server)
-          (cd agent && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags '-s -w' -o ../build/1panel-agent ./cmd/server)
-          ls -lh build/
