@@ -267,6 +267,12 @@ export namespace Setting {
         latestVersion: string;
         releaseNote: string;
     }
+    // none | once | daily | ignore. time: "YYYY-MM-DD HH:mm" for once, "HH:mm" for daily (panel time zone)
+    export interface UpgradePlan {
+        mode: string;
+        time: string;
+        lastRun?: string;
+    }
 
     export interface License {
         licenseName: string;

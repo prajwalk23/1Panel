@@ -82,6 +82,9 @@ type IUpgradeService interface {
 	LoadNotes(req dto.Upgrade) (string, error)
 	SearchUpgrade() (*dto.UpgradeInfo, error)
 	LoadRelease() ([]dto.ReleasesNotes, error)
+	LoadPlan() dto.UpgradePlan
+	UpdatePlan(req dto.UpgradePlan) error
+	RunScheduledPlan()
 }
 
 func NewIUpgradeService() IUpgradeService {
@@ -147,6 +150,7 @@ func (u *UpgradeService) LoadNotes(req dto.Upgrade) (string, error) {
 }
 
 func (u *UpgradeService) Upgrade(req dto.Upgrade) error {
+	clearUpgradeIgnore() // updating by hand ends "ignore updates"
 	if global.IsForkBuild() { // fork: never install stock 1Panel over a fork build
 		return NewIGithubUpdateService().Upgrade(dto.ForkUpgrade{Version: req.Version})
 	}
