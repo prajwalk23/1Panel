@@ -34,6 +34,12 @@ jobs:
           (cd agent && go test ./utils/github/...)
           (cd core && go test ./utils/github/... && go test ./init/migration/migrations/ -run TestAddGithubMenu)
 
+      - name: Stub embedded frontend files
+        # core embeds the built frontend; vet only needs the files to exist, so the frontend is not built here.
+        run: |
+          mkdir -p core/cmd/server/web/assets
+          touch core/cmd/server/web/assets/.keep core/cmd/server/web/index.html
+
       - name: Vet fork code
         run: |
           (cd agent && go vet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...)
