@@ -130,6 +130,30 @@ jobs:
           (cd agent && go vet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...)
           (cd core && go vet ./utils/github/... ./app/... ./router/... ./global/... ./init/migration/... ./i18n/...)
 
+      - name: Security scan (govulncheck, gosec)
+        # Report only for now: findings show in the log but do not stop the release.
+        # Remove continue-on-error once the baseline is clean.
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          go install golang.org/x/vuln/cmd/govulncheck@v1.10.0
+          go install github.com/securego/gosec/v2/cmd/gosec@v2.30.0
+          rc=0
+          echo "::group::govulncheck agent"
+          (cd agent && govulncheck ./...) || rc=1
+          echo "::endgroup::"
+          echo "::group::govulncheck core"
+          (cd core && govulncheck ./...) || rc=1
+          echo "::endgroup::"
+          echo "::group::gosec agent (fork packages)"
+          (cd agent && gosec -quiet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...) || rc=1
+          echo "::endgroup::"
+          echo "::group::gosec core (fork packages)"
+          (cd core && gosec -quiet ./utils/github/... ./app/... ./router/... ./global/... ./init/migration/... ./i18n/...) || rc=1
+          echo "::endgroup::"
+          if [ "${rc}" != "0" ]; then echo "::warning::Security scan reported findings, see the log."; fi
+          exit "${rc}"
+
       - name: Build binaries
         run: |
           set -euo pipefail
