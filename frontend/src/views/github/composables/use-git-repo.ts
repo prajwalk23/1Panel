@@ -1,5 +1,6 @@
 // fork: shared logic of the repository source forms (create form, repository settings, GitHub project edit).
 import { computed, ref, Ref } from 'vue';
+import { ElMessageBox } from 'element-plus';
 import i18n from '@/lang';
 import { Github } from '@/api/interface/github';
 import { checkGithubRepo, createGithubKey, listGithubKeyOptions } from '@/api/modules/github';
@@ -148,9 +149,24 @@ export const useGitRepo = (source: Github.Source, options: GitRepoOptions = {}) 
         }
     };
 
+    // Asks for the name of the new key first, with a suggestion made from the repository name.
     const generateKey = async () => {
         const base = githubRepoName.value.split('/')[1] || 'key';
-        const name = `${base}_${Math.floor(10000 + Math.random() * 90000)}`;
+        const suggestion = `${base}_${Math.floor(10000 + Math.random() * 90000)}`;
+        const answer = await ElMessageBox.prompt(
+            i18n.global.t('github.keyName'),
+            i18n.global.t('github.generateProjectKey'),
+            {
+                confirmButtonText: i18n.global.t('commons.button.confirm'),
+                cancelButtonText: i18n.global.t('commons.button.cancel'),
+                inputValue: suggestion,
+                inputPlaceholder: i18n.global.t('github.keyNamePlaceholder'),
+                inputValidator: (value: string) => !!value && value.trim().length > 0 && value.trim().length <= 128,
+                inputErrorMessage: i18n.global.t('commons.rule.requiredInput'),
+            },
+        ).catch(() => undefined);
+        const name = answer?.value?.trim();
+        if (!name) return;
         creatingKey.value = true;
         try {
             const res = await createGithubKey(name, 'shared');

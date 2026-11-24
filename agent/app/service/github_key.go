@@ -218,6 +218,42 @@ func githubKeyUsers(key model.GithubKey, setting dto.GithubSetting, projects []m
 			used = append(used, project.Name)
 		}
 	}
+	return append(used, githubLegacyKeyUsers(key, setting, projects)...)
+}
+
+// githubLegacyKeyUsers lists websites and runtimes that clone with this key but have no
+// GitHub project yet (made before the Git Manager). A key is only deletable when nothing uses it.
+func githubLegacyKeyUsers(key model.GithubKey, setting dto.GithubSetting, projects []model.GithubProject) []string {
+	linkedSites, linkedRuntimes := map[uint]bool{}, map[uint]bool{}
+	for _, project := range projects {
+		if project.WebsiteID != 0 {
+			linkedSites[project.WebsiteID] = true
+		}
+		if project.RuntimeID != 0 {
+			linkedRuntimes[project.RuntimeID] = true
+		}
+	}
+	uses := func(keyID uint, cloneURL string) bool {
+		if keyID == key.ID {
+			return true
+		}
+		return keyID == 0 && setting.SharedKeyID == key.ID && githubutil.IsSSHCloneURL(cloneURL)
+	}
+	var used []string
+	if websites, err := websiteRepo.List(); err == nil {
+		for _, site := range websites {
+			if websiteGitEnabled(&site) && !linkedSites[site.ID] && uses(site.GitKeyID, site.GitCloneURL) {
+				used = append(used, "website: "+site.PrimaryDomain)
+			}
+		}
+	}
+	if runtimes, err := runtimeRepo.List(); err == nil {
+		for i := range runtimes {
+			if runtimeGitEnabled(&runtimes[i]) && !linkedRuntimes[runtimes[i].ID] && uses(runtimes[i].GitKeyID, runtimes[i].GitCloneURL) {
+				used = append(used, "runtime: "+runtimes[i].Name)
+			}
+		}
+	}
 	return used
 }
 
