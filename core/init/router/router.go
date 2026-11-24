@@ -76,7 +76,7 @@ func Routers() *gin.Engine {
 	Router.Use(middleware.MCPTokenBoundary())
 	Router.Use(middleware.MCPAPIIdentity())
 	Router.Use(i18n.UseI18n())
-	Router.Use(middleware.WhiteAllow(middleware.MCPSourcePolicy()))
+	Router.Use(middleware.WhiteAllow(middleware.MCPSourcePolicy(), githubHookSourcePolicy())) // fork: /hook is open to git hosts
 	Router.Use(middleware.BindDomain(middleware.MCPDomainPolicy))
 
 	swaggerRouter := Router.Group("1panel")
@@ -92,6 +92,7 @@ func Routers() *gin.Engine {
 		Router.Use(middleware.DemoHandle())
 	}
 	registerMCPTransport(Router)
+	registerGithubHook(Router) // fork: public webhook, protected by its access key
 
 	Router.Use(middleware.FrontendFallback())
 	Router.Use(middleware.WebSocketOriginGuard())

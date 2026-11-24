@@ -2,11 +2,15 @@
 import { ReqPage } from '.';
 
 export namespace Github {
-    export type KeyMode = 'project' | 'shared' | 'custom' | 'none';
+    // none = public repository, token = https + access token, the rest use an SSH key
+    export type KeyMode = 'project' | 'shared' | 'custom' | 'none' | 'token';
     export type UpdateStrategy = 'ff-only' | 'reset';
+    // What the create form asks for: public | token | ssh
+    export type AuthMode = 'public' | 'token' | 'ssh';
 
     export interface ProjectSearch extends ReqPage {
         info: string;
+        standalone?: boolean; // only projects that are not linked to a website or runtime
     }
     export interface ProjectOperate {
         id?: number;
@@ -20,10 +24,17 @@ export namespace Github {
         timeout: number;
         keyMode: KeyMode;
         keyID: number;
+        tokenUser?: string;
+        token?: string; // empty on update keeps the stored token
+        keepRecords?: number;
+        ignorePaths?: string;
         enabled: boolean;
     }
     export interface ProjectInfo extends ProjectOperate {
         id: number;
+        websiteID: number;
+        runtimeID: number;
+        hasToken: boolean;
         webhookEnabled: boolean;
         webhookScriptID: number;
         createdAt: string;
@@ -38,26 +49,54 @@ export namespace Github {
     }
     export interface ProjectSecret {
         id: number;
-        secret: string;
         webhookURL: string;
         publicKey: string;
     }
+    export interface LinkedSearch {
+        websiteID?: number;
+        runtimeID?: number;
+    }
+    export interface ProjectDeploy {
+        id: number;
+        scriptID?: number;
+        commit?: string;
+        rollback?: boolean;
+    }
+    export interface CommitSearch extends ReqPage {
+        id: number;
+        branch: string;
+    }
+    export interface CommitInfo {
+        commit: string;
+        author: string;
+        message: string;
+        time: string;
+        active: boolean;
+    }
+    export interface ProjectSummary {
+        project: ProjectInfo;
+        commit: string;
+        commitMessage: string;
+        commitAuthor: string;
+        deployedAt: string;
+        duration: number;
+    }
     export interface WebhookInfo {
+        enabled: boolean;
         scriptID: number;
         scriptName: string;
         url: string;
+        path: string; // /hook?access_key=..., the host part comes from the panel address
+        bindDomain: boolean;
         https: boolean;
         contentType: string;
         events: string;
-        enabled: boolean;
-        proxyPass: string;
-        listener: string;
-        message: string;
     }
 
     export interface LogSearch extends ReqPage {
         projectID?: number;
         status?: string;
+        trigger?: string;
     }
     export interface LogInfo {
         id: number;
@@ -74,6 +113,11 @@ export namespace Github {
         message: string;
         startedAt: string;
         finishedAt: string;
+        commitMessage: string;
+        commitAuthor: string;
+        duration: number;
+        active: boolean;
+        rollbackable: boolean;
     }
 
     export interface KeySearch extends ReqPage {
@@ -121,28 +165,37 @@ export namespace Github {
     }
 
     export interface Setting {
-        webhookPort: number;
-        webhookBind: string;
         defaultShell: string;
         logRetention: number;
-        webhookDomain: string;
         sharedKeyID: number;
     }
     export interface SettingInfo extends Setting {
-        listenerRunning: boolean;
-        listenerAddr: string;
-        listenerError: string;
+        webhookBase: string;
+        bindDomain: boolean;
         gitInstalled: boolean;
     }
     export interface RepoCheck {
         cloneURL: string;
         keyMode: KeyMode;
         keyID: number;
+        tokenUser?: string;
+        token?: string;
+        projectID?: number; // reuse the stored token of this project when token is empty
     }
     export interface RepoCheckInfo {
         ok: boolean;
         message: string;
         defaultBranch: string;
         branches: string[];
+    }
+
+    // The source of a repository a create form collects (shared by GitHub, website and runtime create).
+    export interface Source {
+        cloneURL: string;
+        branch: string;
+        authMode: AuthMode;
+        keyID: number;
+        tokenUser: string;
+        token: string;
     }
 }

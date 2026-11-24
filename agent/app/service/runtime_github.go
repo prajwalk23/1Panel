@@ -129,9 +129,13 @@ func applyWebsiteGit(website *model.Website, create request.WebsiteCreate) {
 	website.GitBranch = branch
 	website.GitKeyID = create.GitKeyID
 	website.GitUpdateStrategy = strategy
+	website.GitAuthMode = create.GitAuthMode
+	website.GitTokenUser = create.GitTokenUser
+	website.GitToken = create.GitToken
 	if mode == dto.RuntimeGitModeNone {
 		website.GitCloneURL = ""
 		website.GitKeyID = 0
+		website.GitAuthMode, website.GitTokenUser, website.GitToken = "", "", ""
 	}
 }
 
@@ -149,11 +153,6 @@ func resolveGitKey(keyID uint, cloneURL string) (model.GithubKey, error) {
 		return model.GithubKey{}, buserr.New("ErrGithubKeyRequired")
 	}
 	return model.GithubKey{}, nil
-}
-
-// resolveRuntimeGitKey returns the SSH key used to reach the runtime repository.
-func resolveRuntimeGitKey(runtime *model.Runtime) (model.GithubKey, error) {
-	return resolveGitKey(runtime.GitKeyID, runtime.GitCloneURL)
 }
 
 func runtimeGitEnv(key model.GithubKey) []string {
@@ -186,11 +185,11 @@ func gitRun(ctx context.Context, logPath string, t *task.Task, workDir string, e
 
 // gitSyncCheckout clones dir from cloneURL the first time and updates the
 // checkout on later runs. It returns the resulting HEAD.
-func gitSyncCheckout(ctx context.Context, logPath string, t *task.Task, dir, cloneURL, branch, strategy string, key model.GithubKey) (string, error) {
+func gitSyncCheckout(ctx context.Context, logPath string, t *task.Task, dir, cloneURL, branch, strategy string, key model.GithubKey, extraEnv ...string) (string, error) {
 	if !cmd.Which("git") {
 		return "", buserr.New("ErrGithubGitNotFound")
 	}
-	env := runtimeGitEnv(key)
+	env := append(runtimeGitEnv(key), extraEnv...)
 	if branch == "" {
 		branch = "main"
 	}
@@ -244,16 +243,6 @@ func gitSyncCheckout(ctx context.Context, logPath string, t *task.Task, dir, clo
 	return head, nil
 }
 
-// runtimeGitSync clones the repository into the runtime code directory the first
-// time and updates the checkout on later runs. It returns the resulting HEAD.
-func runtimeGitSync(ctx context.Context, runtime *model.Runtime, t *task.Task) (string, error) {
-	key, err := resolveRuntimeGitKey(runtime)
-	if err != nil {
-		return "", err
-	}
-	return gitSyncCheckout(ctx, runtime.GetLogPath(), t, runtime.CodeDir, runtime.GitCloneURL, runtime.GitBranch, runtime.GitUpdateStrategy, key)
-}
-
 // websiteGitEnabled reports whether a PHP website clones its code from GitHub.
 func websiteGitEnabled(website *model.Website) bool {
 	return website != nil && website.GitMode != "" && website.GitMode != dto.RuntimeGitModeNone
@@ -261,12 +250,12 @@ func websiteGitEnabled(website *model.Website) bool {
 
 // websiteGitClone clones or updates the website repository into its index dir.
 func websiteGitClone(website *model.Website) error {
-	key, err := resolveGitKey(website.GitKeyID, website.GitCloneURL)
+	key, extraEnv, err := gitCredentials(website.GitAuthMode, website.GitKeyID, website.GitCloneURL, website.GitTokenUser, website.GitToken)
 	if err != nil {
 		return err
 	}
 	dir := GetSitePath(*website, SiteIndexDir)
-	commit, err := gitSyncCheckout(context.Background(), "", nil, dir, website.GitCloneURL, website.GitBranch, website.GitUpdateStrategy, key)
+	commit, err := gitSyncCheckout(context.Background(), "", nil, dir, website.GitCloneURL, website.GitBranch, website.GitUpdateStrategy, key, extraEnv...)
 	if err != nil {
 		return err
 	}
@@ -274,25 +263,17 @@ func websiteGitClone(website *model.Website) error {
 	return nil
 }
 
-// runtimeGitCloneRepo is the create-task entry point: it fails the task on error.
-func runtimeGitCloneRepo(ctx context.Context, runtime *model.Runtime, t *task.Task) (string, error) {
-	return runtimeGitSync(ctx, runtime, t)
-}
-
-// runtimeGitPullIfEnabled pulls the latest code before a start/restart. It is
-// best effort: a failure is written to the runtime log but does not stop the
-// container from starting on the code that is already on disk.
-func runtimeGitPullIfEnabled(runtime *model.Runtime) error {
-	if !runtimeGitEnabled(runtime) {
-		return nil
-	}
-	commit, err := runtimeGitSync(context.Background(), runtime, nil)
+// runtimeGitCloneRepo is the create-task entry point: it clones the code directory, fails the
+// task on error and creates the project the Git Manager works on.
+func runtimeGitCloneRepo(ctx context.Context, runtime *model.Runtime, create request.RuntimeCreate, t *task.Task) (string, error) {
+	key, extraEnv, err := gitCredentials(create.GitAuthMode, runtime.GitKeyID, runtime.GitCloneURL, create.GitTokenUser, create.GitToken)
 	if err != nil {
-		global.LOG.Errorf("runtime [%s] git pull failed: %v", runtime.Name, err)
-		return err
+		return "", err
 	}
-	if commit != "" {
-		global.LOG.Infof("runtime [%s] git pull ok, HEAD %s", runtime.Name, commit)
+	commit, err := gitSyncCheckout(ctx, runtime.GetLogPath(), t, runtime.CodeDir, runtime.GitCloneURL, runtime.GitBranch, runtime.GitUpdateStrategy, key, extraEnv...)
+	if err != nil {
+		return "", err
 	}
-	return nil
+	githubLinkRuntime(runtime, create)
+	return commit, nil
 }

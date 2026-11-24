@@ -1,39 +1,19 @@
 <template>
-    <DialogPro v-model="visible" :title="$t('github.webhookTitle')" size="large" @close="onClose">
+    <DialogPro v-model="visible" :title="$t('github.webhookTitle')" size="large">
         <div v-loading="loading">
             <el-alert v-if="info && !info.enabled" type="info" :closable="false" class="mb-3">
                 <template #title>{{ $t('github.webhookOffInfo') }}</template>
             </el-alert>
             <template v-else>
-                <el-alert v-if="warning" type="warning" :closable="false" class="mb-3" :title="warning" />
-                <el-alert v-if="info && !info.https && info.url" type="warning" :closable="false" class="mb-3">
-                    <template #title>{{ $t('github.notHTTPS') }}</template>
-                </el-alert>
-
-                <p class="mb-2">{{ $t('github.githubSteps') }}</p>
+                <p class="mb-2">{{ $t('github.webhookUrlHelper') }}</p>
                 <el-descriptions :column="1" border>
                     <el-descriptions-item :label="$t('github.payloadURL')">
                         <div class="flex items-center gap-1 break-all">
-                            <span>{{ info?.url || '-' }}</span>
-                            <CopyButton v-if="info?.url" :content="info.url" />
+                            <span>{{ url || '-' }}</span>
+                            <CopyButton v-if="url" :content="url" />
                         </div>
                     </el-descriptions-item>
                     <el-descriptions-item :label="$t('github.contentType')">application/json</el-descriptions-item>
-                    <el-descriptions-item :label="$t('github.secret')">
-                        <div v-if="secret" class="flex flex-col gap-1">
-                            <div class="flex items-center gap-1 break-all font-mono">
-                                <span>{{ secret }}</span>
-                                <CopyButton :content="secret" />
-                            </div>
-                            <span class="text-xs text-orange-500">{{ $t('github.secretOnce') }}</span>
-                        </div>
-                        <div v-else class="flex items-center gap-2">
-                            <span class="text-gray-400">{{ $t('github.secretHidden') }}</span>
-                            <el-button v-permission v-node-admin link type="primary" @click="onRegenerate">
-                                {{ $t('github.regenerateSecret') }}
-                            </el-button>
-                        </div>
-                    </el-descriptions-item>
                     <el-descriptions-item :label="$t('github.events')">
                         {{ $t('github.eventsValue') }}
                     </el-descriptions-item>
@@ -41,14 +21,10 @@
                         {{ info?.scriptName || '-' }}
                     </el-descriptions-item>
                 </el-descriptions>
-
-                <template v-if="info?.proxyPass">
-                    <p class="mt-4 mb-2">{{ $t('github.proxyHelper') }}</p>
-                    <div class="flex items-start gap-1">
-                        <el-input :model-value="proxySnippet" type="textarea" :rows="6" readonly class="font-mono" />
-                        <CopyButton :content="proxySnippet" />
-                    </div>
-                </template>
+                <p class="input-help mt-2">{{ $t('github.webhookProviderHelper') }}</p>
+                <el-button v-permission v-node-admin class="mt-3" @click="onRefresh">
+                    {{ $t('github.refreshToken') }}
+                </el-button>
 
                 <template v-if="publicKey">
                     <p class="mt-4 mb-2">{{ $t('github.deployKeySteps') }}</p>
@@ -66,12 +42,14 @@
 </template>
 
 <script lang="ts" setup>
-// fork: shows what to enter on GitHub for a project's webhook and deploy key.
+// fork: shows the webhook URL of a project. The host is the bound domain when there is one,
+// otherwise the address the panel is opened with.
 import { computed, ref } from 'vue';
 import { ElMessageBox } from 'element-plus';
 import i18n from '@/lang';
 import { Github } from '@/api/interface/github';
-import { loadGithubWebhook, regenerateGithubSecret, searchGithubProjects } from '@/api/modules/github';
+import { loadGithubWebhook, refreshGithubWebhookToken, searchGithubProjects } from '@/api/modules/github';
+import { webhookDisplayURL } from '@/views/github/helper';
 
 const emit = defineEmits<{ (e: 'search'): void }>();
 
@@ -79,33 +57,9 @@ const visible = ref(false);
 const loading = ref(false);
 const projectID = ref(0);
 const info = ref<Github.WebhookInfo>();
-const secret = ref('');
 const publicKey = ref('');
 
-const warning = computed(() => {
-    if (!info.value) {
-        return '';
-    }
-    if (!info.value.url) {
-        return i18n.global.t('github.noDomain');
-    }
-    if (!info.value.listener) {
-        return i18n.global.t('github.listenerDown');
-    }
-    return '';
-});
-
-const proxySnippet = computed(() => {
-    const pass = info.value?.proxyPass || '';
-    return [
-        'location ^~ /github-hook/ {',
-        `    proxy_pass ${pass};`,
-        '    proxy_set_header Host $host;',
-        '    proxy_set_header X-Real-IP $remote_addr;',
-        '    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;',
-        '}',
-    ].join('\n');
-});
+const url = computed(() => webhookDisplayURL(info.value));
 
 const load = async () => {
     loading.value = true;
@@ -122,29 +76,24 @@ const load = async () => {
     }
 };
 
-const acceptParams = (id: number, created?: Github.ProjectSecret) => {
+const acceptParams = (id: number) => {
     projectID.value = id;
-    secret.value = created?.secret || '';
-    publicKey.value = created?.publicKey || '';
+    publicKey.value = '';
     info.value = undefined;
     visible.value = true;
     load().catch(() => {});
 };
 
-const onRegenerate = () => {
-    ElMessageBox.confirm(i18n.global.t('github.regenerateSecretHelper'), i18n.global.t('github.regenerateSecret'), {
+const onRefresh = () => {
+    ElMessageBox.confirm(i18n.global.t('github.refreshTokenHelper'), i18n.global.t('github.refreshToken'), {
         confirmButtonText: i18n.global.t('commons.button.confirm'),
         cancelButtonText: i18n.global.t('commons.button.cancel'),
         type: 'warning',
     }).then(async () => {
-        const res = await regenerateGithubSecret(projectID.value);
-        secret.value = res.data.secret;
+        await refreshGithubWebhookToken(projectID.value);
+        await load();
         emit('search');
     });
-};
-
-const onClose = () => {
-    secret.value = '';
 };
 
 defineExpose({ acceptParams });

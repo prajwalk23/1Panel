@@ -281,7 +281,7 @@ func executeRuntimeCreateTask(create request.RuntimeCreate, runtime *model.Runti
 		return markRuntimeCreateFailed(runtime, err)
 	}
 	if runtimeGitEnabled(runtime) { // fork: clone the code directory from GitHub
-		if _, err = runtimeGitCloneRepo(context.Background(), runtime, taskItem); err != nil {
+		if _, err = runtimeGitCloneRepo(context.Background(), runtime, create, taskItem); err != nil {
 			return markRuntimeCreateFailed(runtime, err)
 		}
 	}
@@ -418,6 +418,7 @@ func executeRuntimeDeleteTask(runtimeDelete request.RuntimeDelete, runtime *mode
 		if runtimeDelete.DeleteImage {
 			deleteRuntimeImages(runtime, taskItem)
 		}
+		githubDeleteLinked(0, runtimeDelete.ID) // fork: drop the GitHub project of the runtime
 		return runtimeRepo.DeleteBy(repo.WithByID(runtimeDelete.ID))
 	}
 	projectDir := runtime.GetPath()
@@ -430,6 +431,7 @@ func executeRuntimeDeleteTask(runtimeDelete request.RuntimeDelete, runtime *mode
 	if err := files.NewFileOp().DeleteDir(projectDir); err != nil && !runtimeDelete.ForceDelete {
 		return err
 	}
+	githubDeleteLinked(0, runtimeDelete.ID) // fork: drop the GitHub project of the runtime
 	return runtimeRepo.DeleteBy(repo.WithByID(runtimeDelete.ID))
 }
 
@@ -666,9 +668,6 @@ func (r *RuntimeService) Update(req request.RuntimeUpdate) (err error) {
 		return runtimeRepo.Save(runtime)
 	}
 	oldRuntime := *runtime
-	if err := validateRuntimeGitFields(req.GitMode, req.GitCloneURL, req.GitBranch, req.CodeDir); err != nil { // fork: GitHub source
-		return err
-	}
 	appDetail, err := getRuntimeUpdateAppDetail(runtime, req)
 	if err != nil {
 		return err
@@ -797,7 +796,6 @@ func (r *RuntimeService) Update(req request.RuntimeUpdate) (err error) {
 		runtime.Port = strings.Join(hostPorts, ",")
 		runtime.Status = constant.StatusReCreating
 		runtime.ContainerName = req.Params["CONTAINER_NAME"].(string)
-		applyRuntimeGitFromUpdate(runtime, req) // fork: GitHub source
 		if err = runtimeRepo.Save(runtime); err != nil {
 			return err
 		}
@@ -806,7 +804,6 @@ func (r *RuntimeService) Update(req request.RuntimeUpdate) (err error) {
 				global.LOG.Errorf("prepare runtime [%s] update failed: %v", runtime.Name, err)
 				return
 			}
-			runtimeGitPullIfEnabled(runtime) // fork: pull latest code before recreate
 			reCreateRuntime(runtime)
 		}()
 	}

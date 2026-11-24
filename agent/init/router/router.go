@@ -22,6 +22,7 @@ func Routers() *gin.Engine {
 	Router.Use(i18n.UseI18n())
 	Router.Use(middleware.MCPErrorMetadata())
 	registerMCPRuntime(Router)
+	registerGithubHook(Router) // fork
 
 	PrivateGroup := Router.Group("/api/v2")
 	if !global.IsMaster {

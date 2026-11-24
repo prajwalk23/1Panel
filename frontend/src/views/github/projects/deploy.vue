@@ -63,7 +63,7 @@ const acceptParams = async (id: number, name: string) => {
 const onRun = async () => {
     loading.value = true;
     try {
-        await deployGithubProject(projectID.value, scriptID.value);
+        await deployGithubProject({ id: projectID.value, scriptID: scriptID.value });
         MsgSuccess(i18n.global.t('github.deployStarted'));
         visible.value = false;
         emit('search');

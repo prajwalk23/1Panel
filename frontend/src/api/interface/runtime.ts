@@ -24,6 +24,8 @@ export namespace Runtime {
         port: string;
         appID: number;
         remark: string;
+        gitMode?: string; // fork: set when the code comes from a repository
+        gitCloneURL?: string;
     }
 
     export interface RuntimeReq extends ReqPage {
@@ -86,6 +88,9 @@ export namespace Runtime {
         gitBranch?: string;
         gitKeyID?: number;
         gitUpdateStrategy?: string;
+        gitAuthMode?: string;
+        gitTokenUser?: string;
+        gitToken?: string;
     }
 
     export interface ExposedPort {

@@ -45,6 +45,9 @@ type Website struct {
 	GitBranch         string `gorm:"default:main" json:"gitBranch"`
 	GitKeyID          uint   `json:"gitKeyID"`
 	GitUpdateStrategy string `gorm:"default:ff-only" json:"gitUpdateStrategy"`
+	GitAuthMode       string `gorm:"-" json:"-"` // create request only, never stored on the site
+	GitTokenUser      string `gorm:"-" json:"-"`
+	GitToken          string `gorm:"-" json:"-"`
 
 	Domains    []WebsiteDomain `json:"domains" gorm:"-:migration"`
 	WebsiteSSL WebsiteSSL      `json:"webSiteSSL" gorm:"-:migration"`

@@ -20,14 +20,23 @@ export const deleteGithubProject = (id: number) => {
 export const updateGithubProjectStatus = (id: number, enabled: boolean) => {
     return http.post(`/github/projects/status`, { id: id, enabled: enabled });
 };
-export const deployGithubProject = (id: number, scriptID = 0) => {
-    return http.post(`/github/projects/deploy`, { id: id, scriptID: scriptID });
+export const deployGithubProject = (params: Github.ProjectDeploy) => {
+    return http.post(`/github/projects/deploy`, params, TimeoutEnum.T_60S);
+};
+export const loadLinkedGithubProject = (params: Github.LinkedSearch) => {
+    return http.post<Github.ProjectInfo>(`/github/projects/linked`, params, TimeoutEnum.T_60S);
+};
+export const loadGithubSummary = (id: number) => {
+    return http.post<Github.ProjectSummary>(`/github/projects/summary`, { id: id });
+};
+export const searchGithubCommits = (params: Github.CommitSearch) => {
+    return http.post<ResPage<Github.CommitInfo>>(`/github/projects/commits`, params, TimeoutEnum.T_60S);
 };
 export const cancelGithubDeploy = (id: number) => {
     return http.post(`/github/projects/cancel`, { id: id });
 };
-export const regenerateGithubSecret = (id: number) => {
-    return http.post<Github.ProjectSecret>(`/github/projects/secret/regenerate`, { id: id });
+export const refreshGithubWebhookToken = (id: number) => {
+    return http.post<Github.ProjectSecret>(`/github/projects/webhook/token`, { id: id });
 };
 export const configureGithubWebhook = (params: Github.WebhookConfig) => {
     return http.post<Github.ProjectSecret>(`/github/projects/webhook/config`, params, TimeoutEnum.T_60S);
@@ -55,8 +64,8 @@ export const listGithubSystemUsers = () => {
 export const searchGithubLogs = (params: Github.LogSearch) => {
     return http.post<ResPage<Github.LogInfo>>(`/github/logs/search`, params);
 };
-export const cleanGithubLogs = (projectID: number) => {
-    return http.post(`/github/logs/clean`, { projectID: projectID });
+export const cleanGithubLogs = (projectID: number, trigger = '') => {
+    return http.post(`/github/logs/clean`, { projectID: projectID, trigger: trigger });
 };
 
 export const searchGithubKeys = (params: Github.KeySearch) => {

@@ -20,7 +20,10 @@ func (s *GithubRouter) InitRouter(Router *gin.RouterGroup) {
 		githubRouter.POST("/projects/status", baseApi.UpdateGithubProjectStatus)
 		githubRouter.POST("/projects/deploy", baseApi.DeployGithubProject)
 		githubRouter.POST("/projects/cancel", baseApi.CancelGithubDeploy)
-		githubRouter.POST("/projects/secret/regenerate", baseApi.RegenerateGithubSecret)
+		githubRouter.POST("/projects/linked", baseApi.LoadLinkedGithubProject)
+		githubRouter.POST("/projects/summary", baseApi.LoadGithubSummary)
+		githubRouter.POST("/projects/commits", baseApi.SearchGithubCommits)
+		githubRouter.POST("/projects/webhook/token", baseApi.RefreshGithubWebhookToken)
 		githubRouter.POST("/projects/webhook", baseApi.LoadGithubWebhook)
 		githubRouter.POST("/projects/webhook/config", baseApi.ConfigureGithubWebhook)
 
