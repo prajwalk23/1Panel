@@ -32,7 +32,7 @@ func TestTokenEnv(t *testing.T) {
 	if !strings.Contains(joined, "Authorization: Basic b2N0bzpnaHBfeA==") || !strings.Contains(joined, "GIT_CONFIG_COUNT=1") {
 		t.Fatalf("env: %v", env)
 	}
-	if !strings.Contains(strings.Join(TokenEnv("", "tok"), "\n"), "x-access-token") {
+	if !strings.Contains(strings.Join(TokenEnv("", "tok"), "\n"), "Basic eC1hY2Nlc3MtdG9rZW46dG9r") { // base64("x-access-token:tok")
 		t.Fatal("default user")
 	}
 }
