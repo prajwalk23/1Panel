@@ -37,8 +37,9 @@ import { MsgSuccess } from '@/utils/message';
 import { ref } from 'vue';
 import { useGlobalStore } from '@/composables/useGlobalStore';
 import { ElMessageBox } from 'element-plus';
+import { clearUpgradePromptState } from '@/components/system-upgrade/status';
 
-const { isLoading, isOnRestart } = useGlobalStore();
+const { isLoading, isOnRestart, hasNewVersion } = useGlobalStore();
 
 const drawerVisible = ref(false);
 const upgradeInfo = ref();
@@ -80,6 +81,10 @@ const onUpgrade = async () => {
         type: 'info',
     }).then(async () => {
         await upgrade(upgradeVersion.value);
+        // upgrade accepted: reset the update status right away, no version re-check. The
+        // persisted flag would otherwise keep the footer dot until the home page re-checks.
+        hasNewVersion.value = false;
+        clearUpgradePromptState();
         isLoading.value = true;
         isOnRestart.value = true;
         drawerVisible.value = false;

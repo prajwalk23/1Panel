@@ -4255,6 +4255,11 @@ const message = {
         upgradeCheck: 'Check for updates',
         upgradeNotes: 'Release note',
         upgradeNow: 'Upgrade now',
+        versionUpdate: 'Version update',
+        upgradeAvailable: 'New panel version available',
+        upgradeLatest: 'Latest version',
+        upgradeIgnore: 'Ignore updates',
+        upgradeDelay: 'Delay update',
         source: 'Download source',
         versionNotSame: 'Node version mismatch with the main node. Please upgrade in Node Management before retrying.',
         currentNodeVersionNotSame:
