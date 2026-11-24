@@ -84,6 +84,26 @@ const upgradeVersion = ref();
 const search = async () => {
     const res = await getSettingBaseInfo();
     version.value = res.data.forkVersion || res.data.systemVersion; // fork: show the full fork build
+    resetDotOnUpdateDone(version.value);
+};
+
+// update complete = the running version differs from the one this browser last saw (survives the
+// post-update reload/re-login): clear the persisted red dot now; the server re-check follows.
+const resetDotOnUpdateDone = (current: string) => {
+    if (!current || current === 'Waiting') {
+        return;
+    }
+    const key = 'panelVersionSeen';
+    try {
+        const seen = localStorage.getItem(key);
+        if (seen && seen !== current) {
+            hasNewVersion.value = false;
+            sessionStorage.removeItem('upgradePrompted');
+        }
+        localStorage.setItem(key, current);
+    } catch (e) {
+        // storage may be blocked; the server re-check still runs
+    }
 };
 
 const getVersionLog = () => {
