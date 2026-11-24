@@ -18,6 +18,10 @@ func Init() {
 		global.LOG.Errorf("[core] can not add backup token refresh corn job: %s", err.Error())
 	}
 
+	if _, err := global.Cron.AddJob("* * * * *", job.NewUpgradePlanJob()); err != nil {
+		global.LOG.Errorf("[core] can not add panel update plan cron job: %s", err.Error())
+	}
+
 	service.StartSync()
 	global.Cron.Start()
 }

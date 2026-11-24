@@ -212,6 +212,12 @@ export const loadReleaseNotes = (version: string) => {
 export const listReleases = () => {
     return http.get<Array<Setting.ReleasesNotes>>(`/core/settings/upgrade/releases`);
 };
+export const loadUpgradePlan = () => {
+    return http.get<Setting.UpgradePlan>(`/core/settings/upgrade/plan`);
+};
+export const updateUpgradePlan = (mode: string, time: string = '') => {
+    return http.post(`/core/settings/upgrade/plan`, { mode: mode, time: time });
+};
 export const upgrade = (version: string) => {
     return http.post(`/core/settings/upgrade`, { version: version });
 };

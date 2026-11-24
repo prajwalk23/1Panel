@@ -190,6 +190,14 @@ type Upgrade struct {
 	Version string `json:"version" validate:"required"`
 }
 
+// UpgradePlan is what to do about a new panel version: none, once, daily or ignore.
+// Time is "2006-01-02 15:04" for once and "15:04" for daily, in the panel time zone.
+type UpgradePlan struct {
+	Mode    string `json:"mode" validate:"required,oneof=none once daily ignore"`
+	Time    string `json:"time"`
+	LastRun string `json:"lastRun"`
+}
+
 type ReleasesNotes struct {
 	Version           string `json:"version"`
 	CreatedAt         string `json:"createdAt"`

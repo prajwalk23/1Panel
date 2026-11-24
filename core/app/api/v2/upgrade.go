@@ -79,3 +79,33 @@ func (b *BaseApi) Upgrade(c *gin.Context) {
 	}
 	helper.Success(c)
 }
+
+// @Tags System Setting
+// @Summary Load panel update plan
+// @Success 200 {object} dto.UpgradePlan
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /core/settings/upgrade/plan [get]
+func (b *BaseApi) LoadUpgradePlan(c *gin.Context) {
+	helper.SuccessWithData(c, upgradeService.LoadPlan())
+}
+
+// @Tags System Setting
+// @Summary Update panel update plan
+// @Accept json
+// @Param request body dto.UpgradePlan true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /core/settings/upgrade/plan [post]
+func (b *BaseApi) UpdateUpgradePlan(c *gin.Context) {
+	var req dto.UpgradePlan
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	if err := upgradeService.UpdatePlan(req); err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.Success(c)
+}
