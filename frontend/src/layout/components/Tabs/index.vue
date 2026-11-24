@@ -69,7 +69,7 @@ const closeTabs = (tabPath, type) => {
 
 const dropdownVisibleChange = (visible, tabPath) => {
     if (visible) {
-        // 关闭其他下拉菜单
+        // Close other dropdown menus
         tabItems.value.forEach(({ dropdownRef }) => {
             if (dropdownRef.id !== tabPath) {
                 dropdownRef.handleClose();

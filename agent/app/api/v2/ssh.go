@@ -31,7 +31,7 @@ func (b *BaseApi) GetSSHInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/ssh/operate [post]
-// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operation] SSH ","formatEN":"[operation] SSH"}
+// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] SSH"}
 func (b *BaseApi) OperateSSH(c *gin.Context) {
 	var req dto.Operate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -53,7 +53,7 @@ func (b *BaseApi) OperateSSH(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/ssh/update [post]
-// @x-panel-log {"bodyKeys":["key","newValue"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改 SSH 配置 [key] => [newValue]","formatEN":"update SSH setting [key] => [newValue]"}
+// @x-panel-log {"bodyKeys":["key","newValue"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update SSH setting [key] => [newValue]"}
 func (b *BaseApi) UpdateSSH(c *gin.Context) {
 	var req dto.SSHUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -75,7 +75,7 @@ func (b *BaseApi) UpdateSSH(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/ssh/cert [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"生成 SSH 密钥 ","formatEN":"generate SSH secret"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"generate SSH secret"}
 func (b *BaseApi) CreateRootCert(c *gin.Context) {
 	var req dto.RootCertOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -100,7 +100,7 @@ func (b *BaseApi) CreateRootCert(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/ssh/cert/update [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"生成 SSH 密钥 ","formatEN":"generate SSH secret"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"generate SSH secret"}
 func (b *BaseApi) EditRootCert(c *gin.Context) {
 	var req dto.RootCertOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -123,7 +123,7 @@ func (b *BaseApi) EditRootCert(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/ssh/cert/sync [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"同步 SSH 密钥 ","formatEN":"sync SSH secret"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"sync SSH secret"}
 func (b *BaseApi) SyncRootCert(c *gin.Context) {
 	if err := sshService.SyncRootCert(); err != nil {
 		helper.InternalServer(c, err)
@@ -165,7 +165,7 @@ func (b *BaseApi) SearchRootCert(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/ssh/cert/delete [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除 SSH 密钥 ","formatEN":"delete SSH secret"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"delete SSH secret"}
 func (b *BaseApi) DeleteRootCert(c *gin.Context) {
 	var req dto.ForceDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -232,7 +232,7 @@ func (b *BaseApi) ExportSSHLogs(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/ssh/log/clean [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"清空 SSH 登录日志","formatEN":"clean SSH login logs"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"clean SSH login logs"}
 func (b *BaseApi) CleanSSHLogs(c *gin.Context) {
 	if err := sshService.CleanLog(); err != nil {
 		helper.InternalServer(c, err)
@@ -271,7 +271,7 @@ func (b *BaseApi) LoadSSHFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/ssh/file/update [post]
-// @x-panel-log {"bodyKeys":["key"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改 SSH 配置文件 [key]","formatEN":"update SSH conf [key]"}
+// @x-panel-log {"bodyKeys":["key"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update SSH conf [key]"}
 func (b *BaseApi) UpdateSSHByFile(c *gin.Context) {
 	var req dto.SSHConfUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

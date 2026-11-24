@@ -58,7 +58,7 @@ func (b *BaseApi) LoadDBFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/common/update/conf [post]
-// @x-panel-log {"bodyKeys":["type","database"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新 [type] 数据库 [database] 配置信息","formatEN":"update the [type] [database] database configuration information"}
+// @x-panel-log {"bodyKeys":["type","database"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update the [type] [database] database configuration information"}
 func (b *BaseApi) UpdateDBConfByFile(c *gin.Context) {
 	var req dto.DBConfUpdateByFile
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

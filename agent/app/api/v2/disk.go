@@ -32,7 +32,7 @@ func (b *BaseApi) GetCompleteDiskInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/disks/partition [post]
-// @x-panel-log {"bodyKeys":["device", "filesystem", "mountPoint"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"对磁盘 [device] 进行分区，文件系统 [filesystem]，挂载点 [mountPoint]","formatEN":"Partition disk [device] with filesystem [filesystem], mount point [mountPoint]"}
+// @x-panel-log {"bodyKeys":["device", "filesystem", "mountPoint"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Partition disk [device] with filesystem [filesystem], mount point [mountPoint]"}
 func (b *BaseApi) PartitionDisk(c *gin.Context) {
 	var req request.DiskPartitionRequest
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -57,7 +57,7 @@ func (b *BaseApi) PartitionDisk(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/disks/mount [post]
-// @x-panel-log {"bodyKeys":["device", "mountPoint"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"挂载磁盘 [device] 到 [mountPoint]","formatEN":"Mount disk [device] to [mountPoint]"}
+// @x-panel-log {"bodyKeys":["device", "mountPoint"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Mount disk [device] to [mountPoint]"}
 func (b *BaseApi) MountDisk(c *gin.Context) {
 	var req request.DiskMountRequest
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -82,7 +82,7 @@ func (b *BaseApi) MountDisk(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/disks/unmount [post]
-// @x-panel-log {"bodyKeys":["device", "mountPoint"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"卸载磁盘 [device] 从 [mountPoint]","formatEN":"Unmount disk [device] from [mountPoint]"}
+// @x-panel-log {"bodyKeys":["device", "mountPoint"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Unmount disk [device] from [mountPoint]"}
 func (b *BaseApi) UnmountDisk(c *gin.Context) {
 	var req request.DiskUnmountRequest
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

@@ -39,7 +39,7 @@ func (b *BaseApi) SearchRuntimes(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /runtimes [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建运行环境 [name]","formatEN":"Create runtime [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Create runtime [name]"}
 func (b *BaseApi) CreateRuntime(c *gin.Context) {
 	var req request.RuntimeCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -61,7 +61,7 @@ func (b *BaseApi) CreateRuntime(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /runtimes/del [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除运行环境 [name]","formatEN":"Delete runtime [name]"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Delete runtime [name]"}
 func (b *BaseApi) DeleteRuntime(c *gin.Context) {
 	var req request.RuntimeDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -106,7 +106,7 @@ func (b *BaseApi) DeleteRuntimeCheck(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /runtimes/update [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新运行环境 [name]","formatEN":"Update runtime [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Update runtime [name]"}
 func (b *BaseApi) UpdateRuntime(c *gin.Context) {
 	var req request.RuntimeUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -170,7 +170,7 @@ func (b *BaseApi) GetNodePackageRunScript(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /runtimes/operate [post]
-// @x-panel-log {"bodyKeys":["ID"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ID","isList":false,"db":"runtimes","output_column":"name","output_value":"name"}],"formatZH":"操作运行环境 [name]","formatEN":"Operate runtime [name]"}
+// @x-panel-log {"bodyKeys":["ID"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ID","isList":false,"db":"runtimes","output_column":"name","output_value":"name"}],"formatEN":"Operate runtime [name]"}
 func (b *BaseApi) OperateRuntime(c *gin.Context) {
 	var req request.RuntimeOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -335,7 +335,7 @@ func (b *BaseApi) GetPHPConfig(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /runtimes/php/config [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"websites","output_column":"primary_domain","output_value":"domain"}],"formatZH":"[domain] PHP 配置修改","formatEN":"[domain] PHP conf update"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"websites","output_column":"primary_domain","output_value":"domain"}],"formatEN":"[domain] PHP conf update"}
 func (b *BaseApi) UpdatePHPConfig(c *gin.Context) {
 	var req request.PHPConfigUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -356,7 +356,7 @@ func (b *BaseApi) UpdatePHPConfig(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /runtimes/php/update [post]
-// @x-panel-log {"bodyKeys":["websiteId"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"websiteId","isList":false,"db":"websites","output_column":"primary_domain","output_value":"domain"}],"formatZH":"php 配置修改 [domain]","formatEN":"Nginx conf update [domain]"}
+// @x-panel-log {"bodyKeys":["websiteId"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"websiteId","isList":false,"db":"websites","output_column":"primary_domain","output_value":"domain"}],"formatEN":"Nginx conf update [domain]"}
 func (b *BaseApi) UpdatePHPFile(c *gin.Context) {
 	var req request.PHPFileUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

@@ -64,7 +64,7 @@ func (b *BaseApi) LoadFirewallBaseInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/operate [post]
-// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operation] 防火墙","formatEN":"[operation] firewall"}
+// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] firewall"}
 func (b *BaseApi) OperateFirewall(c *gin.Context) {
 	var request dto.FirewallLifecycleOperation
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -126,7 +126,7 @@ func (b *BaseApi) SearchForwardingRules(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/forward/operate [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新端口转发规则","formatEN":"update port forward rules"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update port forward rules"}
 func (b *BaseApi) OperateForwardingRules(c *gin.Context) {
 	var request dto.ForwardRuleOperate
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -149,7 +149,7 @@ func (b *BaseApi) OperateForwardingRules(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/forward/enable [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"初始化并启用端口转发","formatEN":"initialize and enable port forwarding"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"initialize and enable port forwarding"}
 func (b *BaseApi) EnableForwarding(c *gin.Context) {
 	var request dto.FirewallInitializationTask
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -171,7 +171,7 @@ func (b *BaseApi) EnableForwarding(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/filter/operate [post]
-// @x-panel-log {"bodyKeys":["operate"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operate] 防火墙过滤链","formatEN":"[operate] firewall filter chain"}
+// @x-panel-log {"bodyKeys":["operate"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operate] firewall filter chain"}
 func (b *BaseApi) OperateFilterChain(c *gin.Context) {
 	var request dto.FilterChainOperation
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -224,7 +224,7 @@ func (b *BaseApi) SearchFirewallRules(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/rules/reset [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"重置防火墙规则","formatEN":"reset firewall rules"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"reset firewall rules"}
 func (b *BaseApi) ResetFirewallRules(c *gin.Context) {
 	var request dto.FirewallRuleReset
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -271,7 +271,7 @@ func (b *BaseApi) LoadFirewallNativeDetail(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/rules [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"添加防火墙规则","formatEN":"create firewall rules"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create firewall rules"}
 func (b *BaseApi) CreateFirewallRules(c *gin.Context) {
 	var request dto.FirewallRuleCreate
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -295,7 +295,7 @@ func (b *BaseApi) CreateFirewallRules(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/rules/delete [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除防火墙规则","formatEN":"delete firewall rules"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"delete firewall rules"}
 func (b *BaseApi) DeleteFirewallRules(c *gin.Context) {
 	var request dto.FirewallRuleDelete
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -318,7 +318,7 @@ func (b *BaseApi) DeleteFirewallRules(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/rules/update [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新防火墙规则","formatEN":"update firewall rule"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update firewall rule"}
 func (b *BaseApi) UpdateFirewallRule(c *gin.Context) {
 	var request dto.FirewallRuleUpdate
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -340,7 +340,7 @@ func (b *BaseApi) UpdateFirewallRule(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/rules/reorder [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"调整防火墙规则顺序","formatEN":"reorder firewall rule"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"reorder firewall rule"}
 func (b *BaseApi) ReorderFirewallRule(c *gin.Context) {
 	var request dto.FirewallRuleReorder
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -404,7 +404,7 @@ func (b *BaseApi) LoadFirewallSettings(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/settings/whitelist [post]
-// @x-panel-log {"bodyKeys":["rule"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建防火墙端口白名单","formatEN":"create firewall port whitelist"}
+// @x-panel-log {"bodyKeys":["rule"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create firewall port whitelist"}
 func (b *BaseApi) CreateFirewallPortWhitelist(c *gin.Context) {
 	var request dto.FirewallPortWhitelistCreate
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -426,7 +426,7 @@ func (b *BaseApi) CreateFirewallPortWhitelist(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/settings/whitelist/update [post]
-// @x-panel-log {"bodyKeys":["oldRule","rule"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"编辑防火墙端口白名单","formatEN":"update firewall port whitelist"}
+// @x-panel-log {"bodyKeys":["oldRule","rule"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update firewall port whitelist"}
 func (b *BaseApi) UpdateFirewallPortWhitelist(c *gin.Context) {
 	var request dto.FirewallPortWhitelistUpdate
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -448,7 +448,7 @@ func (b *BaseApi) UpdateFirewallPortWhitelist(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/settings/whitelist/delete [post]
-// @x-panel-log {"bodyKeys":["rules"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除防火墙端口白名单","formatEN":"delete firewall port whitelist"}
+// @x-panel-log {"bodyKeys":["rules"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"delete firewall port whitelist"}
 func (b *BaseApi) DeleteFirewallPortWhitelist(c *gin.Context) {
 	var request dto.FirewallPortWhitelistDelete
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -469,7 +469,7 @@ func (b *BaseApi) DeleteFirewallPortWhitelist(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/settings/operate [post]
-// @x-panel-log {"bodyKeys":["subsystem","backend","operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"防火墙子系统 [subsystem] 后端 [operation] [backend]","formatEN":"[operation] firewall [subsystem] backend [backend]"}
+// @x-panel-log {"bodyKeys":["subsystem","backend","operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] firewall [subsystem] backend [backend]"}
 func (b *BaseApi) OperateFirewallBackend(c *gin.Context) {
 	var request dto.FirewallBackendOperation
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -526,7 +526,7 @@ func (b *BaseApi) ListDockerPublishedPorts(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/docker/operate [post]
-// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operation] Docker 端口防护","formatEN":"[operation] Docker port guard"}
+// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] Docker port guard"}
 func (b *BaseApi) OperateDockerPortGuard(c *gin.Context) {
 	var request dto.DockerPortGuardOperation
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -556,7 +556,7 @@ func (b *BaseApi) OperateDockerPortGuard(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/docker/policies/delete/batch [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除 Docker 端口防护策略","formatEN":"delete Docker port guard policies"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"delete Docker port guard policies"}
 func (b *BaseApi) DeleteDockerPortGuardPolicies(c *gin.Context) {
 	var request dto.DockerPortGuardPolicyBatchDelete
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -578,7 +578,7 @@ func (b *BaseApi) DeleteDockerPortGuardPolicies(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/docker/policies/batch [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"批量更新 Docker 端口防护策略","formatEN":"batch update Docker port guard policies"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"batch update Docker port guard policies"}
 func (b *BaseApi) UpsertDockerPortGuardPolicies(c *gin.Context) {
 	var request dto.DockerPortGuardPolicyBatch
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -643,7 +643,7 @@ func (b *BaseApi) ListFirewallRuleBackups(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/family/operate [post]
-// @x-panel-log {"bodyKeys":["subsystem","family","operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operation] [subsystem] [family] 防火墙链","formatEN":"[operation] [subsystem] [family] firewall chains"}
+// @x-panel-log {"bodyKeys":["subsystem","family","operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] [subsystem] [family] firewall chains"}
 func (b *BaseApi) OperateFirewallFamily(c *gin.Context) {
 	var request dto.FirewallFamilyOperation
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {
@@ -665,7 +665,7 @@ func (b *BaseApi) OperateFirewallFamily(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/firewall/settings/ipv6 [post]
-// @x-panel-log {"bodyKeys":["status"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"设置防火墙 IPv6 支持为 [status]","formatEN":"Set firewall IPv6 support to [status]"}
+// @x-panel-log {"bodyKeys":["status"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Set firewall IPv6 support to [status]"}
 func (b *BaseApi) OperateFirewallIPv6(c *gin.Context) {
 	var request dto.FirewallIPv6Operation
 	if err := helper.CheckBindAndValidate(&request, c); err != nil {

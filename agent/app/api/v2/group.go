@@ -14,7 +14,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /groups [post]
-// @x-panel-log {"bodyKeys":["name","type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建组 [name][type]","formatEN":"create group [name][type]"}
+// @x-panel-log {"bodyKeys":["name","type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create group [name][type]"}
 func (b *BaseApi) CreateGroup(c *gin.Context) {
 	var req dto.GroupCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -36,7 +36,7 @@ func (b *BaseApi) CreateGroup(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /groups/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"groups","output_column":"name","output_value":"name"},{"input_column":"id","input_value":"id","isList":false,"db":"groups","output_column":"type","output_value":"type"}],"formatZH":"删除组 [type][name]","formatEN":"delete group [type][name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"groups","output_column":"name","output_value":"name"},{"input_column":"id","input_value":"id","isList":false,"db":"groups","output_column":"type","output_value":"type"}],"formatEN":"delete group [type][name]"}
 func (b *BaseApi) DeleteGroup(c *gin.Context) {
 	var req dto.OperateByID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -58,7 +58,7 @@ func (b *BaseApi) DeleteGroup(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /groups/update [post]
-// @x-panel-log {"bodyKeys":["name","type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新组 [name][type]","formatEN":"update group [name][type]"}
+// @x-panel-log {"bodyKeys":["name","type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update group [name][type]"}
 func (b *BaseApi) UpdateGroup(c *gin.Context) {
 	var req dto.GroupUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

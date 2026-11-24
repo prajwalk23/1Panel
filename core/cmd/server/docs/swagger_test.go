@@ -228,7 +228,6 @@ type operationJson struct {
 	BodyKeys        []string       `json:"bodyKeys"`
 	ParamKeys       []string       `json:"paramKeys"`
 	BeforeFunctions []functionInfo `json:"beforeFunctions"`
-	FormatZH        string         `json:"formatZH"`
 	FormatEN        string         `json:"formatEN"`
 }
 type functionInfo struct {

@@ -119,7 +119,7 @@ func (b *BaseApi) GetPHPExtensions(c *gin.Context) {
 }
 
 // @Router /runtimes/php/extensions/import [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"同步 PHP 扩展模版 [name]","formatEN":"Sync PHP extension template [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Sync PHP extension template [name]"}
 func (b *BaseApi) ImportPHPExtensions(c *gin.Context) {
 	var req request.PHPExtensionsCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -134,7 +134,7 @@ func (b *BaseApi) ImportPHPExtensions(c *gin.Context) {
 }
 
 // @Router /runtimes/php/extensions/push [post]
-// @x-panel-log {"bodyKeys":["sourceNode","targetNodes"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"推送 PHP 扩展模版 [sourceNode] 至 [targetNodes]","formatEN":"Push PHP extension template from [sourceNode] to [targetNodes]"}
+// @x-panel-log {"bodyKeys":["sourceNode","targetNodes"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Push PHP extension template from [sourceNode] to [targetNodes]"}
 func (b *BaseApi) PushPHPExtensions(c *gin.Context) {
 	var req dto.PHPExtensionsPush
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

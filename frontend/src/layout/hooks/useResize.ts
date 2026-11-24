@@ -3,10 +3,10 @@ import { useRoute } from 'vue-router';
 import { MenuStore } from '@/store';
 import { DeviceType } from '@/enums/app';
 import { useGlobalStore } from '@/composables/useGlobalStore';
-/** 与 Tailwind CSS 的 md 断点保持一致 */
+/** Matches the Tailwind CSS md breakpoint */
 const MOBILE_BREAKPOINT = 768;
 
-/** 根据大小变化重新布局 */
+/** Re-layout on size change */
 export default () => {
     const route = useRoute();
     const { globalStore, isMobile } = useGlobalStore();

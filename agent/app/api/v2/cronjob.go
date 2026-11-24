@@ -19,7 +19,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /cronjobs [post]
-// @x-panel-log {"bodyKeys":["type","name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建计划任务 [type][name]","formatEN":"create cronjob [type][name]"}
+// @x-panel-log {"bodyKeys":["type","name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create cronjob [type][name]"}
 func (b *BaseApi) CreateCronjob(c *gin.Context) {
 	var req dto.CronjobOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -211,7 +211,7 @@ func (b *BaseApi) LoadRecordLog(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /cronjobs/records/clean [post]
-// @x-panel-log {"bodyKeys":["cronjobID"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"cronjobID","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatZH":"清空计划任务记录 [name]","formatEN":"clean cronjob [name] records"}
+// @x-panel-log {"bodyKeys":["cronjobID"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"cronjobID","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatEN":"clean cronjob [name] records"}
 func (b *BaseApi) CleanRecord(c *gin.Context) {
 	var req dto.CronjobClean
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -256,7 +256,7 @@ func (b *BaseApi) StopCronJob(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /cronjobs/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"cronjobs","output_column":"name","output_value":"names"}],"formatZH":"删除计划任务 [names]","formatEN":"delete cronjob [names]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"cronjobs","output_column":"name","output_value":"names"}],"formatEN":"delete cronjob [names]"}
 func (b *BaseApi) DeleteCronjob(c *gin.Context) {
 	var req dto.CronjobBatchDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -278,7 +278,7 @@ func (b *BaseApi) DeleteCronjob(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /cronjobs/update [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatZH":"更新计划任务 [name]","formatEN":"update cronjob [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatEN":"update cronjob [name]"}
 func (b *BaseApi) UpdateCronjob(c *gin.Context) {
 	var req dto.CronjobOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -300,7 +300,7 @@ func (b *BaseApi) UpdateCronjob(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /cronjobs/group/update [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatZH":"更新计划任务分组 [name]","formatEN":"update cronjob group [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatEN":"update cronjob group [name]"}
 func (b *BaseApi) UpdateCronjobGroup(c *gin.Context) {
 	var req dto.ChangeGroup
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -322,7 +322,7 @@ func (b *BaseApi) UpdateCronjobGroup(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /cronjobs/status [post]
-// @x-panel-log {"bodyKeys":["id","status"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatZH":"修改计划任务 [name] 状态为 [status]","formatEN":"change the status of cronjob [name] to [status]."}
+// @x-panel-log {"bodyKeys":["id","status"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatEN":"change the status of cronjob [name] to [status]."}
 func (b *BaseApi) UpdateCronjobStatus(c *gin.Context) {
 	var req dto.CronjobUpdateStatus
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -344,7 +344,7 @@ func (b *BaseApi) UpdateCronjobStatus(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /cronjobs/handle [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatZH":"手动执行计划任务 [name]","formatEN":"manually execute the cronjob [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatEN":"manually execute the cronjob [name]"}
 func (b *BaseApi) HandleOnce(c *gin.Context) {
 	var req dto.OperateByID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

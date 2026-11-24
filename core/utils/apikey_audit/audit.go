@@ -40,15 +40,15 @@ func Record(c *gin.Context, event Event) error {
 }
 
 func Build(c *gin.Context, event Event) (*model.OperationLog, error) {
-	labels := map[string][2]string{
-		"create":      {"创建 API Key", "Create API key"},
-		"update":      {"修改 API Key", "Update API key"},
-		"enable":      {"启用 API Key", "Enable API key"},
-		"disable":     {"停用 API Key", "Disable API key"},
-		"revoke":      {"撤销 API Key", "Revoke API key"},
-		"delete":      {"删除 API Key", "Delete API key"},
-		"reveal":      {"查看 API Key", "Reveal API key"},
-		"app_binding": {"向 APP 交付 API Key", "Deliver API key to APP"},
+	labels := map[string]string{
+		"create":      "Create API key",
+		"update":      "Update API key",
+		"enable":      "Enable API key",
+		"disable":     "Disable API key",
+		"revoke":      "Revoke API key",
+		"delete":      "Delete API key",
+		"reveal":      "Reveal API key",
+		"app_binding": "Deliver API key to APP",
 	}
 	label, ok := labels[event.Action]
 	if !ok || event.KeyID == "" || (event.Status != constant.StatusSuccess && event.Status != constant.StatusFailed) {
@@ -63,8 +63,8 @@ func Build(c *gin.Context, event Event) (*model.OperationLog, error) {
 	record := &model.OperationLog{
 		Source: "auth", User: event.User,
 		AuthMethod: "session", Status: event.Status, Message: event.Message,
-		DetailZH: fmt.Sprintf("%s [%s] (%s)", label[0], event.KeyName, event.KeyID),
-		DetailEN: fmt.Sprintf("%s [%s] (%s)", label[1], event.KeyName, event.KeyID),
+		DetailZH: fmt.Sprintf("%s [%s] (%s)", label, event.KeyName, event.KeyID),
+		DetailEN: fmt.Sprintf("%s [%s] (%s)", label, event.KeyName, event.KeyID),
 	}
 	if event.Action == "app_binding" {
 		record.AuthMethod = "qr_exchange"

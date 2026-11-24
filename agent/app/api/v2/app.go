@@ -38,7 +38,7 @@ func (b *BaseApi) SearchApp(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/sync/remote [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"应用商店同步","formatEN":"App store synchronization"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"App store synchronization"}
 func (b *BaseApi) SyncApp(c *gin.Context) {
 	var req dto.OperateWithTask
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -70,7 +70,7 @@ func (b *BaseApi) SyncApp(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/sync/local [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"应用商店同步","formatEN":"App store synchronization"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"App store synchronization"}
 func (b *BaseApi) SyncLocalApp(c *gin.Context) {
 	var req dto.OperateWithTask
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -106,8 +106,8 @@ func (b *BaseApi) GetApp(c *gin.Context) {
 // @Summary Search app detail by appid
 // @Accept json
 // @Param appId path integer true "app id"
-// @Param version path string true "app 版本"
-// @Param type path string true "app 类型"
+// @Param version path string true "app version"
+// @Param type path string true "app type"
 // @Success 200 {object} response.AppDetailDTO
 // @Security ApiKeyAuth
 // @Security Timestamp
@@ -158,7 +158,7 @@ func (b *BaseApi) GetAppDetailByID(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/install [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"安装应用 [name]","formatEN":"Install app [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Install app [name]"}
 func (b *BaseApi) InstallApp(c *gin.Context) {
 	var req request.AppInstallCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

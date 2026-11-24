@@ -1137,7 +1137,7 @@ func extractDingTalkConfig(conf map[string]interface{}) dto.AgentDingTalkConfig 
 		GroupSessionScope:               "group",
 		SharedMemoryAcrossConversations: false,
 		AsyncMode:                       false,
-		AckText:                         "任务已接收，处理中...",
+		AckText:                         "Task received, processing...",
 	}
 	dingtalk := getChannelConfig(conf, "dingtalk-connector")
 	if len(dingtalk) == 0 {

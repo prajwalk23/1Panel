@@ -1,42 +1,42 @@
 import axios, { AxiosRequestConfig, Canceler } from 'axios';
 import qs from 'qs';
 
-// * 声明一个 Map 用于存储每个请求的标识 和 取消函数
+// * Map that stores each request identifier and its cancel function
 let pendingMap = new Map<string, Canceler>();
 
-// * 序列化参数
+// * Serialize params
 export const getPendingUrl = (config: AxiosRequestConfig) =>
     [config.method, config.url, qs.stringify(config.data), qs.stringify(config.params)].join('&');
 
 export class AxiosCanceler {
     /**
-     * @description: 添加请求
+     * @description: add a request
      * @param {Object} config
      * @return void
      */
     addPending(config: AxiosRequestConfig) {
-        // * 在请求开始前，对之前的请求做检查取消操作
+        // * Before a request starts, check and cancel the previous request
         this.removePending(config);
         const url = getPendingUrl(config);
         config.cancelToken =
             config.cancelToken ||
             new axios.CancelToken((cancel) => {
                 if (!pendingMap.has(url)) {
-                    // 如果 pending 中不存在当前请求，则添加进去
+                    // If the request is not in pending, add it
                     pendingMap.set(url, cancel);
                 }
             });
     }
 
     /**
-     * @description: 移除请求
+     * @description: remove a request
      * @param {Object} config
      */
     removePending(config: AxiosRequestConfig) {
         const url = getPendingUrl(config);
 
         if (pendingMap.has(url)) {
-            // 如果在 pending 中存在当前请求标识，需要取消当前请求，并且移除
+            // If the request identifier exists in pending, cancel the request and remove it
             const cancel = pendingMap.get(url);
             typeof cancel === 'function' && cancel();
             pendingMap.delete(url);
@@ -44,7 +44,7 @@ export class AxiosCanceler {
     }
 
     /**
-     * @description: 清空所有pending
+     * @description: clear all pending requests
      */
     removeAllPending() {
         pendingMap.forEach((cancel) => {
@@ -54,7 +54,7 @@ export class AxiosCanceler {
     }
 
     /**
-     * @description: 重置
+     * @description: reset
      */
     reset(): void {
         pendingMap = new Map<string, Canceler>();

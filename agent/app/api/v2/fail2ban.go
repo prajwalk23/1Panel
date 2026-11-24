@@ -55,7 +55,7 @@ func (b *BaseApi) SearchFail2Ban(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/fail2ban/operate [post]
-// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operation] Fail2ban","formatEN":"[operation] Fail2ban"}
+// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] Fail2ban"}
 func (b *BaseApi) OperateFail2Ban(c *gin.Context) {
 	var req dto.Operate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -100,7 +100,7 @@ func (b *BaseApi) OperateSSHD(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/fail2ban/update [post]
-// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改 Fail2ban 配置 [key] => [value]","formatEN":"update fail2ban conf [key] => [value]"}
+// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update fail2ban conf [key] => [value]"}
 func (b *BaseApi) UpdateFail2BanConf(c *gin.Context) {
 	var req dto.Fail2BanUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

@@ -108,7 +108,7 @@ func (b *BaseApi) LoadUsers(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/device/update/conf [post]
-// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改主机参数 [key] => [value]","formatEN":"update device conf [key] => [value]"}
+// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update device conf [key] => [value]"}
 func (b *BaseApi) UpdateDeviceConf(c *gin.Context) {
 	var req dto.SettingUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -129,7 +129,7 @@ func (b *BaseApi) UpdateDeviceConf(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/device/update/host [post]
-// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改主机 Host [key] => [value]","formatEN":"update device host [key] => [value]"}
+// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update device host [key] => [value]"}
 func (b *BaseApi) UpdateDeviceHost(c *gin.Context) {
 	var req []dto.HostHelper
 	if err := helper.CheckBind(&req, c); err != nil {
@@ -181,7 +181,7 @@ func (b *BaseApi) UpdateDevicePasswd(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/device/update/swap [post]
-// @x-panel-log {"bodyKeys":["operate","path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operate] 主机 swap [path]","formatEN":"[operate] device swap [path]"}
+// @x-panel-log {"bodyKeys":["operate","path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operate] device swap [path]"}
 func (b *BaseApi) UpdateDeviceSwap(c *gin.Context) {
 	var req dto.SwapHelper
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -224,7 +224,7 @@ func (b *BaseApi) CheckDNS(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/scan [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"扫描系统垃圾文件","formatEN":"scan System Junk Files"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"scan System Junk Files"}
 func (b *BaseApi) ScanSystem(c *gin.Context) {
 	helper.SuccessWithData(c, deviceService.Scan())
 }
@@ -237,7 +237,7 @@ func (b *BaseApi) ScanSystem(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/clean [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"清理系统垃圾文件","formatEN":"Clean system junk files"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Clean system junk files"}
 func (b *BaseApi) SystemClean(c *gin.Context) {
 	var req []dto.Clean
 	if err := helper.CheckBind(&req, c); err != nil {

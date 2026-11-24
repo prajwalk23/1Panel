@@ -1,13 +1,12 @@
 // fork: merges the GitHub section messages into a locale. Locales without
 // their own file fall back to English through vue-i18n's fallbackLocale.
 import en from './en';
-import zh from './zh';
-import { memoryLimitEn, memoryLimitZh } from './memory-limit';
+import { memoryLimitEn } from './memory-limit';
 
 type LocaleMessage = Record<string, unknown>;
 
-const githubMessages: Record<string, LocaleMessage> = { en, zh };
-const memoryLimitMessages: Record<string, LocaleMessage> = { en: memoryLimitEn, zh: memoryLimitZh };
+const githubMessages: Record<string, LocaleMessage> = { en };
+const memoryLimitMessages: Record<string, LocaleMessage> = { en: memoryLimitEn };
 
 export const withGithubMessages = (locale: string, messages: LocaleMessage): LocaleMessage => {
     const extra = githubMessages[locale];

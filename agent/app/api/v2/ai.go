@@ -14,7 +14,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /ai/ollama/model [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"添加 Ollama 模型 [name]","formatEN":"add Ollama model [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"add Ollama model [name]"}
 func (b *BaseApi) CreateOllamaModel(c *gin.Context) {
 	var req dto.OllamaModelName
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -36,7 +36,7 @@ func (b *BaseApi) CreateOllamaModel(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /ai/ollama/model/recreate [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"添加 Ollama 模型重试 [name]","formatEN":"re-add Ollama model [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"re-add Ollama model [name]"}
 func (b *BaseApi) RecreateOllamaModel(c *gin.Context) {
 	var req dto.OllamaModelName
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -58,7 +58,7 @@ func (b *BaseApi) RecreateOllamaModel(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /ai/ollama/close [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"关闭 Ollama 模型连接 [name]","formatEN":"close conn for Ollama model [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"close conn for Ollama model [name]"}
 func (b *BaseApi) CloseOllamaModel(c *gin.Context) {
 	var req dto.OllamaModelName
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -141,7 +141,7 @@ func (b *BaseApi) LoadOllamaModelDetail(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /ai/ollama/model/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"ollama_models","output_column":"name","output_value":"names"}],"formatZH":"删除 Ollama 模型 [names]","formatEN":"remove Ollama model [names]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"ollama_models","output_column":"name","output_value":"names"}],"formatEN":"remove Ollama model [names]"}
 func (b *BaseApi) DeleteOllamaModel(c *gin.Context) {
 	var req dto.ForceDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -205,7 +205,7 @@ func (b *BaseApi) GetBindDomain(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /ai/domain/update [post]
-// @x-panel-log {"bodyKeys":["domain"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新 Ollama 绑定域名 [domain]","formatEN":"update Ollama bind domain [domain]"}
+// @x-panel-log {"bodyKeys":["domain"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update Ollama bind domain [domain]"}
 func (b *BaseApi) UpdateBindDomain(c *gin.Context) {
 	var req dto.OllamaBindDomain
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

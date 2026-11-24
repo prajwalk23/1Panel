@@ -15,7 +15,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts [post]
-// @x-panel-log {"bodyKeys":["name","addr"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建主机 [name][addr]","formatEN":"create host [name][addr]"}
+// @x-panel-log {"bodyKeys":["name","addr"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create host [name][addr]"}
 func (b *BaseApi) CreateHost(c *gin.Context) {
 	var req dto.HostOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -117,7 +117,7 @@ func (b *BaseApi) SearchHost(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"hosts","output_column":"name","output_value":"names"}],"formatZH":"删除主机 [names]","formatEN":"delete host [names]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"hosts","output_column":"name","output_value":"names"}],"formatEN":"delete host [names]"}
 func (b *BaseApi) DeleteHost(c *gin.Context) {
 	var req dto.OperateByIDs
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -139,7 +139,7 @@ func (b *BaseApi) DeleteHost(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/update [post]
-// @x-panel-log {"bodyKeys":["name","addr"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新主机 [name][addr]","formatEN":"update host [name][addr]"}
+// @x-panel-log {"bodyKeys":["name","addr"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update host [name][addr]"}
 func (b *BaseApi) UpdateHost(c *gin.Context) {
 	var req dto.HostOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -207,7 +207,7 @@ func (b *BaseApi) UpdateHost(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/update/group [post]
-// @x-panel-log {"bodyKeys":["id","groupID"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"hosts","output_column":"name","output_value":"name"}],"formatZH":"更新主机 [name] 分组","formatEN":"update host [name] group"}
+// @x-panel-log {"bodyKeys":["id","groupID"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"hosts","output_column":"name","output_value":"name"}],"formatEN":"update host [name] group"}
 func (b *BaseApi) UpdateHostGroup(c *gin.Context) {
 	var req dto.ChangeGroup
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

@@ -362,8 +362,6 @@ func (u *BackupService) checkBackupConn(backup *model.BackupAccount) (bool, erro
 	}
 	defer file.Close()
 	write := bufio.NewWriter(file)
-	_, _ = write.WriteString("1Panel 备份账号测试文件。\n")
-	_, _ = write.WriteString("1Panel 備份賬號測試文件。\n")
 	_, _ = write.WriteString("1Panel Backs up account test files.\n")
 	_, _ = write.WriteString("1Panelアカウントのテストファイルをバックアップします。\n")
 	write.Flush()

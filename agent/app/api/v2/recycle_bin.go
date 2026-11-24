@@ -39,7 +39,7 @@ func (b *BaseApi) SearchRecycleBinFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/recycle/reduce [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"还原回收站文件 [name]","formatEN":"Reduce RecycleBin file [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Reduce RecycleBin file [name]"}
 func (b *BaseApi) ReduceRecycleBinFile(c *gin.Context) {
 	var req request.RecycleBinReduce
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -59,7 +59,7 @@ func (b *BaseApi) ReduceRecycleBinFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/recycle/clear [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"清空回收站","formatEN":"清空回收站"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Clear recycle bin"}
 func (b *BaseApi) ClearRecycleBinFile(c *gin.Context) {
 	if err := recycleBinService.Clear(); err != nil {
 		helper.InternalServer(c, err)

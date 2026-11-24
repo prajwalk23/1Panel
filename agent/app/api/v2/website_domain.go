@@ -14,7 +14,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/domains/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_domains","output_column":"domain","output_value":"domain"}],"formatZH":"删除域名 [domain]","formatEN":"Delete domain [domain]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_domains","output_column":"domain","output_value":"domain"}],"formatEN":"Delete domain [domain]"}
 func (b *BaseApi) DeleteWebDomain(c *gin.Context) {
 	var req request.WebsiteDomainDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -35,7 +35,7 @@ func (b *BaseApi) DeleteWebDomain(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/domains [post]
-// @x-panel-log {"bodyKeys":["domain"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建域名 [domain]","formatEN":"Create domain [domain]"}
+// @x-panel-log {"bodyKeys":["domain"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Create domain [domain]"}
 func (b *BaseApi) CreateWebDomain(c *gin.Context) {
 	var req request.WebsiteDomainCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -79,7 +79,7 @@ func (b *BaseApi) GetWebDomains(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/domains/update [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_domains","output_column":"domain","output_value":"domain"}],"formatZH":"更新域名 [domain]","formatEN":"Update domain [domain]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_domains","output_column":"domain","output_value":"domain"}],"formatEN":"Update domain [domain]"}
 func (b *BaseApi) UpdateWebDomain(c *gin.Context) {
 	var req request.WebsiteDomainUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

@@ -163,7 +163,7 @@ func TailFromEnd(filename string, lines int) ([]string, error) {
 			if i == len(linesInChunk)-1 && linesInChunk[i] == "" && len(result) == 0 {
 				continue
 			}
-			// 反插数据
+			// Reverse insert data
 			result = append(result, linesInChunk[i])
 		}
 	}
@@ -176,7 +176,7 @@ func TailFromEnd(filename string, lines int) ([]string, error) {
 		result = result[:lines]
 	}
 
-	// 反转数据
+	// Reverse data
 	for i, j := 0, len(result)-1; i < j; i, j = i+1, j-1 {
 		result[i], result[j] = result[j], result[i]
 	}

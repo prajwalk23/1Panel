@@ -66,7 +66,7 @@ func (b *BaseApi) GetNotesByVersion(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/upgrade [post]
-// @x-panel-log {"bodyKeys":["version"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新系统 => [version]","formatEN":"upgrade system => [version]"}
+// @x-panel-log {"bodyKeys":["version"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"upgrade system => [version]"}
 func (b *BaseApi) Upgrade(c *gin.Context) {
 	var req dto.Upgrade
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

@@ -30,7 +30,7 @@ func (b *BaseApi) ListAppIgnored(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/installed/ignore [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"忽略应用升级","formatEN":"Ignore application upgrade"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Ignore application upgrade"}
 func (b *BaseApi) IgnoreAppUpgrade(c *gin.Context) {
 	var req request.AppIgnoreUpgradeReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -43,7 +43,7 @@ func (b *BaseApi) IgnoreAppUpgrade(c *gin.Context) {
 	helper.Success(c)
 }
 
-// 写一个去掉忽略的接口
+// Endpoint to cancel an ignored upgrade
 // @Tags App
 // @Summary Cancel Ignore Upgrade App
 // @Accept json
@@ -52,7 +52,7 @@ func (b *BaseApi) IgnoreAppUpgrade(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/ignored/cancel [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"取消忽略应用升级","formatEN":"Cancel ignore application upgrade"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Cancel ignore application upgrade"}
 func (b *BaseApi) CancelIgnoreAppUpgrade(c *gin.Context) {
 	var req request.ReqWithID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

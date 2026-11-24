@@ -91,9 +91,7 @@ const GlobalStore = defineStore('GlobalState', {
             if (state.docWithRegion) {
                 return state.isIntl ? INTL_DOCS_URL : CN_DOCS_URL;
             }
-            const lang = state.language.toLowerCase();
-            const isChinese = lang === 'zh';
-            return isChinese ? CN_DOCS_URL : INTL_DOCS_URL;
+            return INTL_DOCS_URL;
         },
         isMaster: (state) => state.currentNode === 'local',
         isMobile: (state) => state.device === DeviceType.Mobile,

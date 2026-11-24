@@ -279,7 +279,7 @@ onMounted(() => {
         margin-left: 0px;
     }
 }
-// for mobile response 适配移动端
+// for mobile response
 .mobile {
     .main-container {
         margin-left: 0px;
