@@ -27,7 +27,13 @@
                         <el-text type="warning" class="!ml-2">{{ $t('website.ipWebsiteWarn') }}</el-text>
 
                         <el-divider content-position="left">{{ $t('website.SSLConfig') }}</el-divider>
-                        <HttpsConfig v-model="form" :website-ssl="websiteSSL" @ssl-change="handleSSLChange" />
+                        <HttpsConfig
+                            ref="httpsConfigRef"
+                            v-model="form"
+                            :website-ssl="websiteSSL"
+                            :allow-create="true"
+                            @ssl-change="handleSSLChange"
+                        />
                         <el-form-item>
                             <el-button v-permission type="primary" @click="submit(httpsForm)">
                                 {{ $t('commons.button.save') }}
@@ -37,10 +43,12 @@
                 </el-collapse-transition>
             </el-form>
         </el-col>
+        <CreateSSL ref="createRef" @done="handleCreated" />
     </el-row>
 </template>
 <script lang="ts" setup>
 import HttpsConfig from '@/views/website/website/components/https/index.vue';
+import CreateSSL from './create-ssl.vue';
 
 import { Website } from '@/api/interface/website';
 import { getHTTPSConfig, updateHTTPSConfig } from '@/api/modules/website';
@@ -48,7 +56,7 @@ import { ElMessageBox, FormInstance } from 'element-plus';
 import { computed, onMounted, reactive, ref } from 'vue';
 import i18n from '@/lang';
 import { Rules } from '@/global/form-rules';
-import { MsgSuccess } from '@/utils/message';
+import { MsgError, MsgSuccess } from '@/utils/message';
 
 const props = defineProps({
     id: {
@@ -60,12 +68,14 @@ const id = computed(() => {
     return props.id;
 });
 const httpsForm = ref<FormInstance>();
+const httpsConfigRef = ref();
+const createRef = ref();
 let form = reactive({
     acmeAccountID: 0,
     enable: false,
     websiteId: id.value,
     websiteSSLId: undefined,
-    type: 'existed',
+    type: 'create',
     importType: 'paste',
     privateKey: '',
     certificate: '',
@@ -103,8 +113,8 @@ const handleSSLChange = (ssl: Website.SSL) => {
 const get = () => {
     getHTTPSConfig(id.value).then((res) => {
         if (res.data) {
-            form.type = 'existed';
             const data = res.data;
+            form.type = data.SSL && data.SSL.id > 0 ? 'existed' : 'create';
             resData.value = data;
             form.enable = data.enable;
             if (data.httpConfig != '') {
@@ -128,22 +138,43 @@ const get = () => {
         }
     });
 };
+// "create" is a UI-only type: the certificate is issued first and then saved as an existing one
+const buildPayload = () => ({ ...form, websiteId: id.value, type: form.type === 'create' ? 'existed' : form.type });
+
+const save = () => {
+    loading.value = true;
+    updateHTTPSConfig(buildPayload())
+        .then(() => {
+            MsgSuccess(i18n.global.t('commons.msg.updateSuccess'));
+            get();
+        })
+        .finally(() => {
+            loading.value = false;
+        });
+};
+
+const handleCreated = async (sslId: number) => {
+    form.type = 'existed';
+    form.websiteSSLId = sslId as any;
+    await httpsConfigRef.value?.listSSLs();
+    save();
+};
+
 const submit = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     await formEl.validate((valid) => {
         if (!valid) {
             return;
         }
-        loading.value = true;
-        form.websiteId = id.value;
-        updateHTTPSConfig(form)
-            .then(() => {
-                MsgSuccess(i18n.global.t('commons.msg.updateSuccess'));
-                get();
-            })
-            .finally(() => {
-                loading.value = false;
-            });
+        if (form.type === 'create') {
+            if (!form.acmeAccountID) {
+                MsgError(i18n.global.t('website.newSSLNoAcme'));
+                return;
+            }
+            createRef.value.acceptParams({ websiteId: id.value, acmeAccountId: form.acmeAccountID });
+            return;
+        }
+        save();
     });
 };
 
@@ -166,8 +197,7 @@ const changeEnable = (enable: boolean) => {
                 } else {
                     instance.confirmButtonLoading = true;
                     form.enable = false;
-                    form.websiteId = id.value;
-                    updateHTTPSConfig(form).then(() => {
+                    updateHTTPSConfig({ ...buildPayload(), enable: false }).then(() => {
                         done();
                         MsgSuccess(i18n.global.t('commons.msg.operationSuccess'));
                         get();

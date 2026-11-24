@@ -312,6 +312,7 @@ export namespace Website {
         privateKeyPath: string;
         certPath: string;
         isIP: boolean;
+        message?: string;
     }
 
     export interface SSLDTO extends SSL {
@@ -327,6 +328,8 @@ export namespace Website {
         id?: number;
         description: string;
         isIP: boolean;
+        keyType?: string;
+        autoRenew?: boolean;
     }
 
     export interface SSLApply {
