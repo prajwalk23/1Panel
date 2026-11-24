@@ -8,8 +8,8 @@ export const memoryLimitEn = {
     agent: 'Agent',
     heap: 'heap',
     notRunning: 'not running',
-    limit: 'Limit (MiB)',
-    range: 'Between {0} and {1} MiB. Default {2} MiB.',
+    limit: 'Limit (GB)',
+    range: 'Between {0} and {1} GB. Default {2} GB.',
     appliedHelper: 'Applied immediately. The agent picks it up within one minute.',
     over: 'Above the limit',
 };
@@ -23,8 +23,8 @@ export const memoryLimitZh = {
     agent: 'Agent',
     heap: '堆',
     notRunning: '未运行',
-    limit: '上限 (MiB)',
-    range: '范围 {0} - {1} MiB，默认 {2} MiB。',
+    limit: '上限 (GB)',
+    range: '范围 {0} - {1} GB，默认 {2} GB。',
     appliedHelper: '立即生效，agent 会在一分钟内同步。',
     over: '已超过上限',
 };

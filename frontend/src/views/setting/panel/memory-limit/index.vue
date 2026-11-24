@@ -7,9 +7,9 @@
                         <div class="usage-head">
                             <span>{{ item.label }}</span>
                             <span v-if="item.running" :class="{ 'is-over': item.over }">
-                                {{ item.rss.toFixed(0) }} MiB / {{ info.limitMiB }} MiB
+                                {{ formatGB(item.rss) }} / {{ formatGB(info.limitMiB) }}
                                 <template v-if="item.heap !== null">
-                                    · {{ $t('memoryLimit.heap') }} {{ item.heap.toFixed(0) }} MiB
+                                    · {{ $t('memoryLimit.heap') }} {{ formatGB(item.heap) }}
                                 </template>
                             </span>
                             <span v-else class="input-help">{{ $t('memoryLimit.notRunning') }}</span>
@@ -25,10 +25,10 @@
                 </div>
             </el-form-item>
 
-            <el-form-item :label="$t('memoryLimit.limit')" prop="limitMiB">
-                <el-input v-model.number="form.limitMiB" />
+            <el-form-item :label="$t('memoryLimit.limit')" prop="limitGB">
+                <el-input v-model.number="form.limitGB" />
                 <span class="input-help">
-                    {{ $t('memoryLimit.range', [info.minMiB, info.maxMiB, info.defaultMiB]) }}
+                    {{ $t('memoryLimit.range', [mibToGB(info.minMiB), mibToGB(info.maxMiB), mibToGB(info.defaultMiB)]) }}
                     {{ $t('memoryLimit.appliedHelper') }}
                 </span>
                 <span class="input-help">{{ $t('memoryLimit.help') }}</span>
@@ -51,8 +51,15 @@ import { computed, reactive, ref } from 'vue';
 import i18n from '@/lang';
 import { MsgSuccess } from '@/utils/message';
 import { FormInstance } from 'element-plus';
-import { Rules, checkNumberRange } from '@/global/form-rules';
-import { getPanelMemoryLimit, updatePanelMemoryLimit, MemoryLimit } from '@/api/modules/memory-limit';
+import { Rules } from '@/global/form-rules';
+import {
+    getPanelMemoryLimit,
+    updatePanelMemoryLimit,
+    MemoryLimit,
+    mibToGB,
+    gbToMib,
+    formatGB,
+} from '@/api/modules/memory-limit';
 
 const emit = defineEmits<{ (e: 'search'): void }>();
 
@@ -69,10 +76,20 @@ const info = reactive<MemoryLimit.Info>({
     core: { running: false, rssMiB: 0, heapMiB: 0 },
     agent: { running: false, rssMiB: 0, heapMiB: 0 },
 });
-const form = reactive({ limitMiB: 512 });
+const form = reactive({ limitGB: 0.5 });
+
+const checkLimitGB = (_rule: any, value: any, callback: any) => {
+    const mib = gbToMib(Number(value));
+    if (isNaN(mib) || mib < info.minMiB || mib > info.maxMiB) {
+        return callback(
+            new Error(i18n.global.t('commons.rule.numberRange', [mibToGB(info.minMiB), mibToGB(info.maxMiB)])),
+        );
+    }
+    callback();
+};
 
 const rules = computed(() => ({
-    limitMiB: [Rules.requiredInput, Rules.integerNumber, checkNumberRange(info.minMiB, info.maxMiB)],
+    limitGB: [Rules.requiredInput, { validator: checkLimitGB, trigger: 'blur' }],
 }));
 
 const usageItems = computed(() =>
@@ -98,7 +115,7 @@ const load = async () => {
     try {
         const res = await getPanelMemoryLimit();
         Object.assign(info, res.data);
-        form.limitMiB = res.data.limitMiB;
+        form.limitGB = mibToGB(res.data.limitMiB);
     } finally {
         loading.value = false;
     }
@@ -115,7 +132,7 @@ const onSave = (formEl: FormInstance | undefined) => {
         if (!valid) return;
         loading.value = true;
         try {
-            await updatePanelMemoryLimit(form.limitMiB);
+            await updatePanelMemoryLimit(gbToMib(Number(form.limitGB)));
             MsgSuccess(i18n.global.t('commons.msg.operationSuccess'));
             drawerVisible.value = false;
             emit('search');

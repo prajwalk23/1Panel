@@ -225,7 +225,7 @@ import Watermark from '@/views/setting/panel/watermark/index.vue';
 import Edition from '@/views/setting/panel/edition/index.vue';
 import Timeout from '@/views/setting/panel/timeout/index.vue';
 import MemoryLimitDialog from '@/views/setting/panel/memory-limit/index.vue'; // fork
-import { getPanelMemoryLimit, MemoryLimit } from '@/api/modules/memory-limit'; // fork
+import { getPanelMemoryLimit, formatGB, MemoryLimit } from '@/api/modules/memory-limit'; // fork
 import PanelName from '@/views/setting/panel/name/index.vue';
 import SystemIP from '@/views/setting/panel/systemip/index.vue';
 import Proxy from '@/views/setting/panel/proxy/index.vue';
@@ -299,13 +299,13 @@ const proxyRef = ref();
 const timeoutRef = ref();
 const memoryLimitRef = ref(); // fork
 const memoryLimit = ref<MemoryLimit.Info | null>(null); // fork
-const memoryLimitText = computed(() => (memoryLimit.value ? `${memoryLimit.value.limitMiB} MiB` : '-')); // fork
+const memoryLimitText = computed(() => (memoryLimit.value ? formatGB(memoryLimit.value.limitMiB) : '-')); // fork
 const memoryUsageText = computed(() => {
     // fork
     const data = memoryLimit.value;
     if (!data) return '-';
-    const fmt = (item: MemoryLimit.ProcessMemory) => (item.running ? `${item.rssMiB.toFixed(0)} MiB` : '-');
-    return `${i18n.global.t('memoryLimit.core')} ${fmt(data.core)} · ${i18n.global.t('memoryLimit.agent')} ${fmt(data.agent)} / ${data.limitMiB} MiB`;
+    const fmt = (item: MemoryLimit.ProcessMemory) => (item.running ? formatGB(item.rssMiB) : '-');
+    return `${i18n.global.t('memoryLimit.core')} ${fmt(data.core)} · ${i18n.global.t('memoryLimit.agent')} ${fmt(data.agent)} / ${formatGB(data.limitMiB)}`;
 });
 const hideMenuRef = ref();
 const cacheRef = ref();
