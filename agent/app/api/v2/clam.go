@@ -14,7 +14,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/clam [post]
-// @x-panel-log {"bodyKeys":["name","path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建扫描规则 [name][path]","formatEN":"create clam [name][path]"}
+// @x-panel-log {"bodyKeys":["name","path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create clam [name][path]"}
 func (b *BaseApi) CreateClam(c *gin.Context) {
 	var req dto.ClamCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -36,7 +36,7 @@ func (b *BaseApi) CreateClam(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/clam/update [post]
-// @x-panel-log {"bodyKeys":["name","path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改扫描规则 [name][path]","formatEN":"update clam [name][path]"}
+// @x-panel-log {"bodyKeys":["name","path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update clam [name][path]"}
 func (b *BaseApi) UpdateClam(c *gin.Context) {
 	var req dto.ClamUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -58,7 +58,7 @@ func (b *BaseApi) UpdateClam(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/clam/status/update [post]
-// @x-panel-log {"bodyKeys":["id","status"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"clams","output_column":"name","output_value":"name"}],"formatZH":"修改扫描规则 [name] 状态为 [status]","formatEN":"change the status of clam [name] to [status]."}
+// @x-panel-log {"bodyKeys":["id","status"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"clams","output_column":"name","output_value":"name"}],"formatEN":"change the status of clam [name] to [status]."}
 func (b *BaseApi) UpdateClamStatus(c *gin.Context) {
 	var req dto.ClamUpdateStatus
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -123,7 +123,7 @@ func (b *BaseApi) LoadClamBaseInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/clam/operate [post]
-// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operation] Clam","formatEN":"[operation] Clam"}
+// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] Clam"}
 func (b *BaseApi) OperateClam(c *gin.Context) {
 	var req dto.Operate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -146,7 +146,7 @@ func (b *BaseApi) OperateClam(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/clam/record/clean [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":true,"db":"clams","output_column":"name","output_value":"name"}],"formatZH":"清空扫描报告 [name]","formatEN":"clean clam record [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":true,"db":"clams","output_column":"name","output_value":"name"}],"formatEN":"clean clam record [name]"}
 func (b *BaseApi) CleanClamRecord(c *gin.Context) {
 	var req dto.OperateByID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -237,7 +237,7 @@ func (b *BaseApi) UpdateFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/clam/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"clams","output_column":"name","output_value":"names"}],"formatZH":"删除扫描规则 [names]","formatEN":"delete clam [names]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"clams","output_column":"name","output_value":"names"}],"formatEN":"delete clam [names]"}
 func (b *BaseApi) DeleteClam(c *gin.Context) {
 	var req dto.ClamDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -259,7 +259,7 @@ func (b *BaseApi) DeleteClam(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/clam/handle [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":true,"db":"clams","output_column":"name","output_value":"name"}],"formatZH":"执行病毒扫描 [name]","formatEN":"handle clam scan [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":true,"db":"clams","output_column":"name","output_value":"name"}],"formatEN":"handle clam scan [name]"}
 func (b *BaseApi) HandleClamScan(c *gin.Context) {
 	var req dto.OperateByID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

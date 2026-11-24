@@ -209,7 +209,7 @@ func (b *BaseApi) GetFileTree(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建文件/文件夹 [path]","formatEN":"Create dir or file [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Create dir or file [path]"}
 func (b *BaseApi) CreateFile(c *gin.Context) {
 	var req request.FileCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -231,7 +231,7 @@ func (b *BaseApi) CreateFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/del [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除文件/文件夹 [path]","formatEN":"Delete dir or file [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Delete dir or file [path]"}
 func (b *BaseApi) DeleteFile(c *gin.Context) {
 	var req request.FileDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -253,7 +253,7 @@ func (b *BaseApi) DeleteFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/batch/del [post]
-// @x-panel-log {"bodyKeys":["paths"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"批量删除文件/文件夹 [paths]","formatEN":"Batch delete dir or file [paths]"}
+// @x-panel-log {"bodyKeys":["paths"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Batch delete dir or file [paths]"}
 func (b *BaseApi) BatchDeleteFile(c *gin.Context) {
 	var req request.FileBatchDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -275,7 +275,7 @@ func (b *BaseApi) BatchDeleteFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/mode [post]
-// @x-panel-log {"bodyKeys":["path","mode"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改权限 [path] => [mode]","formatEN":"Change mode [path] => [mode]"}
+// @x-panel-log {"bodyKeys":["path","mode"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Change mode [path] => [mode]"}
 func (b *BaseApi) ChangeFileMode(c *gin.Context) {
 	var req request.FileCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -297,7 +297,7 @@ func (b *BaseApi) ChangeFileMode(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/owner [post]
-// @x-panel-log {"bodyKeys":["path","user","group"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改用户/组 [path] => [user]/[group]","formatEN":"Change owner [path] => [user]/[group]"}
+// @x-panel-log {"bodyKeys":["path","user","group"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Change owner [path] => [user]/[group]"}
 func (b *BaseApi) ChangeFileOwner(c *gin.Context) {
 	var req request.FileRoleUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -318,7 +318,7 @@ func (b *BaseApi) ChangeFileOwner(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/compress [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"压缩文件 [name]","formatEN":"Compress file [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Compress file [name]"}
 func (b *BaseApi) CompressFile(c *gin.Context) {
 	var req request.FileCompress
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -360,7 +360,7 @@ func (b *BaseApi) StopCompressFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/decompress [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"解压 [path]","formatEN":"Decompress file [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Decompress file [path]"}
 func (b *BaseApi) DeCompressFile(c *gin.Context) {
 	var req request.FileDeCompress
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -402,7 +402,7 @@ func (b *BaseApi) StopDeCompressFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/content [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"获取文件内容 [path]","formatEN":"Load file content [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Load file content [path]"}
 func (b *BaseApi) GetContent(c *gin.Context) {
 	var req request.FileContentReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -428,7 +428,7 @@ func (b *BaseApi) GetContent(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/preview [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"预览文件内容 [path]","formatEN":"Preview file content [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Preview file content [path]"}
 func (b *BaseApi) PreviewContent(c *gin.Context) {
 	var req request.FileContentReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -451,7 +451,7 @@ func (b *BaseApi) PreviewContent(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/save [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新文件内容 [path]","formatEN":"Update file content [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Update file content [path]"}
 func (b *BaseApi) SaveContent(c *gin.Context) {
 	var req request.FileEdit
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -471,7 +471,7 @@ func (b *BaseApi) SaveContent(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/upload [post]
-// @x-panel-log {"bodyKeys":["path", "file"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"上传文件 [path]/[file]","formatEN":"Upload file [path]/[file]"}
+// @x-panel-log {"bodyKeys":["path", "file"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Upload file [path]/[file]"}
 func (b *BaseApi) UploadFiles(c *gin.Context) {
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -628,7 +628,7 @@ func (b *BaseApi) BatchCheckFiles(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/rename [post]
-// @x-panel-log {"bodyKeys":["oldName","newName"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"重命名 [oldName] => [newName]","formatEN":"Rename [oldName] => [newName]"}
+// @x-panel-log {"bodyKeys":["oldName","newName"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Rename [oldName] => [newName]"}
 func (b *BaseApi) ChangeFileName(c *gin.Context) {
 	var req request.FileRename
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -649,7 +649,7 @@ func (b *BaseApi) ChangeFileName(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/wget [post]
-// @x-panel-log {"bodyKeys":["url","path","name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"下载 url => [path]/[name]","formatEN":"Download url => [path]/[name]"}
+// @x-panel-log {"bodyKeys":["url","path","name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Download url => [path]/[name]"}
 func (b *BaseApi) WgetFile(c *gin.Context) {
 	var req request.FileWget
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -673,7 +673,7 @@ func (b *BaseApi) WgetFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/wget/stop [post]
-// @x-panel-log {"bodyKeys":["key"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"停止下载任务 [key]","formatEN":"Stop wget task [key]"}
+// @x-panel-log {"bodyKeys":["key"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Stop wget task [key]"}
 func (b *BaseApi) StopWget(c *gin.Context) {
 	var req request.FileProcessReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -699,7 +699,7 @@ func (b *BaseApi) StopWget(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/wget/process/remove [post]
-// @x-panel-log {"bodyKeys":["keys"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"移除已结束下载记录 [keys]","formatEN":"Remove finished download records [keys]"}
+// @x-panel-log {"bodyKeys":["keys"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Remove finished download records [keys]"}
 func (b *BaseApi) RemoveWgetRecords(c *gin.Context) {
 	var req request.FileProcessRemoveReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -721,7 +721,7 @@ func (b *BaseApi) RemoveWgetRecords(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/move [post]
-// @x-panel-log {"bodyKeys":["oldPaths","newPath"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"移动文件 [oldPaths] => [newPath]","formatEN":"Move [oldPaths] => [newPath]"}
+// @x-panel-log {"bodyKeys":["oldPaths","newPath"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Move [oldPaths] => [newPath]"}
 func (b *BaseApi) MoveFile(c *gin.Context) {
 	var req request.FileMove
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -791,7 +791,7 @@ func (b *BaseApi) Download(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/chunkdownload [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"下载文件 [name]","formatEN":"Download file [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Download file [name]"}
 func (b *BaseApi) DownloadChunkFiles(c *gin.Context) {
 	var req request.FileChunkDownload
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -872,7 +872,7 @@ func (b *BaseApi) DownloadChunkFiles(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/size [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"获取文件夹大小 [path]","formatEN":"Load file size [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Load file size [path]"}
 func (b *BaseApi) Size(c *gin.Context) {
 	var req request.DirSizeReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -894,7 +894,7 @@ func (b *BaseApi) Size(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/depth/size [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"获取目录及其第一层子目录文件夹大小 [path]","formatEN":"Multi file size [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Multi file size [path]"}
 func (b *BaseApi) DepthDirSize(c *gin.Context) {
 	var req request.DirSizeReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -1527,7 +1527,7 @@ func (b *BaseApi) ReadFileByLine(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/batch/role [post]
-// @x-panel-log {"bodyKeys":["paths","mode","user","group"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"批量修改文件权限和用户/组 [paths] => [mode]/[user]/[group]","formatEN":"Batch change file mode and owner [paths] => [mode]/[user]/[group]"}
+// @x-panel-log {"bodyKeys":["paths","mode","user","group"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Batch change file mode and owner [paths] => [mode]/[user]/[group]"}
 func (b *BaseApi) BatchChangeModeAndOwner(c *gin.Context) {
 	var req request.FileRoleReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -1780,7 +1780,7 @@ func (b *BaseApi) GetFileShareQRCode(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/share/create [post]
-// @x-panel-log {"bodyKeys":["path","expireMinutes"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建文件分享 [path]","formatEN":"Create file share [path]"}
+// @x-panel-log {"bodyKeys":["path","expireMinutes"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Create file share [path]"}
 func (b *BaseApi) CreateFileShare(c *gin.Context) {
 	var req request.FileShareCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -1806,7 +1806,7 @@ func (b *BaseApi) CreateFileShare(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/share/del [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"关闭文件分享 [path]","formatEN":"Close file share [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Close file share [path]"}
 func (b *BaseApi) DeleteFileShare(c *gin.Context) {
 	var req dto.FilePath
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

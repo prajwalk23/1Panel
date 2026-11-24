@@ -17,7 +17,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/pg [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建 postgresql 数据库 [name]","formatEN":"create postgresql database [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create postgresql database [name]"}
 func (b *BaseApi) CreatePostgresql(c *gin.Context) {
 	var req dto.PostgresqlDBCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -48,7 +48,7 @@ func (b *BaseApi) CreatePostgresql(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/pg/bind [post]
-// @x-panel-log {"bodyKeys":["name", "username"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"绑定 postgresql 数据库 [name] 用户 [username]","formatEN":"bind postgresql database [name] user [username]"}
+// @x-panel-log {"bodyKeys":["name", "username"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"bind postgresql database [name] user [username]"}
 func (b *BaseApi) BindPostgresqlUser(c *gin.Context) {
 	var req dto.PostgresqlBindUser
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -70,7 +70,7 @@ func (b *BaseApi) BindPostgresqlUser(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/pg/description [post]
-// @x-panel-log {"bodyKeys":["id","description"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"database_postgresqls","output_column":"name","output_value":"name"}],"formatZH":"postgresql 数据库 [name] 描述信息修改 [description]","formatEN":"The description of the postgresql database [name] is modified => [description]"}
+// @x-panel-log {"bodyKeys":["id","description"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"database_postgresqls","output_column":"name","output_value":"name"}],"formatEN":"The description of the postgresql database [name] is modified => [description]"}
 func (b *BaseApi) UpdatePostgresqlDescription(c *gin.Context) {
 	var req dto.UpdateDescription
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -92,7 +92,7 @@ func (b *BaseApi) UpdatePostgresqlDescription(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/pg/privileges [post]
-// @x-panel-log {"bodyKeys":["database", "username"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新数据库 [database] 用户 [username] 权限","formatEN":"Update [username] privileges of database [database]"}
+// @x-panel-log {"bodyKeys":["database", "username"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Update [username] privileges of database [database]"}
 func (b *BaseApi) ChangePostgresqlPrivileges(c *gin.Context) {
 	var req dto.PostgresqlPrivileges
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -114,7 +114,7 @@ func (b *BaseApi) ChangePostgresqlPrivileges(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/pg/password [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"database_postgresqls","output_column":"name","output_value":"name"}],"formatZH":"更新数据库 [name] 密码","formatEN":"Update database [name] password"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"database_postgresqls","output_column":"name","output_value":"name"}],"formatEN":"Update database [name] password"}
 func (b *BaseApi) ChangePostgresqlPassword(c *gin.Context) {
 	var req dto.ChangeDBInfo
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -217,7 +217,7 @@ func (b *BaseApi) DeleteCheckPostgresql(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/pg/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"database_postgresqls","output_column":"name","output_value":"name"}],"formatZH":"删除 postgresql 数据库 [name]","formatEN":"delete postgresql database [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"database_postgresqls","output_column":"name","output_value":"name"}],"formatEN":"delete postgresql database [name]"}
 func (b *BaseApi) DeletePostgresql(c *gin.Context) {
 	var req dto.PostgresqlDBDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

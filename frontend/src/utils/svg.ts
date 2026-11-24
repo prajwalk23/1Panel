@@ -1,5 +1,5 @@
 /**
- * @description 自定义 loading svg
+ * @description Custom loading svg
  */
 export const loadingSvg = `
 <path class="path" d="

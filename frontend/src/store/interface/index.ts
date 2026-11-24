@@ -28,7 +28,7 @@ export interface Watermark {
 }
 
 export interface GlobalState {
-    language: string; // zh | en | tw
+    language: string; // en
     device: DeviceType;
     themeConfig: ThemeConfigProp;
     // ui

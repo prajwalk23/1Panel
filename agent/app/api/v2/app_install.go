@@ -152,7 +152,7 @@ func (b *BaseApi) DeleteCheck(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/installed/sync [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"同步已安装应用列表","formatEN":"Sync the list of installed apps"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Sync the list of installed apps"}
 func (b *BaseApi) SyncInstalled(c *gin.Context) {
 	if err := appInstallService.SyncAll(false); err != nil {
 		helper.InternalServer(c, err)
@@ -169,7 +169,7 @@ func (b *BaseApi) SyncInstalled(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/installed/op [post]
-// @x-panel-log {"bodyKeys":["installId","operate"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"installId","isList":false,"db":"app_installs","output_column":"app_id","output_value":"appId"},{"input_column":"id","input_value":"installId","isList":false,"db":"app_installs","output_column":"name","output_value":"appName"},{"input_column":"id","input_value":"appId","isList":false,"db":"apps","output_column":"key","output_value":"appKey"}],"formatZH":"[operate] 应用 [appKey][appName]","formatEN":"[operate] App [appKey][appName]"}
+// @x-panel-log {"bodyKeys":["installId","operate"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"installId","isList":false,"db":"app_installs","output_column":"app_id","output_value":"appId"},{"input_column":"id","input_value":"installId","isList":false,"db":"app_installs","output_column":"name","output_value":"appName"},{"input_column":"id","input_value":"appId","isList":false,"db":"apps","output_column":"key","output_value":"appKey"}],"formatEN":"[operate] App [appKey][appName]"}
 func (b *BaseApi) OperateInstalled(c *gin.Context) {
 	var req request.AppInstalledOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -229,7 +229,7 @@ func (b *BaseApi) GetUpdateVersions(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/installed/port/change [post]
-// @x-panel-log {"bodyKeys":["key","name","port"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"应用端口修改 [key]-[name] => [port]","formatEN":"Application port update [key]-[name] => [port]"}
+// @x-panel-log {"bodyKeys":["key","name","port"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Application port update [key]-[name] => [port]"}
 func (b *BaseApi) ChangeAppPort(c *gin.Context) {
 	var req request.PortUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -294,7 +294,7 @@ func (b *BaseApi) GetParams(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/installed/params/update [post]
-// @x-panel-log {"bodyKeys":["installId"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"installId","isList":false,"db":"app_installs","output_column":"name","output_value":"name"}],"formatZH":"应用参数修改 [name]","formatEN":"Application param update [name]"}
+// @x-panel-log {"bodyKeys":["installId"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"installId","isList":false,"db":"app_installs","output_column":"name","output_value":"name"}],"formatEN":"Application param update [name]"}
 func (b *BaseApi) UpdateInstalled(c *gin.Context) {
 	var req request.AppInstalledUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -315,7 +315,7 @@ func (b *BaseApi) UpdateInstalled(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/installed/config/update [post]
-// @x-panel-log {"bodyKeys":["installID","webUI"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"应用配置更新 [installID]","formatEN":"Application config update [installID]"}
+// @x-panel-log {"bodyKeys":["installID","webUI"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Application config update [installID]"}
 func (b *BaseApi) UpdateAppConfig(c *gin.Context) {
 	var req request.AppConfigUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -358,7 +358,7 @@ func (b *BaseApi) GetAppInstallInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /apps/installed/sort/update [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新已安装应用排序","formatEN":"update installed app sort"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update installed app sort"}
 func (b *BaseApi) UpdateAppInstallSort(c *gin.Context) {
 	var req request.AppInstallSort
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

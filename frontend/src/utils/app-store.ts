@@ -1,7 +1,7 @@
 import i18n from '@/lang';
 
 export function getLanguage() {
-    return localStorage.getItem('lang') || 'zh';
+    return 'en';
 }
 
 function normalizeAppLocaleKey(language: string) {
@@ -15,19 +15,16 @@ function normalizeAppLocaleKey(language: string) {
 }
 
 export function getLabel(row: any) {
-    const language = localStorage.getItem('lang') || 'zh';
+    const language = 'en';
     const lang = normalizeAppLocaleKey(language);
     if (row.label && typeof row.label[lang] === 'string' && row.label[lang] !== '') {
         return row.label[lang];
-    }
-    if (language == 'zh' || language == 'tw') {
-        return row.labelZh;
     }
     return row.labelEn;
 }
 
 export function getDescription(row: any) {
-    const language = localStorage.getItem('lang') || 'zh';
+    const language = 'en';
     const lang = normalizeAppLocaleKey(language);
     if (row.description && typeof row.description[lang] === 'string' && row.description[lang] !== '') {
         return row.description[lang];

@@ -46,7 +46,7 @@ func (b *BaseApi) PageWebsiteCA(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ca [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建网站 ca [name]","formatEN":"Create website ca [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Create website ca [name]"}
 func (b *BaseApi) CreateWebsiteCA(c *gin.Context) {
 	var req request.WebsiteCACreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -89,7 +89,7 @@ func (b *BaseApi) GetWebsiteCA(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ca/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_cas","output_column":"name","output_value":"name"}],"formatZH":"删除网站 ca [name]","formatEN":"Delete website ca [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_cas","output_column":"name","output_value":"name"}],"formatEN":"Delete website ca [name]"}
 func (b *BaseApi) DeleteWebsiteCA(c *gin.Context) {
 	var req request.WebsiteCommonReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -110,7 +110,7 @@ func (b *BaseApi) DeleteWebsiteCA(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ca/obtain [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_cas","output_column":"name","output_value":"name"}],"formatZH":"自签 SSL 证书 [name]","formatEN":"Obtain SSL [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_cas","output_column":"name","output_value":"name"}],"formatEN":"Obtain SSL [name]"}
 func (b *BaseApi) ObtainWebsiteCA(c *gin.Context) {
 	var req request.WebsiteCAObtain
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -132,7 +132,7 @@ func (b *BaseApi) ObtainWebsiteCA(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ca/renew [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_cas","output_column":"name","output_value":"name"}],"formatZH":"自签 SSL 证书 [name]","formatEN":"Obtain SSL [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_cas","output_column":"name","output_value":"name"}],"formatEN":"Obtain SSL [name]"}
 func (b *BaseApi) RenewWebsiteCA(c *gin.Context) {
 	var req request.WebsiteCARenew
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -158,7 +158,7 @@ func (b *BaseApi) RenewWebsiteCA(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router  /websites/ca/download [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_cas","output_column":"name","output_value":"name"}],"formatZH":"下载 CA 证书文件 [name]","formatEN":"download ca file [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_cas","output_column":"name","output_value":"name"}],"formatEN":"download ca file [name]"}
 func (b *BaseApi) DownloadCAFile(c *gin.Context) {
 	var req request.WebsiteResourceReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

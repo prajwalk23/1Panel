@@ -54,7 +54,6 @@ const initializing = ref(true);
 const errorMessage = ref('');
 const shareInfo = ref<File.FileSharePublicInfo | null>(null);
 const shareLocale = ref('en');
-const supportedLocales = ['zh', 'zh-Hant', 'en', 'pt-BR', 'ja', 'ru', 'ms', 'ko', 'tr', 'es-ES', 'fa', 'lo'];
 
 const code = computed(() => String(route.params.code || '').trim());
 const currentNode = computed(() => String(route.query.operateNode || 'local'));
@@ -94,30 +93,8 @@ const applySharedPassword = () => {
     );
 };
 
-const resolveBrowserLocale = () => {
-    if (typeof navigator === 'undefined') {
-        return 'en';
-    }
-    const browserLocale = String(navigator.language || '').trim();
-    const normalized = browserLocale.toLowerCase();
-    if (normalized.startsWith('zh-hant') || normalized.startsWith('zh-tw') || normalized.startsWith('zh-hk')) {
-        return 'zh-Hant';
-    }
-    if (normalized.startsWith('zh')) {
-        return 'zh';
-    }
-    const exactMatch = supportedLocales.find((locale) => locale.toLowerCase() === normalized);
-    if (exactMatch) {
-        return exactMatch;
-    }
-    const prefix = normalized.split('-')[0];
-    const prefixMatch = supportedLocales.find((locale) => locale.toLowerCase().split('-')[0] === prefix);
-    return prefixMatch || 'en';
-};
-
 const applyPublicLocale = async () => {
-    const locale = resolveBrowserLocale();
-    const loaded = await loadLocaleMessages(locale);
+    const loaded = await loadLocaleMessages('en');
     i18n.global.locale.value = loaded;
     shareLocale.value = loaded;
 };

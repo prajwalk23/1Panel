@@ -2,24 +2,24 @@
 
 root = true
 
-# 表示所有文件适用
+# Applies to all files
 [*]
-# 设置文件字符集为 utf-8
+# Use utf-8 charset
 charset = utf-8
-# 控制换行类型(lf | cr | crlf)
+# Line ending type (lf | cr | crlf)
 end_of_line = lf
-# 始终在文件末尾插入一个新行
+# Always insert a final newline
 insert_final_newline = true
-# 缩进风格（tab | space）
+# Indent style (tab | space)
 indent_style = space
-# 缩进大小
+# Indent size
 indent_size = 4
-# 最大行长度
+# Max line length
 max_line_length = 120
 
-# 表示仅 md 文件适用以下规则
+# Rules below apply to md files only
 [*.md]
-# 关闭最大行长度限制
+# Disable max line length
 max_line_length = off
-# 关闭末尾空格修剪
+# Disable trailing whitespace trimming
 trim_trailing_whitespace = false

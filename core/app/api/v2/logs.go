@@ -66,7 +66,7 @@ func (b *BaseApi) GetOperationLogs(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/logs/clean [post]
-// @x-panel-log {"bodyKeys":["logType"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"清空 [logType] 日志信息","formatEN":"Clean the [logType] log information"}
+// @x-panel-log {"bodyKeys":["logType"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Clean the [logType] log information"}
 func (b *BaseApi) CleanLogs(c *gin.Context) {
 	var req dto.CleanLog
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

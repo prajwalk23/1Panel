@@ -1646,7 +1646,7 @@ func ChangeHSTSConfig(enable bool, includeSubDomains bool, http3Enable bool, web
 				if !ok {
 					return nil
 				}
-				//前置移除HSTS配置
+				// Remove the HSTS config first
 				location.RemoveDirective("add_header", []string{"Strict-Transport-Security", "\"max-age=31536000\""})
 				location.RemoveDirective("add_header", []string{"Strict-Transport-Security", "\"max-age=31536000; includeSubDomains\""})
 				if enable {

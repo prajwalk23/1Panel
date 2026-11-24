@@ -27,7 +27,7 @@ func (b *BaseApi) LoadPanelMemoryLimit(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/memory-limit [post]
-// @x-panel-log {"bodyKeys":["limitMiB"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改面板内存上限 [limitMiB] MiB","formatEN":"update panel memory limit [limitMiB] MiB"}
+// @x-panel-log {"bodyKeys":["limitMiB"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update panel memory limit [limitMiB] MiB"}
 func (b *BaseApi) UpdatePanelMemoryLimit(c *gin.Context) {
 	var req dto.PanelMemoryLimitUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

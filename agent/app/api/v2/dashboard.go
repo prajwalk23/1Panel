@@ -69,7 +69,7 @@ func (b *BaseApi) LoadAppLauncherOption(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /dashboard/app/launcher/show [post]
-// @x-panel-log {"bodyKeys":["key", "value"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"首页应用 [key] => 显示：[value]","formatEN":"app launcher [key] => show: [value]"}
+// @x-panel-log {"bodyKeys":["key", "value"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"app launcher [key] => show: [value]"}
 func (b *BaseApi) UpdateAppLauncher(c *gin.Context) {
 	var req dto.SettingUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -101,7 +101,7 @@ func (b *BaseApi) LoadQuickOption(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /dashboard/quick/change [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"切换快速跳转","formatEN":"change quick jump"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"change quick jump"}
 func (b *BaseApi) UpdateQuickJump(c *gin.Context) {
 	var req dto.ChangeQuicks
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

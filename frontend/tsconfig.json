@@ -22,12 +22,12 @@
         "resolveJsonModule": true,
         "esModuleInterop": true,
         "lib": ["esnext", "dom"],
-        // 模块名到基于 tsconfig 所在目录的路径映射列表。
+        // Map of module names to paths relative to the tsconfig directory.
         "paths": {
             "@": ["./src"],
             "@/*": ["./src/*"]
         },
-        // 跳过库检查，解决打包失败
+        // Skip library checks to avoid build failures
         "skipLibCheck": true
     },
     "include": [

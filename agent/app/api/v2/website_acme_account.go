@@ -39,7 +39,7 @@ func (b *BaseApi) PageWebsiteAcmeAccount(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/acme [post]
-// @x-panel-log {"bodyKeys":["email"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建网站 acme [email]","formatEN":"Create website acme [email]"}
+// @x-panel-log {"bodyKeys":["email"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Create website acme [email]"}
 func (b *BaseApi) CreateWebsiteAcmeAccount(c *gin.Context) {
 	var req request.WebsiteAcmeAccountCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -61,7 +61,7 @@ func (b *BaseApi) CreateWebsiteAcmeAccount(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/acme/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_acme_accounts","output_column":"email","output_value":"email"}],"formatZH":"删除网站 acme [email]","formatEN":"Delete website acme [email]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_acme_accounts","output_column":"email","output_value":"email"}],"formatEN":"Delete website acme [email]"}
 func (b *BaseApi) DeleteWebsiteAcmeAccount(c *gin.Context) {
 	var req request.WebsiteResourceReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -82,7 +82,7 @@ func (b *BaseApi) DeleteWebsiteAcmeAccount(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/acme/update [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_acme_accounts","output_column":"email","output_value":"email"}],"formatZH":"更新 acme [email]","formatEN":"Update acme [email]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_acme_accounts","output_column":"email","output_value":"email"}],"formatEN":"Update acme [email]"}
 func (b *BaseApi) UpdateWebsiteAcmeAccount(c *gin.Context) {
 	var req request.WebsiteAcmeAccountUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

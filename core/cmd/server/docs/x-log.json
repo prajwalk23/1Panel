@@ -5,7 +5,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 Ollama 绑定域名 [domain]",
 		"formatEN": "update Ollama bind domain [domain]"
 	},
 	"/xpack/model/downloader/featured/sync/status": {
@@ -14,7 +13,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新推荐模型自动同步 [value]",
 		"formatEN": "update featured model automatic synchronization [value]"
 	},
 	"/xpack/model/downloader/hf/download": {
@@ -24,7 +22,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "下载 Hugging Face 模型 [repoID]",
 		"formatEN": "download Hugging Face model [repoID]"
 	},
 	"/xpack/model/downloader/local/delete": {
@@ -33,7 +30,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除本地模型 [name]",
 		"formatEN": "delete local model [name]"
 	},
 	"/xpack/model/downloader/modelscope/download": {
@@ -43,7 +39,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "下载 ModelScope 模型 [repoID]",
 		"formatEN": "download ModelScope model [repoID]"
 	},
 	"/xpack/model/downloader/settings": {
@@ -52,7 +47,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新模型下载设置 [modelDir]",
 		"formatEN": "update model downloader settings [modelDir]"
 	},
 	"/xpack/model/downloader/tasks/cancel": {
@@ -70,7 +64,6 @@
 				"output_value": "repoID"
 			}
 		],
-		"formatZH": "取消模型下载任务 [repoID]",
 		"formatEN": "cancel model download task [repoID]"
 	},
 	"/xpack/model/downloader/tasks/remove": {
@@ -88,7 +81,6 @@
 				"output_value": "repoID"
 			}
 		],
-		"formatZH": "移除模型下载任务 [repoID]",
 		"formatEN": "remove model download task [repoID]"
 	},
 	"/xpack/model/downloader/tasks/retry": {
@@ -106,7 +98,6 @@
 				"output_value": "repoID"
 			}
 		],
-		"formatZH": "重试模型下载任务 [repoID]",
 		"formatEN": "retry model download task [repoID]"
 	},
 	"/ai/ollama/close": {
@@ -115,7 +106,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "关闭 Ollama 模型连接 [name]",
 		"formatEN": "close conn for Ollama model [name]"
 	},
 	"/ai/ollama/model": {
@@ -124,7 +114,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加 Ollama 模型 [name]",
 		"formatEN": "add Ollama model [name]"
 	},
 	"/ai/ollama/model/del": {
@@ -142,7 +131,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除 Ollama 模型 [names]",
 		"formatEN": "remove Ollama model [names]"
 	},
 	"/ai/ollama/model/recreate": {
@@ -151,7 +139,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加 Ollama 模型重试 [name]",
 		"formatEN": "re-add Ollama model [name]"
 	},
 	"/alert": {
@@ -160,14 +147,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建告警任务 [title]",
 		"formatEN": "create alert [title]"
 	},
 	"/alert/config/del": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除告警配置 [name]",
 		"formatEN": "delete alert config [name]"
 	},
 	"/alert/config/status": {
@@ -176,7 +161,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新告警配置状态 [name][status]",
 		"formatEN": "update alert config status [name][status]"
 	},
 	"/alert/config/update": {
@@ -185,7 +169,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新告警配置 [displayName]",
 		"formatEN": "update alert config [displayName]"
 	},
 	"/alert/del": {
@@ -194,14 +177,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除告警任务 [id]",
 		"formatEN": "delete alert [id]"
 	},
 	"/alert/logs/clean": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清空告警日志",
 		"formatEN": "clean alert logs"
 	},
 	"/alert/status": {
@@ -211,7 +192,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新告警任务 [id] 状态 [status]",
 		"formatEN": "update alert [id] status [status]"
 	},
 	"/alert/update": {
@@ -220,14 +200,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新告警任务 [title]",
 		"formatEN": "update alert [title]"
 	},
 	"/apps/ignored/cancel": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "取消忽略应用升级",
 		"formatEN": "Cancel ignore application upgrade"
 	},
 	"/apps/install": {
@@ -236,7 +214,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "安装应用 [name]",
 		"formatEN": "Install app [name]"
 	},
 	"/apps/installed/config/update": {
@@ -246,14 +223,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "应用配置更新 [installID]",
 		"formatEN": "Application config update [installID]"
 	},
 	"/apps/installed/ignore": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "忽略应用升级",
 		"formatEN": "Ignore application upgrade"
 	},
 	"/apps/installed/op": {
@@ -288,7 +263,6 @@
 				"output_value": "appKey"
 			}
 		],
-		"formatZH": "[operate] 应用 [appKey][appName]",
 		"formatEN": "[operate] App [appKey][appName]"
 	},
 	"/apps/installed/params/update": {
@@ -306,7 +280,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "应用参数修改 [name]",
 		"formatEN": "Application param update [name]"
 	},
 	"/apps/installed/port/change": {
@@ -317,35 +290,30 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "应用端口修改 [key]-[name] =\u003e [port]",
 		"formatEN": "Application port update [key]-[name] =\u003e [port]"
 	},
 	"/apps/installed/sort/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新已安装应用排序",
 		"formatEN": "update installed app sort"
 	},
 	"/apps/installed/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步已安装应用列表",
 		"formatEN": "Sync the list of installed apps"
 	},
 	"/apps/sync/local": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "应用商店同步",
 		"formatEN": "App store synchronization"
 	},
 	"/apps/sync/remote": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "应用商店同步",
 		"formatEN": "App store synchronization"
 	},
 	"/backups": {
@@ -354,7 +322,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建备份账号 [type]",
 		"formatEN": "create backup account [type]"
 	},
 	"/backups/backup": {
@@ -365,7 +332,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "备份 [type] 数据 [name][detailName]",
 		"formatEN": "backup [type] data [name][detailName]"
 	},
 	"/backups/del": {
@@ -383,7 +349,6 @@
 				"output_value": "types"
 			}
 		],
-		"formatZH": "删除备份账号 [types]",
 		"formatEN": "delete backup account [types]"
 	},
 	"/backups/record/del": {
@@ -401,7 +366,6 @@
 				"output_value": "files"
 			}
 		],
-		"formatZH": "删除备份记录 [files]",
 		"formatEN": "delete backup records [files]"
 	},
 	"/backups/record/download": {
@@ -411,7 +375,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "下载备份记录 [source][fileName]",
 		"formatEN": "download backup records [source][fileName]"
 	},
 	"/backups/recover": {
@@ -423,7 +386,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "从 [file] 恢复 [type] 数据 [name][detailName]",
 		"formatEN": "recover [type] data [name][detailName] from [file]"
 	},
 	"/backups/recover/byupload": {
@@ -435,7 +397,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "从 [file] 恢复 [type] 数据 [name][detailName]",
 		"formatEN": "recover [type] data [name][detailName] from [file]"
 	},
 	"/backups/update": {
@@ -444,7 +405,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新备份账号 [type]",
 		"formatEN": "update backup account [type]"
 	},
 	"/backups/upload": {
@@ -453,7 +413,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "上传备份文件 [filePath]",
 		"formatEN": "upload backup file [filePath]"
 	},
 	"/containers": {
@@ -463,7 +422,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建容器 [name][image]",
 		"formatEN": "create container [name][image]"
 	},
 	"/containers/clean/log": {
@@ -472,7 +430,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清理容器 [name] 日志",
 		"formatEN": "clean container [name] logs"
 	},
 	"/containers/compose": {
@@ -481,7 +438,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 compose [name]",
 		"formatEN": "create compose [name]"
 	},
 	"/containers/compose/clean/log": {
@@ -490,7 +446,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清理容器编排 [name] 日志",
 		"formatEN": "clean compose [name] logs"
 	},
 	"/containers/compose/operate": {
@@ -500,7 +455,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "compose [operation] [name]",
 		"formatEN": "compose [operation] [name]"
 	},
 	"/containers/compose/test": {
@@ -509,7 +463,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "检测 compose [name] 格式",
 		"formatEN": "check compose [name]"
 	},
 	"/containers/compose/update": {
@@ -518,7 +471,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 compose [name]",
 		"formatEN": "update compose information [name]"
 	},
 	"/containers/daemonjson/update": {
@@ -528,14 +480,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新配置 [key]",
 		"formatEN": "Updated configuration [key]"
 	},
 	"/containers/daemonjson/update/byfile": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新配置文件",
 		"formatEN": "Updated configuration file"
 	},
 	"/containers/docker/operate": {
@@ -544,7 +494,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "docker 服务 [operation]",
 		"formatEN": "[operation] docker service"
 	},
 	"/containers/files/del": {
@@ -554,7 +503,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除容器 [containerID] 文件 [paths]",
 		"formatEN": "Delete files [paths] in container [containerID]"
 	},
 	"/containers/files/download": {
@@ -564,7 +512,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "下载容器 [containerID] 文件 [path]",
 		"formatEN": "Download file [path] from container [containerID]"
 	},
 	"/containers/files/upload": {
@@ -574,7 +521,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "容器 [containerID] 上传文件到 [path]",
 		"formatEN": "Upload file to [path] in container [containerID]"
 	},
 	"/containers/image/build": {
@@ -583,7 +529,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "构建镜像 [name]",
 		"formatEN": "build image [name]"
 	},
 	"/containers/image/load": {
@@ -592,7 +537,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "从 [path] 加载镜像",
 		"formatEN": "load image from [path]"
 	},
 	"/containers/image/pull": {
@@ -611,7 +555,6 @@
 				"output_value": "reponame"
 			}
 		],
-		"formatZH": "镜像拉取 [reponame][imageName]",
 		"formatEN": "image pull [reponame][imageName]"
 	},
 	"/containers/image/push": {
@@ -631,7 +574,6 @@
 				"output_value": "reponame"
 			}
 		],
-		"formatZH": "[tagName] 推送到 [reponame][name]",
 		"formatEN": "push [tagName] to [reponame][name]"
 	},
 	"/containers/image/remove": {
@@ -640,7 +582,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "移除镜像 [names]",
 		"formatEN": "remove image [names]"
 	},
 	"/containers/image/save": {
@@ -651,7 +592,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "保留 [tagName] 为 [path]/[name]",
 		"formatEN": "save [tagName] as [path]/[name]"
 	},
 	"/containers/image/tag": {
@@ -670,21 +610,18 @@
 				"output_value": "reponame"
 			}
 		],
-		"formatZH": "tag 镜像 [reponame][targetName]",
 		"formatEN": "tag image [reponame][targetName]"
 	},
 	"/containers/ipv6option/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 ipv6 配置",
 		"formatEN": "Updated the ipv6 option"
 	},
 	"/containers/logoption/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新日志配置",
 		"formatEN": "Updated the log option"
 	},
 	"/containers/network": {
@@ -693,7 +630,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建容器网络 name",
 		"formatEN": "create container network [name]"
 	},
 	"/containers/network/del": {
@@ -702,7 +638,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除容器网络 [names]",
 		"formatEN": "delete container network [names]"
 	},
 	"/containers/operate": {
@@ -712,7 +647,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "容器 [names] 执行 [operation]",
 		"formatEN": "container [operation] [names]"
 	},
 	"/containers/prune": {
@@ -721,7 +655,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清理容器 [pruneType]",
 		"formatEN": "clean container [pruneType]"
 	},
 	"/containers/rename": {
@@ -731,7 +664,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "容器重命名 [name] =\u003e [newName]",
 		"formatEN": "rename container [name] =\u003e [newName]"
 	},
 	"/containers/repo": {
@@ -740,7 +672,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建镜像仓库 [name]",
 		"formatEN": "create image repo [name]"
 	},
 	"/containers/repo/del": {
@@ -758,7 +689,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除镜像仓库 [name]",
 		"formatEN": "delete image repo [name]"
 	},
 	"/containers/repo/update": {
@@ -776,7 +706,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新镜像仓库 [name]",
 		"formatEN": "update image repo information [name]"
 	},
 	"/containers/template": {
@@ -785,14 +714,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 compose 模版 [name]",
 		"formatEN": "create compose template [name]"
 	},
 	"/containers/template/batch": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "批量导入编排模版",
 		"formatEN": "batch import compose templates"
 	},
 	"/containers/template/del": {
@@ -810,7 +737,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除 compose 模版 [names]",
 		"formatEN": "delete compose template [names]"
 	},
 	"/containers/template/update": {
@@ -828,7 +754,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新 compose 模版 [name]",
 		"formatEN": "update compose template information [name]"
 	},
 	"/containers/update": {
@@ -838,7 +763,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新容器 [name][image]",
 		"formatEN": "update container [name][image]"
 	},
 	"/containers/upgrade": {
@@ -848,7 +772,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新容器镜像 [names][image]",
 		"formatEN": "upgrade container image [names][image]"
 	},
 	"/containers/volume": {
@@ -857,7 +780,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建容器存储卷 [name]",
 		"formatEN": "create container volume [name]"
 	},
 	"/containers/volume/del": {
@@ -866,14 +788,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除容器存储卷 [names]",
 		"formatEN": "delete container volume [names]"
 	},
 	"/core/auth/api/generate": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "生成 API 接口密钥",
 		"formatEN": "generate api key"
 	},
 	"/core/auth/api/update": {
@@ -883,28 +803,24 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 API 接口配置 =\u003e IP 白名单: [ipWhiteList], API 可信代理: [apiTrustedProxies]",
 		"formatEN": "update api config =\u003e IP Allowlist: [ipWhiteList], API Trusted Proxies: [apiTrustedProxies]"
 	},
 	"/core/auth/expired/reset": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重置过期密码",
 		"formatEN": "reset an expired Password"
 	},
 	"/core/auth/mfa/bind": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "mfa 绑定",
 		"formatEN": "bind mfa"
 	},
 	"/core/auth/mfa/close": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "mfa 关闭",
 		"formatEN": "close mfa"
 	},
 	"/core/backups": {
@@ -913,7 +829,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建备份账号 [type]",
 		"formatEN": "create backup account [type]"
 	},
 	"/core/backups/del": {
@@ -922,7 +837,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除备份账号 [name]",
 		"formatEN": "delete backup account [name]"
 	},
 	"/core/backups/update": {
@@ -931,7 +845,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新备份账号 [type]",
 		"formatEN": "update backup account [type]"
 	},
 	"/core/commands": {
@@ -941,7 +854,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建快捷命令 [name][command]",
 		"formatEN": "create quick command [name][command]"
 	},
 	"/core/commands/del": {
@@ -959,21 +871,18 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除快捷命令 [names]",
 		"formatEN": "delete quick command [names]"
 	},
 	"/core/commands/export": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导出快速命令",
 		"formatEN": "export quick commands"
 	},
 	"/core/commands/import": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导入快速命令",
 		"formatEN": "import quick commands"
 	},
 	"/core/commands/update": {
@@ -982,14 +891,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新快捷命令 [name]",
 		"formatEN": "update quick command [name]"
 	},
 	"/core/commands/upload": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "上传快速命令文件",
 		"formatEN": "upload quick commands with csv"
 	},
 	"/core/enterprise/agents/batch-install": {
@@ -1000,7 +907,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "批量安装智能体 [agentType] 到节点 [nodeIDs]",
 		"formatEN": "batch install agent [agentType] to nodes [nodeIDs]"
 	},
 	"/core/enterprise/agents/batch-operate": {
@@ -1011,7 +917,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "批量操作智能体 [agentType] [operate]",
 		"formatEN": "batch operate agent [agentType] [operate]"
 	},
 	"/core/enterprise/agents/batch-skill-install": {
@@ -1022,7 +927,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "批量安装智能体技能 [skillID] 到 [agentType]",
 		"formatEN": "batch install agent skill [skillID] to [agentType]"
 	},
 	"/core/enterprise/agents/batch-upgrade": {
@@ -1033,7 +937,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "批量升级智能体 [agentType] 到 [targetVersion]",
 		"formatEN": "batch upgrade agent [agentType] to [targetVersion]"
 	},
 	"/core/enterprise/ai-benchmark/tasks": {
@@ -1042,14 +945,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 AI 基准测试 [model]",
 		"formatEN": "create AI benchmark [model]"
 	},
 	"/core/enterprise/ai-benchmark/tasks/:id/cancel": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "取消 AI 基准测试",
 		"formatEN": "cancel AI benchmark"
 	},
 	"/core/enterprise/ai-benchmark/tasks/delete": {
@@ -1058,7 +959,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 AI 基准测试 [id]",
 		"formatEN": "delete AI benchmark [id]"
 	},
 	"/core/enterprise/ai-proxy/api-keys/create": {
@@ -1076,35 +976,30 @@
 				"output_value": "groupName"
 			}
 		],
-		"formatZH": "创建 AI 网关 API Key 分组 [groupName]",
 		"formatEN": "create AI proxy API key group [groupName]"
 	},
 	"/core/enterprise/ai-proxy/api-keys/delete": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 AI 网关 API Key",
 		"formatEN": "delete AI proxy API key"
 	},
 	"/core/enterprise/ai-proxy/api-keys/reactivate": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重新激活 AI 网关 API Key",
 		"formatEN": "reactivate AI proxy API key"
 	},
 	"/core/enterprise/ai-proxy/api-keys/reveal": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "查看 AI 网关 API Key",
 		"formatEN": "reveal AI proxy API key"
 	},
 	"/core/enterprise/ai-proxy/api-keys/token/reset": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重置 AI 网关 API Key Token",
 		"formatEN": "reset AI proxy API key token"
 	},
 	"/core/enterprise/ai-proxy/api-keys/update": {
@@ -1122,21 +1017,18 @@
 				"output_value": "groupName"
 			}
 		],
-		"formatZH": "更新 AI 网关 API Key 分组 [groupName]",
 		"formatEN": "update AI proxy API key group [groupName]"
 	},
 	"/core/enterprise/ai-proxy/backends/delete": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 AI 网关后端",
 		"formatEN": "delete AI proxy backend"
 	},
 	"/core/enterprise/ai-proxy/backends/import": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导入 AI 网关后端账号",
 		"formatEN": "import AI proxy backend account"
 	},
 	"/core/enterprise/ai-proxy/backends/status": {
@@ -1145,14 +1037,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关后端状态 [enabled]",
 		"formatEN": "update AI proxy backend status [enabled]"
 	},
 	"/core/enterprise/ai-proxy/backends/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关后端",
 		"formatEN": "update AI proxy backend"
 	},
 	"/core/enterprise/ai-proxy/content/groups/create": {
@@ -1161,7 +1051,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 AI 网关敏感词分组 [name]",
 		"formatEN": "create AI proxy sensitive group [name]"
 	},
 	"/core/enterprise/ai-proxy/content/groups/delete": {
@@ -1179,7 +1068,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除 AI 网关敏感词分组 [name]",
 		"formatEN": "delete AI proxy sensitive group [name]"
 	},
 	"/core/enterprise/ai-proxy/content/groups/update": {
@@ -1188,7 +1076,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关敏感词分组 [name]",
 		"formatEN": "update AI proxy sensitive group [name]"
 	},
 	"/core/enterprise/ai-proxy/content/settings/update": {
@@ -1197,7 +1084,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关内容审查设置 [enabled]",
 		"formatEN": "update AI proxy content audit settings [enabled]"
 	},
 	"/core/enterprise/ai-proxy/content/words/create": {
@@ -1215,7 +1101,6 @@
 				"output_value": "groupName"
 			}
 		],
-		"formatZH": "创建 AI 网关敏感词，分组 [groupName]",
 		"formatEN": "create AI proxy sensitive word, group [groupName]"
 	},
 	"/core/enterprise/ai-proxy/content/words/delete": {
@@ -1233,7 +1118,6 @@
 				"output_value": "word"
 			}
 		],
-		"formatZH": "删除 AI 网关敏感词 [word]",
 		"formatEN": "delete AI proxy sensitive word [word]"
 	},
 	"/core/enterprise/ai-proxy/content/words/import": {
@@ -1251,7 +1135,6 @@
 				"output_value": "groupName"
 			}
 		],
-		"formatZH": "导入 AI 网关敏感词，分组 [groupName]",
 		"formatEN": "import AI proxy sensitive words, group [groupName]"
 	},
 	"/core/enterprise/ai-proxy/content/words/update": {
@@ -1278,7 +1161,6 @@
 				"output_value": "groupName"
 			}
 		],
-		"formatZH": "更新 AI 网关敏感词 [word] 分组 [groupName]",
 		"formatEN": "update AI proxy sensitive word [word] group [groupName]"
 	},
 	"/core/enterprise/ai-proxy/groups/create": {
@@ -1287,7 +1169,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 AI 网关分组 [name]",
 		"formatEN": "create AI proxy group [name]"
 	},
 	"/core/enterprise/ai-proxy/groups/delete": {
@@ -1305,7 +1186,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除 AI 网关分组 [name]",
 		"formatEN": "delete AI proxy group [name]"
 	},
 	"/core/enterprise/ai-proxy/groups/update": {
@@ -1314,7 +1194,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关分组 [name]",
 		"formatEN": "update AI proxy group [name]"
 	},
 	"/core/enterprise/ai-proxy/model-groups/create": {
@@ -1323,7 +1202,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 AI 网关模型组 [name]",
 		"formatEN": "create AI proxy model group [name]"
 	},
 	"/core/enterprise/ai-proxy/model-groups/delete": {
@@ -1332,7 +1210,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 AI 网关模型组 [id]",
 		"formatEN": "delete AI proxy model group [id]"
 	},
 	"/core/enterprise/ai-proxy/model-groups/update": {
@@ -1341,7 +1218,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关模型组 [name]",
 		"formatEN": "update AI proxy model group [name]"
 	},
 	"/core/enterprise/ai-proxy/service/operate": {
@@ -1350,28 +1226,24 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "操作 AI 网关服务 [operate]",
 		"formatEN": "operate AI proxy service [operate]"
 	},
 	"/core/enterprise/ai-proxy/settings/logs/clear": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清空 AI 网关日志",
 		"formatEN": "clear AI proxy logs"
 	},
 	"/core/enterprise/ai-proxy/settings/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关设置",
 		"formatEN": "update AI proxy settings"
 	},
 	"/core/enterprise/ai-proxy/smart-route/policy/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关智能路由策略",
 		"formatEN": "update AI proxy smart route policy"
 	},
 	"/core/enterprise/ai-proxy/smart-route/samples/create": {
@@ -1381,7 +1253,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 AI 网关智能路由样本 [type] [label]",
 		"formatEN": "create AI proxy smart route sample [type] [label]"
 	},
 	"/core/enterprise/ai-proxy/smart-route/samples/delete": {
@@ -1390,14 +1261,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 AI 网关智能路由样本 [id]",
 		"formatEN": "delete AI proxy smart route sample [id]"
 	},
 	"/core/enterprise/ai-proxy/smart-route/samples/rebuild": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重建 AI 网关智能路由样本向量",
 		"formatEN": "rebuild AI proxy smart route sample vectors"
 	},
 	"/core/enterprise/ai-proxy/smart-route/samples/update": {
@@ -1408,91 +1277,78 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 AI 网关智能路由样本 [id] [type] [label]",
 		"formatEN": "update AI proxy smart route sample [id] [type] [label]"
 	},
 	"/core/enterprise/auth-sources/ldap/setting": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 LDAP 认证设置",
 		"formatEN": "update LDAP authentication settings"
 	},
 	"/core/enterprise/auth-sources/ldap/sync/run": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "手动同步 LDAP 用户",
 		"formatEN": "manually synchronize LDAP users"
 	},
 	"/core/enterprise/auth-sources/ldap/sync/setting": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 LDAP 同步设置",
 		"formatEN": "update LDAP synchronization settings"
 	},
 	"/core/enterprise/auth-sources/ldap/test-connection": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "测试 LDAP 连接",
 		"formatEN": "test LDAP connection"
 	},
 	"/core/enterprise/auth-sources/ldap/test-login": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "测试 LDAP 用户登录",
 		"formatEN": "test LDAP user login"
 	},
 	"/core/enterprise/auth-sources/ldap/users/import": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导入 LDAP 用户",
 		"formatEN": "import LDAP users"
 	},
 	"/core/enterprise/auth-sources/oidc/setting": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 OIDC 认证设置",
 		"formatEN": "update OIDC authentication settings"
 	},
 	"/core/enterprise/auth-sources/oidc/test-configuration": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "测试 OIDC 连接",
 		"formatEN": "test OIDC connection"
 	},
 	"/core/enterprise/auth-sources/oidc/test-login/begin": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "发起 OIDC 测试登录",
 		"formatEN": "start OIDC test login"
 	},
 	"/core/enterprise/auth-sources/saml2/setting": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 SAML2 认证设置",
 		"formatEN": "update SAML2 authentication settings"
 	},
 	"/core/enterprise/auth-sources/saml2/test-configuration": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "测试 SAML2 连接",
 		"formatEN": "test SAML2 connection"
 	},
 	"/core/enterprise/auth-sources/saml2/test-login/begin": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "发起 SAML2 测试登录",
 		"formatEN": "start SAML2 test login"
 	},
 	"/core/enterprise/licenses/community-restore": {
@@ -1501,14 +1357,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "恢复为社区版",
 		"formatEN": "restore Community Edition"
 	},
 	"/core/enterprise/licenses/upload": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "上传许可证",
 		"formatEN": "upload license"
 	},
 	"/core/enterprise/roles": {
@@ -1517,7 +1371,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建角色 [name]",
 		"formatEN": "create role [name]"
 	},
 	"/core/enterprise/roles/delete": {
@@ -1535,7 +1388,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除角色 [names]",
 		"formatEN": "delete role [names]"
 	},
 	"/core/enterprise/roles/update": {
@@ -1544,21 +1396,18 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新角色 [name]",
 		"formatEN": "update role [name]"
 	},
 	"/core/enterprise/settings/footer/reset": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重置企业版底部链接设置",
 		"formatEN": "reset Enterprise footer link settings"
 	},
 	"/core/enterprise/settings/footer/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新企业版底部链接设置",
 		"formatEN": "update Enterprise footer link settings"
 	},
 	"/core/enterprise/skills-hub/delete": {
@@ -1576,7 +1425,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除 Skills Hub 技能 [name]",
 		"formatEN": "delete Skills Hub skill [name]"
 	},
 	"/core/enterprise/skills-hub/download": {
@@ -1594,7 +1442,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "下载 Skills Hub 技能 [name]",
 		"formatEN": "download Skills Hub skill [name]"
 	},
 	"/core/enterprise/skills-hub/import": {
@@ -1606,7 +1453,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导入 Skills Hub 技能版本 [version]",
 		"formatEN": "import Skills Hub skill version [version]"
 	},
 	"/core/enterprise/skills-hub/status": {
@@ -1625,7 +1471,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新 Skills Hub 技能 [name] 状态 [operate]",
 		"formatEN": "update Skills Hub skill [name] status [operate]"
 	},
 	"/core/enterprise/skills-hub/targets/create": {
@@ -1634,7 +1479,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 Skills Hub 安装目标 [name]",
 		"formatEN": "create Skills Hub install target [name]"
 	},
 	"/core/enterprise/skills-hub/targets/delete": {
@@ -1652,7 +1496,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除 Skills Hub 安装目标 [name]",
 		"formatEN": "delete Skills Hub install target [name]"
 	},
 	"/core/enterprise/skills-hub/targets/install": {
@@ -1679,7 +1522,6 @@
 				"output_value": "targetNames"
 			}
 		],
-		"formatZH": "安装 Skills Hub 技能 [skillName] 到目标 [targetNames]",
 		"formatEN": "install Skills Hub skill [skillName] to targets [targetNames]"
 	},
 	"/core/enterprise/skills-hub/targets/status": {
@@ -1698,7 +1540,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新 Skills Hub 安装目标 [name] 状态 [enabled]",
 		"formatEN": "update Skills Hub install target [name] status [enabled]"
 	},
 	"/core/enterprise/skills-hub/targets/update": {
@@ -1707,7 +1548,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 Skills Hub 安装目标 [name]",
 		"formatEN": "update Skills Hub install target [name]"
 	},
 	"/core/enterprise/skills-hub/upload": {
@@ -1716,7 +1556,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "上传 Skills Hub 技能包版本 [version]",
 		"formatEN": "upload Skills Hub package version [version]"
 	},
 	"/core/enterprise/users": {
@@ -1725,7 +1564,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加用户 [name]",
 		"formatEN": "add user [name]"
 	},
 	"/core/enterprise/users/api/update": {
@@ -1745,7 +1583,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新用户 [name] API 接口配置 =\u003e IP 白名单: [ipWhiteList], API 可信代理: [apiTrustedProxies]",
 		"formatEN": "update user [name] api config =\u003e IP Allowlist: [ipWhiteList], API Trusted Proxies: [apiTrustedProxies]"
 	},
 	"/core/enterprise/users/del": {
@@ -1763,7 +1600,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除用户 [names]",
 		"formatEN": "delete user [names]"
 	},
 	"/core/enterprise/users/info/update": {
@@ -1772,7 +1608,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [name] 认证信息",
 		"formatEN": "update user [name] auth info"
 	},
 	"/core/enterprise/users/update": {
@@ -1781,7 +1616,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [name]",
 		"formatEN": "update user [name]"
 	},
 	"/core/groups": {
@@ -1791,7 +1625,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建组 [name][type]",
 		"formatEN": "create group [name][type]"
 	},
 	"/core/groups/del": {
@@ -1817,7 +1650,6 @@
 				"output_value": "type"
 			}
 		],
-		"formatZH": "删除组 [type][name]",
 		"formatEN": "delete group [type][name]"
 	},
 	"/core/groups/update": {
@@ -1827,56 +1659,48 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新组 [name][type]",
 		"formatEN": "update group [name][type]"
 	},
 	"/core/licenses/bind": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "绑定许可证",
 		"formatEN": "bind license"
 	},
 	"/core/licenses/bind/free": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改许可证免费节点绑定",
 		"formatEN": "change bind of free node for license"
 	},
 	"/core/licenses/del": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除许可证",
 		"formatEN": "delete license"
 	},
 	"/core/licenses/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步许可证信息",
 		"formatEN": "sync license info"
 	},
 	"/core/licenses/unbind": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "解绑许可证",
 		"formatEN": "unbind license"
 	},
 	"/core/licenses/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "替换许可证",
 		"formatEN": "change license"
 	},
 	"/core/licenses/upload": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加许可证",
 		"formatEN": "import license"
 	},
 	"/core/logs/clean": {
@@ -1885,7 +1709,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清空 [logType] 日志信息",
 		"formatEN": "Clean the [logType] log information"
 	},
 	"/core/script": {
@@ -1894,7 +1717,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加脚本库脚本 [name]",
 		"formatEN": "add script [name]"
 	},
 	"/core/script/del": {
@@ -1912,14 +1734,12 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除脚本库脚本 [names]",
 		"formatEN": "delete script [names]"
 	},
 	"/core/script/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步脚本库脚本",
 		"formatEN": "sync scripts"
 	},
 	"/core/script/update": {
@@ -1937,7 +1757,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新脚本库脚本 [name]",
 		"formatEN": "update script [name]"
 	},
 	"/core/settings/bind/update": {
@@ -1947,28 +1766,24 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改系统监听信息 =\u003e ipv6: [ipv6], 监听 IP: [bindAddress]",
-		"formatEN": "update system bind info =\u003e ipv6: [ipv6], 监听 IP: [bindAddress]"
+		"formatEN": "update system bind info =\u003e ipv6: [ipv6], listen IP: [bindAddress]"
 	},
 	"/core/settings/memo": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新仪表盘备忘录",
 		"formatEN": "update dashboard memo"
 	},
 	"/core/settings/menu/default": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "初始化菜单",
 		"formatEN": "Init menu."
 	},
 	"/core/settings/menu/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "隐藏高级功能菜单",
 		"formatEN": "Hide advanced feature menu."
 	},
 	"/core/settings/port/update": {
@@ -1977,7 +1792,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改系统端口 =\u003e [serverPort]",
 		"formatEN": "update system port =\u003e [serverPort]"
 	},
 	"/core/settings/proxy/update": {
@@ -1987,14 +1801,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "服务器代理配置 [proxyPort]:[proxyPort]",
 		"formatEN": "set proxy [proxyPort]:[proxyPort]."
 	},
 	"/core/settings/ssl/reload": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重载系统 SSL",
 		"formatEN": "reload system SSL"
 	},
 	"/core/settings/ssl/update": {
@@ -2003,14 +1815,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改系统 ssl =\u003e [ssl]",
 		"formatEN": "update system ssl =\u003e [ssl]"
 	},
 	"/core/settings/terminal/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改系统终端配置",
 		"formatEN": "update system terminal setting"
 	},
 	"/core/settings/update": {
@@ -2020,7 +1830,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改系统配置 [key] =\u003e [value]",
 		"formatEN": "update system setting [key] =\u003e [value]"
 	},
 	"/core/settings/upgrade": {
@@ -2029,7 +1838,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新系统 =\u003e [version]",
 		"formatEN": "upgrade system =\u003e [version]"
 	},
 	"/core/xapp/appQRCode": {
@@ -2039,21 +1847,18 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "生成移动端绑定二维码 [panelName]",
 		"formatEN": "generate mobile app QR code [panelName]"
 	},
 	"/core/xapp/verifyQRCode": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "校验移动端绑定二维码",
 		"formatEN": "verify mobile app QR code"
 	},
 	"/core/xpack/alert/offline/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步离线告警",
 		"formatEN": "sync offline alert"
 	},
 	"/core/xpack/cluster": {
@@ -2064,7 +1869,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建集群 [clusterName]",
 		"formatEN": "create cluster [clusterName]"
 	},
 	"/core/xpack/cluster/node": {
@@ -2084,7 +1888,6 @@
 				"output_value": "clusterName"
 			}
 		],
-		"formatZH": "添加集群 [clusterName] 节点 [node]",
 		"formatEN": "add node [node] to cluster [clusterName]"
 	},
 	"/core/xpack/cluster/node/delete": {
@@ -2103,7 +1906,6 @@
 				"output_value": "clusterName"
 			}
 		],
-		"formatZH": "删除集群 [clusterName] 节点 [clusterNodeID]",
 		"formatEN": "delete node [clusterNodeID] from cluster [clusterName]"
 	},
 	"/core/xpack/exchange/file": {
@@ -2115,14 +1917,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "交换文件 [sourcePath] 到 [targetPath]",
 		"formatEN": "exchange file [sourcePath] to [targetPath]"
 	},
 	"/core/xpack/exchange/image": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步节点镜像",
 		"formatEN": "sync images"
 	},
 	"/core/xpack/nodes": {
@@ -2131,28 +1931,24 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加节点 [name]",
 		"formatEN": "add node [name]"
 	},
 	"/core/xpack/nodes/backup": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "备份主节点数据",
 		"formatEN": "backup master data"
 	},
 	"/core/xpack/nodes/backup/clean": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清理主节点备份记录",
 		"formatEN": "clean master backup records"
 	},
 	"/core/xpack/nodes/backup/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改主节点备份设置",
 		"formatEN": "update master backup setting"
 	},
 	"/core/xpack/nodes/del": {
@@ -2170,7 +1966,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除节点 [names]",
 		"formatEN": "delete node [names]"
 	},
 	"/core/xpack/nodes/favorite": {
@@ -2189,7 +1984,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新节点 [name] 收藏状态 [isFavorite]",
 		"formatEN": "update node [name] favorite [isFavorite]"
 	},
 	"/core/xpack/nodes/fix": {
@@ -2207,7 +2001,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "修复节点 [name]",
 		"formatEN": "fix node [name]"
 	},
 	"/core/xpack/nodes/health/setting": {
@@ -2218,7 +2011,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新节点健康检查设置",
 		"formatEN": "update node health check setting"
 	},
 	"/core/xpack/nodes/reinstall": {
@@ -2236,7 +2028,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "重装节点 [name]",
 		"formatEN": "reinstall node [name]"
 	},
 	"/core/xpack/nodes/restart": {
@@ -2255,7 +2046,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "重启节点 [name] 服务 [restartService]",
 		"formatEN": "restart node [name] service [restartService]"
 	},
 	"/core/xpack/nodes/rollback": {
@@ -2273,7 +2063,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "回滚节点 [name]",
 		"formatEN": "rollback node [name]"
 	},
 	"/core/xpack/nodes/simple": {
@@ -2282,7 +2071,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加节点 [name]",
 		"formatEN": "add node [name]"
 	},
 	"/core/xpack/nodes/simple/del": {
@@ -2300,7 +2088,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除节点 [names]",
 		"formatEN": "delete node [names]"
 	},
 	"/core/xpack/nodes/simple/update": {
@@ -2309,7 +2096,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [name]",
 		"formatEN": "update node [name]"
 	},
 	"/core/xpack/nodes/simple/update/base": {
@@ -2318,7 +2104,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [name] 基础信息",
 		"formatEN": "update base info for node [name]"
 	},
 	"/core/xpack/nodes/sync": {
@@ -2336,7 +2121,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "同步节点数据 [name]",
 		"formatEN": "sync node [name]"
 	},
 	"/core/xpack/nodes/update": {
@@ -2345,7 +2129,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [name]",
 		"formatEN": "update node [name]"
 	},
 	"/core/xpack/nodes/update/base": {
@@ -2354,7 +2137,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [name] 基础信息",
 		"formatEN": "update base info for node [name]"
 	},
 	"/core/xpack/nodes/update/proxy": {
@@ -2373,7 +2155,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新节点 [name] 代理设置 [enable]",
 		"formatEN": "update node [name] proxy setting [enable]"
 	},
 	"/core/xpack/nodes/upgrade": {
@@ -2391,7 +2172,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "升级节点 [names]",
 		"formatEN": "upgrade node [names]"
 	},
 	"/core/xpack/nodes/upgrade/auto": {
@@ -2400,14 +2180,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新节点自动升级设置",
 		"formatEN": "update node auto upgrade setting"
 	},
 	"/core/xpack/nodes/upgrade/clean": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清理节点升级包",
 		"formatEN": "clean node upgrade package"
 	},
 	"/core/xpack/nodes/upgrade/log/del": {
@@ -2425,7 +2203,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除节点更新日志 [name]",
 		"formatEN": "delete node upgrade log [name]"
 	},
 	"/core/xpack/settings/app/custom": {
@@ -2436,7 +2213,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新自定义应用配置 [status]",
 		"formatEN": "update custom app config [status]"
 	},
 	"/core/xpack/settings/app/image-prefix": {
@@ -2445,21 +2221,18 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新应用镜像前缀 [imagePrefix]",
 		"formatEN": "update app image prefix [imagePrefix]"
 	},
 	"/core/xpack/settings/reset": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重置专业版设置",
 		"formatEN": "reset xpack settings"
 	},
 	"/core/xpack/settings/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新专业版设置",
 		"formatEN": "update xpack settings"
 	},
 	"/core/xpack/settings/update/item": {
@@ -2469,14 +2242,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新专业版设置 [key]",
 		"formatEN": "update xpack setting [key]"
 	},
 	"/core/xpack/sync/app": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步节点应用",
 		"formatEN": "sync app"
 	},
 	"/core/xpack/sync/ssl": {
@@ -2485,7 +2256,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步 SSL 证书 [primaryDomain]",
 		"formatEN": "sync SSL certificate [primaryDomain]"
 	},
 	"/cronjobs": {
@@ -2495,7 +2265,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建计划任务 [type][name]",
 		"formatEN": "create cronjob [type][name]"
 	},
 	"/cronjobs/del": {
@@ -2513,7 +2282,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除计划任务 [names]",
 		"formatEN": "delete cronjob [names]"
 	},
 	"/cronjobs/group/update": {
@@ -2531,7 +2299,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新计划任务分组 [name]",
 		"formatEN": "update cronjob group [name]"
 	},
 	"/cronjobs/handle": {
@@ -2549,7 +2316,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "手动执行计划任务 [name]",
 		"formatEN": "manually execute the cronjob [name]"
 	},
 	"/cronjobs/records/clean": {
@@ -2567,7 +2333,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "清空计划任务记录 [name]",
 		"formatEN": "clean cronjob [name] records"
 	},
 	"/cronjobs/status": {
@@ -2586,7 +2351,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "修改计划任务 [name] 状态为 [status]",
 		"formatEN": "change the status of cronjob [name] to [status]."
 	},
 	"/cronjobs/update": {
@@ -2604,7 +2368,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新计划任务 [name]",
 		"formatEN": "update cronjob [name]"
 	},
 	"/custom/app/config": {
@@ -2615,7 +2378,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新自定义应用配置 [status]",
 		"formatEN": "update custom app config [status]"
 	},
 	"/custom/app/image-prefix": {
@@ -2624,14 +2386,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新应用镜像前缀 [imagePrefix]",
 		"formatEN": "update app image prefix [imagePrefix]"
 	},
 	"/custom/app/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步自定义应用商店",
 		"formatEN": "sync custom app store"
 	},
 	"/dashboard/app/launcher/show": {
@@ -2641,14 +2401,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "首页应用 [key] =\u003e 显示：[value]",
 		"formatEN": "app launcher [key] =\u003e show: [value]"
 	},
 	"/dashboard/quick/change": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "切换快速跳转",
 		"formatEN": "change quick jump"
 	},
 	"/databases": {
@@ -2657,7 +2415,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 mysql 数据库 [name]",
 		"formatEN": "create mysql database [name]"
 	},
 	"/databases/change/access": {
@@ -2666,7 +2423,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新数据库 [database] root 访问权限",
 		"formatEN": "Update database [database] root access"
 	},
 	"/databases/change/password": {
@@ -2675,7 +2431,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新数据库 [database] root 密码",
 		"formatEN": "Update database [database] root password"
 	},
 	"/databases/common/update/conf": {
@@ -2685,7 +2440,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [type] 数据库 [database] 配置信息",
 		"formatEN": "update the [type] [database] database configuration information"
 	},
 	"/databases/db": {
@@ -2695,7 +2449,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建远程数据库 [name][type]",
 		"formatEN": "create database [name][type]"
 	},
 	"/databases/db/check": {
@@ -2705,7 +2458,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "检测远程数据库 [name][type] 连接性",
 		"formatEN": "check if database [name][type] is connectable"
 	},
 	"/databases/db/del": {
@@ -2723,7 +2475,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除远程数据库 [names]",
 		"formatEN": "delete database [names]"
 	},
 	"/databases/db/update": {
@@ -2732,7 +2483,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新远程数据库 [name]",
 		"formatEN": "update database [name]"
 	},
 	"/databases/del": {
@@ -2750,7 +2500,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除 mysql 数据库 [name]",
 		"formatEN": "delete mysql database [name]"
 	},
 	"/databases/description/update": {
@@ -2769,7 +2518,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "mysql 数据库 [name] 描述信息修改 [description]",
 		"formatEN": "The description of the mysql database [name] is modified =\u003e [description]"
 	},
 	"/databases/grants": {
@@ -2781,7 +2529,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "授权 mysql 数据库 [database] 用户 [username]@[host] 访问 [db]",
 		"formatEN": "grant mysql database [database] user [username]@[host] access to [db]"
 	},
 	"/databases/grants/del": {
@@ -2793,7 +2540,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "取消 mysql 数据库 [database] 用户 [username]@[host] 对 [db] 的授权",
 		"formatEN": "revoke mysql database [database] user [username]@[host] access to [db]"
 	},
 	"/databases/mongodb": {
@@ -2802,7 +2548,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 mongodb 数据库 [name]",
 		"formatEN": "create mongodb database [name]"
 	},
 	"/databases/mongodb/bind": {
@@ -2813,7 +2558,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "绑定 mongodb 数据库 [database] [name] 用户 [username]",
 		"formatEN": "bind mongodb database [database] [name] user [username]"
 	},
 	"/databases/mongodb/del": {
@@ -2831,7 +2575,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除 mongodb 数据库 [name]",
 		"formatEN": "delete mongodb database [name]"
 	},
 	"/databases/mongodb/description": {
@@ -2850,7 +2593,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "mongodb 数据库 [name] 描述信息修改 [description]",
 		"formatEN": "The description of the mongodb database [name] is modified =\u003e [description]"
 	},
 	"/databases/mongodb/password": {
@@ -2860,7 +2602,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 mongodb 数据库 [database] [name] 密码",
 		"formatEN": "update mongodb database [database] [name] password"
 	},
 	"/databases/mongodb/privileges/change": {
@@ -2870,7 +2611,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 mongodb 数据库 [database] 用户 [username] 权限",
 		"formatEN": "update mongodb database [database] user [username] privileges"
 	},
 	"/databases/mongodb/root/password": {
@@ -2879,7 +2619,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 mongodb 数据库 [database] root 密码",
 		"formatEN": "update mongodb database [database] root password"
 	},
 	"/databases/pg": {
@@ -2888,7 +2627,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 postgresql 数据库 [name]",
 		"formatEN": "create postgresql database [name]"
 	},
 	"/databases/pg/bind": {
@@ -2898,7 +2636,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "绑定 postgresql 数据库 [name] 用户 [username]",
 		"formatEN": "bind postgresql database [name] user [username]"
 	},
 	"/databases/pg/del": {
@@ -2916,7 +2653,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除 postgresql 数据库 [name]",
 		"formatEN": "delete postgresql database [name]"
 	},
 	"/databases/pg/description": {
@@ -2935,7 +2671,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "postgresql 数据库 [name] 描述信息修改 [description]",
 		"formatEN": "The description of the postgresql database [name] is modified =\u003e [description]"
 	},
 	"/databases/pg/password": {
@@ -2953,7 +2688,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新数据库 [name] 密码",
 		"formatEN": "Update database [name] password"
 	},
 	"/databases/pg/privileges": {
@@ -2963,28 +2697,24 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新数据库 [database] 用户 [username] 权限",
 		"formatEN": "Update [username] privileges of database [database]"
 	},
 	"/databases/redis/conf/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 redis 数据库配置信息",
 		"formatEN": "update the redis database configuration information"
 	},
 	"/databases/redis/password": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改 redis 数据库密码",
 		"formatEN": "change the password of the redis database"
 	},
 	"/databases/redis/persistence/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "redis 数据库持久化配置更新",
 		"formatEN": "redis database persistence configuration update"
 	},
 	"/databases/users": {
@@ -2995,7 +2725,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 mysql 数据库 [database] 用户 [username]@[host]",
 		"formatEN": "create mysql database [database] user [username]@[host]"
 	},
 	"/databases/users/del": {
@@ -3006,7 +2735,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 mysql 数据库 [database] 用户 [username]@[host]",
 		"formatEN": "delete mysql database [database] user [username]@[host]"
 	},
 	"/databases/users/password": {
@@ -3017,7 +2745,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 mysql 数据库 [database] 用户 [username]@[host] 密码",
 		"formatEN": "update mysql database [database] user [username]@[host] password"
 	},
 	"/databases/users/password/save": {
@@ -3028,7 +2755,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "补充 mysql 数据库 [database] 用户 [username]@[host] 密码",
 		"formatEN": "save mysql database [database] user [username]@[host] password locally"
 	},
 	"/databases/users/update": {
@@ -3041,14 +2767,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 mysql 数据库 [database] 用户 [username] 访问权限 [host] =\u003e [newHost] 描述 [description]",
 		"formatEN": "update mysql database [database] user [username] access [host] =\u003e [newHost] description [description]"
 	},
 	"/databases/variables/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "调整 mysql 数据库性能参数",
 		"formatEN": "adjust mysql database performance parameters"
 	},
 	"/files": {
@@ -3057,7 +2781,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建文件/文件夹 [path]",
 		"formatEN": "Create dir or file [path]"
 	},
 	"/files/batch/del": {
@@ -3066,7 +2789,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "批量删除文件/文件夹 [paths]",
 		"formatEN": "Batch delete dir or file [paths]"
 	},
 	"/files/batch/role": {
@@ -3078,7 +2800,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "批量修改文件权限和用户/组 [paths] =\u003e [mode]/[user]/[group]",
 		"formatEN": "Batch change file mode and owner [paths] =\u003e [mode]/[user]/[group]"
 	},
 	"/files/chunkdownload": {
@@ -3087,7 +2808,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "下载文件 [name]",
 		"formatEN": "Download file [name]"
 	},
 	"/files/compress": {
@@ -3096,7 +2816,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "压缩文件 [name]",
 		"formatEN": "Compress file [name]"
 	},
 	"/files/content": {
@@ -3105,7 +2824,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "获取文件内容 [path]",
 		"formatEN": "Load file content [path]"
 	},
 	"/files/decompress": {
@@ -3114,7 +2832,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "解压 [path]",
 		"formatEN": "Decompress file [path]"
 	},
 	"/files/del": {
@@ -3123,7 +2840,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除文件/文件夹 [path]",
 		"formatEN": "Delete dir or file [path]"
 	},
 	"/files/depth/size": {
@@ -3132,7 +2848,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "获取目录及其第一层子目录文件夹大小 [path]",
 		"formatEN": "Multi file size [path]"
 	},
 	"/files/favorite": {
@@ -3141,8 +2856,7 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "收藏文件/文件夹 [path]",
-		"formatEN": "收藏文件/文件夹 [path]"
+		"formatEN": "Favorite file or folder [path]"
 	},
 	"/files/favorite/del": {
 		"bodyKeys": [
@@ -3159,7 +2873,6 @@
 				"output_value": "path"
 			}
 		],
-		"formatZH": "删除收藏 [path]",
 		"formatEN": "delete avorite [path]"
 	},
 	"/files/mode": {
@@ -3169,7 +2882,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改权限 [path] =\u003e [mode]",
 		"formatEN": "Change mode [path] =\u003e [mode]"
 	},
 	"/files/move": {
@@ -3179,7 +2891,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "移动文件 [oldPaths] =\u003e [newPath]",
 		"formatEN": "Move [oldPaths] =\u003e [newPath]"
 	},
 	"/files/owner": {
@@ -3190,7 +2901,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改用户/组 [path] =\u003e [user]/[group]",
 		"formatEN": "Change owner [path] =\u003e [user]/[group]"
 	},
 	"/files/preview": {
@@ -3199,15 +2909,13 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "预览文件内容 [path]",
 		"formatEN": "Preview file content [path]"
 	},
 	"/files/recycle/clear": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清空回收站",
-		"formatEN": "清空回收站"
+		"formatEN": "Clear recycle bin"
 	},
 	"/files/recycle/reduce": {
 		"bodyKeys": [
@@ -3215,7 +2923,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "还原回收站文件 [name]",
 		"formatEN": "Reduce RecycleBin file [name]"
 	},
 	"/files/rename": {
@@ -3225,7 +2932,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重命名 [oldName] =\u003e [newName]",
 		"formatEN": "Rename [oldName] =\u003e [newName]"
 	},
 	"/files/save": {
@@ -3234,7 +2940,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新文件内容 [path]",
 		"formatEN": "Update file content [path]"
 	},
 	"/files/share/create": {
@@ -3244,7 +2949,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建文件分享 [path]",
 		"formatEN": "Create file share [path]"
 	},
 	"/files/share/del": {
@@ -3253,7 +2957,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "关闭文件分享 [path]",
 		"formatEN": "Close file share [path]"
 	},
 	"/files/size": {
@@ -3262,7 +2965,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "获取文件夹大小 [path]",
 		"formatEN": "Load file size [path]"
 	},
 	"/files/upload": {
@@ -3272,7 +2974,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "上传文件 [path]/[file]",
 		"formatEN": "Upload file [path]/[file]"
 	},
 	"/files/wget": {
@@ -3283,7 +2984,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "下载 url =\u003e [path]/[name]",
 		"formatEN": "Download url =\u003e [path]/[name]"
 	},
 	"/files/wget/process/remove": {
@@ -3292,7 +2992,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "移除已结束下载记录 [keys]",
 		"formatEN": "Remove finished download records [keys]"
 	},
 	"/files/wget/stop": {
@@ -3301,7 +3000,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "停止下载任务 [key]",
 		"formatEN": "Stop wget task [key]"
 	},
 	"/groups": {
@@ -3311,7 +3009,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建组 [name][type]",
 		"formatEN": "create group [name][type]"
 	},
 	"/groups/del": {
@@ -3337,7 +3034,6 @@
 				"output_value": "type"
 			}
 		],
-		"formatZH": "删除组 [type][name]",
 		"formatEN": "delete group [type][name]"
 	},
 	"/groups/update": {
@@ -3347,7 +3043,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新组 [name][type]",
 		"formatEN": "update group [name][type]"
 	},
 	"/hosts": {
@@ -3357,7 +3052,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建主机 [name][addr]",
 		"formatEN": "create host [name][addr]"
 	},
 	"/hosts/del": {
@@ -3375,7 +3069,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除主机 [names]",
 		"formatEN": "delete host [names]"
 	},
 	"/hosts/disks/mount": {
@@ -3385,7 +3078,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "挂载磁盘 [device] 到 [mountPoint]",
 		"formatEN": "Mount disk [device] to [mountPoint]"
 	},
 	"/hosts/disks/partition": {
@@ -3396,7 +3088,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "对磁盘 [device] 进行分区，文件系统 [filesystem]，挂载点 [mountPoint]",
 		"formatEN": "Partition disk [device] with filesystem [filesystem], mount point [mountPoint]"
 	},
 	"/hosts/disks/unmount": {
@@ -3406,7 +3097,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "卸载磁盘 [device] 从 [mountPoint]",
 		"formatEN": "Unmount disk [device] from [mountPoint]"
 	},
 	"/hosts/firewall/docker/operate": {
@@ -3415,21 +3105,18 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operation] Docker 端口防护",
 		"formatEN": "[operation] Docker port guard"
 	},
 	"/hosts/firewall/docker/policies/batch": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "批量更新 Docker 端口防护策略",
 		"formatEN": "batch update Docker port guard policies"
 	},
 	"/hosts/firewall/docker/policies/delete/batch": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 Docker 端口防护策略",
 		"formatEN": "delete Docker port guard policies"
 	},
 	"/hosts/firewall/family/operate": {
@@ -3440,7 +3127,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operation] [subsystem] [family] 防火墙链",
 		"formatEN": "[operation] [subsystem] [family] firewall chains"
 	},
 	"/hosts/firewall/filter/operate": {
@@ -3449,21 +3135,18 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operate] 防火墙过滤链",
 		"formatEN": "[operate] firewall filter chain"
 	},
 	"/hosts/firewall/forward/enable": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "初始化并启用端口转发",
 		"formatEN": "initialize and enable port forwarding"
 	},
 	"/hosts/firewall/forward/operate": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新端口转发规则",
 		"formatEN": "update port forward rules"
 	},
 	"/hosts/firewall/operate": {
@@ -3472,42 +3155,36 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operation] 防火墙",
 		"formatEN": "[operation] firewall"
 	},
 	"/hosts/firewall/rules": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加防火墙规则",
 		"formatEN": "create firewall rules"
 	},
 	"/hosts/firewall/rules/delete": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除防火墙规则",
 		"formatEN": "delete firewall rules"
 	},
 	"/hosts/firewall/rules/reorder": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "调整防火墙规则顺序",
 		"formatEN": "reorder firewall rule"
 	},
 	"/hosts/firewall/rules/reset": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重置防火墙规则",
 		"formatEN": "reset firewall rules"
 	},
 	"/hosts/firewall/rules/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新防火墙规则",
 		"formatEN": "update firewall rule"
 	},
 	"/hosts/firewall/settings/ipv6": {
@@ -3516,7 +3193,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "设置防火墙 IPv6 支持为 [status]",
 		"formatEN": "Set firewall IPv6 support to [status]"
 	},
 	"/hosts/firewall/settings/operate": {
@@ -3527,7 +3203,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "防火墙子系统 [subsystem] 后端 [operation] [backend]",
 		"formatEN": "[operation] firewall [subsystem] backend [backend]"
 	},
 	"/hosts/firewall/settings/whitelist": {
@@ -3536,7 +3211,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建防火墙端口白名单",
 		"formatEN": "create firewall port whitelist"
 	},
 	"/hosts/firewall/settings/whitelist/delete": {
@@ -3545,7 +3219,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除防火墙端口白名单",
 		"formatEN": "delete firewall port whitelist"
 	},
 	"/hosts/firewall/settings/whitelist/update": {
@@ -3555,7 +3228,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "编辑防火墙端口白名单",
 		"formatEN": "update firewall port whitelist"
 	},
 	"/hosts/monitor/clean": {
@@ -3564,7 +3236,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清空 [type] 监控数据",
 		"formatEN": "clean [type] monitoring data"
 	},
 	"/hosts/monitor/setting/update": {
@@ -3574,35 +3245,30 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改默认监控网卡 [key]-[value]",
 		"formatEN": "update default monitor [key]-[value]"
 	},
 	"/hosts/ssh/cert": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "生成 SSH 密钥 ",
 		"formatEN": "generate SSH secret"
 	},
 	"/hosts/ssh/cert/delete": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 SSH 密钥 ",
 		"formatEN": "delete SSH secret"
 	},
 	"/hosts/ssh/cert/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步 SSH 密钥 ",
 		"formatEN": "sync SSH secret"
 	},
 	"/hosts/ssh/cert/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "生成 SSH 密钥 ",
 		"formatEN": "generate SSH secret"
 	},
 	"/hosts/ssh/file/update": {
@@ -3611,14 +3277,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改 SSH 配置文件 [key]",
 		"formatEN": "update SSH conf [key]"
 	},
 	"/hosts/ssh/log/clean": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清空 SSH 登录日志",
 		"formatEN": "clean SSH login logs"
 	},
 	"/hosts/ssh/operate": {
@@ -3627,7 +3291,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operation] SSH ",
 		"formatEN": "[operation] SSH"
 	},
 	"/hosts/ssh/update": {
@@ -3637,7 +3300,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改 SSH 配置 [key] =\u003e [newValue]",
 		"formatEN": "update SSH setting [key] =\u003e [newValue]"
 	},
 	"/hosts/tool/config/set": {
@@ -3646,7 +3308,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [type] 主机工具配置文件 ",
 		"formatEN": "update [type] tool config"
 	},
 	"/hosts/tool/init": {
@@ -3655,7 +3316,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 [type] 配置",
 		"formatEN": "create [type] config"
 	},
 	"/hosts/tool/operate": {
@@ -3665,7 +3325,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operate] [type] ",
 		"formatEN": "[operate] [type]"
 	},
 	"/hosts/tool/supervisor/process": {
@@ -3674,7 +3333,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operate] 守护进程 ",
 		"formatEN": "[operate] process"
 	},
 	"/hosts/tool/supervisor/process/file": {
@@ -3683,7 +3341,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operate] Supervisor 进程文件 ",
 		"formatEN": "[operate] Supervisor Process Config file"
 	},
 	"/hosts/update": {
@@ -3693,7 +3350,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新主机 [name][addr]",
 		"formatEN": "update host [name][addr]"
 	},
 	"/hosts/update/group": {
@@ -3712,28 +3368,24 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新主机 [name] 分组",
 		"formatEN": "update host [name] group"
 	},
 	"/openresty/build": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "构建 OpenResty",
 		"formatEN": "Build OpenResty"
 	},
 	"/openresty/file": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 nginx 配置",
 		"formatEN": "Update nginx conf"
 	},
 	"/openresty/modules/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 OpenResty 模块",
 		"formatEN": "Update OpenResty module"
 	},
 	"/openresty/update": {
@@ -3751,7 +3403,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "更新 nginx 配置 [domain]",
 		"formatEN": "Update nginx conf [domain]"
 	},
 	"/process/stop": {
@@ -3760,8 +3411,7 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "结束进程 [PID]",
-		"formatEN": "结束进程 [PID]"
+		"formatEN": "Kill process [PID]"
 	},
 	"/runtimes": {
 		"bodyKeys": [
@@ -3769,14 +3419,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建运行环境 [name]",
 		"formatEN": "Create runtime [name]"
 	},
 	"/runtimes/del": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除运行环境 [name]",
 		"formatEN": "Delete runtime [name]"
 	},
 	"/runtimes/operate": {
@@ -3794,7 +3442,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "操作运行环境 [name]",
 		"formatEN": "Operate runtime [name]"
 	},
 	"/runtimes/php/config": {
@@ -3812,7 +3459,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "[domain] PHP 配置修改",
 		"formatEN": "[domain] PHP conf update"
 	},
 	"/runtimes/php/update": {
@@ -3830,7 +3476,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "php 配置修改 [domain]",
 		"formatEN": "Nginx conf update [domain]"
 	},
 	"/runtimes/update": {
@@ -3839,7 +3484,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新运行环境 [name]",
 		"formatEN": "Update runtime [name]"
 	},
 	"/settings/files/ai/update": {
@@ -3849,7 +3493,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新文件管理 AI 设置 [aiStatus][aiAccountId]",
 		"formatEN": "update file manage AI setting [aiStatus][aiAccountId]"
 	},
 	"/settings/snapshot": {
@@ -3859,7 +3502,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建系统快照 [description] 到 [from]",
 		"formatEN": "Create system backup [description] to [from]"
 	},
 	"/settings/snapshot/del": {
@@ -3877,7 +3519,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除系统快照 [name]",
 		"formatEN": "Delete system backup [name]"
 	},
 	"/settings/snapshot/description/update": {
@@ -3896,7 +3537,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "快照 [name] 描述信息修改 [description]",
 		"formatEN": "The description of the snapshot [name] is modified =\u003e [description]"
 	},
 	"/settings/snapshot/import": {
@@ -3906,7 +3546,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "从 [from] 同步系统快照 [names]",
 		"formatEN": "Sync system snapshots [names] from [from]"
 	},
 	"/settings/snapshot/recover": {
@@ -3924,7 +3563,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "从系统快照 [name] 恢复",
 		"formatEN": "Recover from system backup [name]"
 	},
 	"/settings/snapshot/recreate": {
@@ -3942,7 +3580,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "重试创建快照 [name]",
 		"formatEN": "recrete the snapshot [name]"
 	},
 	"/settings/snapshot/rollback": {
@@ -3960,7 +3597,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "从系统快照 [name] 回滚",
 		"formatEN": "Rollback from system backup [name]"
 	},
 	"/settings/ssh/default": {
@@ -3969,7 +3605,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "本地终端默认连接 [defaultConn]",
 		"formatEN": "update system default conn [defaultConn]"
 	},
 	"/settings/terminal/ai/update": {
@@ -3979,7 +3614,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新终端 AI 设置 [aiStatus][aiAccountId]",
 		"formatEN": "update terminal AI setting [aiStatus][aiAccountId]"
 	},
 	"/settings/update": {
@@ -3989,7 +3623,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改系统配置 [key] =\u003e [value]",
 		"formatEN": "update system setting [key] =\u003e [value]"
 	},
 	"/toolbox/clam": {
@@ -3999,7 +3632,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建扫描规则 [name][path]",
 		"formatEN": "create clam [name][path]"
 	},
 	"/toolbox/clam/del": {
@@ -4017,7 +3649,6 @@
 				"output_value": "names"
 			}
 		],
-		"formatZH": "删除扫描规则 [names]",
 		"formatEN": "delete clam [names]"
 	},
 	"/toolbox/clam/handle": {
@@ -4035,7 +3666,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "执行病毒扫描 [name]",
 		"formatEN": "handle clam scan [name]"
 	},
 	"/toolbox/clam/operate": {
@@ -4044,7 +3674,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operation] Clam",
 		"formatEN": "[operation] Clam"
 	},
 	"/toolbox/clam/record/clean": {
@@ -4062,7 +3691,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "清空扫描报告 [name]",
 		"formatEN": "clean clam record [name]"
 	},
 	"/toolbox/clam/status/update": {
@@ -4081,7 +3709,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "修改扫描规则 [name] 状态为 [status]",
 		"formatEN": "change the status of clam [name] to [status]."
 	},
 	"/toolbox/clam/update": {
@@ -4091,14 +3718,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改扫描规则 [name][path]",
 		"formatEN": "update clam [name][path]"
 	},
 	"/toolbox/clean": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清理系统垃圾文件",
 		"formatEN": "Clean system junk files"
 	},
 	"/toolbox/device/update/conf": {
@@ -4108,7 +3733,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改主机参数 [key] =\u003e [value]",
 		"formatEN": "update device conf [key] =\u003e [value]"
 	},
 	"/toolbox/device/update/host": {
@@ -4118,7 +3742,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改主机 Host [key] =\u003e [value]",
 		"formatEN": "update device host [key] =\u003e [value]"
 	},
 	"/toolbox/device/update/swap": {
@@ -4128,7 +3751,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operate] 主机 swap [path]",
 		"formatEN": "[operate] device swap [path]"
 	},
 	"/toolbox/fail2ban/operate": {
@@ -4137,7 +3759,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operation] Fail2ban",
 		"formatEN": "[operation] Fail2ban"
 	},
 	"/toolbox/fail2ban/update": {
@@ -4147,7 +3768,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改 Fail2ban 配置 [key] =\u003e [value]",
 		"formatEN": "update fail2ban conf [key] =\u003e [value]"
 	},
 	"/toolbox/ftp": {
@@ -4157,7 +3777,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 FTP 账户 [user][path]",
 		"formatEN": "create FTP [user][path]"
 	},
 	"/toolbox/ftp/del": {
@@ -4175,7 +3794,6 @@
 				"output_value": "users"
 			}
 		],
-		"formatZH": "删除 FTP 账户 [users]",
 		"formatEN": "delete FTP users [users]"
 	},
 	"/toolbox/ftp/operate": {
@@ -4184,14 +3802,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "[operation] FTP",
 		"formatEN": "[operation] FTP"
 	},
 	"/toolbox/ftp/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步 FTP 账户",
 		"formatEN": "sync FTP users"
 	},
 	"/toolbox/ftp/update": {
@@ -4201,14 +3817,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "修改 FTP 账户 [user][path]",
 		"formatEN": "update FTP [user][path]"
 	},
 	"/toolbox/scan": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "扫描系统垃圾文件",
 		"formatEN": "scan System Junk Files"
 	},
 	"/websites": {
@@ -4217,7 +3831,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建网站 [alias]",
 		"formatEN": "Create website [alias]"
 	},
 	"/websites/:id/https": {
@@ -4235,7 +3848,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "更新网站 [domain] https 配置",
 		"formatEN": "Update website https [domain] conf"
 	},
 	"/websites/acme": {
@@ -4244,7 +3856,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建网站 acme [email]",
 		"formatEN": "Create website acme [email]"
 	},
 	"/websites/acme/del": {
@@ -4262,7 +3873,6 @@
 				"output_value": "email"
 			}
 		],
-		"formatZH": "删除网站 acme [email]",
 		"formatEN": "Delete website acme [email]"
 	},
 	"/websites/acme/update": {
@@ -4280,7 +3890,6 @@
 				"output_value": "email"
 			}
 		],
-		"formatZH": "更新 acme [email]",
 		"formatEN": "Update acme [email]"
 	},
 	"/websites/ca": {
@@ -4289,7 +3898,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建网站 ca [name]",
 		"formatEN": "Create website ca [name]"
 	},
 	"/websites/ca/del": {
@@ -4307,7 +3915,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除网站 ca [name]",
 		"formatEN": "Delete website ca [name]"
 	},
 	"/websites/ca/download": {
@@ -4325,7 +3932,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "下载 CA 证书文件 [name]",
 		"formatEN": "download ca file [name]"
 	},
 	"/websites/ca/obtain": {
@@ -4343,7 +3949,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "自签 SSL 证书 [name]",
 		"formatEN": "Obtain SSL [name]"
 	},
 	"/websites/ca/renew": {
@@ -4361,7 +3966,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "自签 SSL 证书 [name]",
 		"formatEN": "Obtain SSL [name]"
 	},
 	"/websites/config/update": {
@@ -4379,7 +3983,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "nginx 配置修改 [domain]",
 		"formatEN": "Nginx conf update [domain]"
 	},
 	"/websites/default/html/update": {
@@ -4388,7 +3991,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新默认 html",
 		"formatEN": "Update default html"
 	},
 	"/websites/default/server": {
@@ -4407,7 +4009,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "修改默认 server =\u003e [domain]",
 		"formatEN": "Change default server =\u003e [domain]"
 	},
 	"/websites/del": {
@@ -4425,7 +4026,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "删除网站 [domain]",
 		"formatEN": "Delete website [domain]"
 	},
 	"/websites/dir/permission": {
@@ -4443,7 +4043,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "更新网站 [domain] 目录权限",
 		"formatEN": "Update  domain [domain] dir permission"
 	},
 	"/websites/dir/update": {
@@ -4461,7 +4060,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "更新网站 [domain] 目录",
 		"formatEN": "Update  domain [domain] dir"
 	},
 	"/websites/dns": {
@@ -4470,7 +4068,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建网站 dns [name]",
 		"formatEN": "Create website dns [name]"
 	},
 	"/websites/dns/del": {
@@ -4488,7 +4085,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除网站 dns [name]",
 		"formatEN": "Delete website dns [name]"
 	},
 	"/websites/dns/update": {
@@ -4497,7 +4093,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新网站 dns [name]",
 		"formatEN": "Update website dns [name]"
 	},
 	"/websites/domains": {
@@ -4506,7 +4101,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建域名 [domain]",
 		"formatEN": "Create domain [domain]"
 	},
 	"/websites/domains/del": {
@@ -4524,7 +4118,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "删除域名 [domain]",
 		"formatEN": "Delete domain [domain]"
 	},
 	"/websites/domains/update": {
@@ -4542,7 +4135,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "更新域名 [domain]",
 		"formatEN": "Update domain [domain]"
 	},
 	"/websites/group/change": {
@@ -4552,7 +4144,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "网站分组 [group] 迁移到 [newGroup]",
 		"formatEN": "change website group [group] to [newGroup]"
 	},
 	"/websites/log/operate": {
@@ -4571,7 +4162,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "[domain][operate] 日志",
 		"formatEN": "[domain][operate] logs"
 	},
 	"/websites/nginx/update": {
@@ -4589,7 +4179,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "[domain] Nginx 配置修改",
 		"formatEN": "[domain] Nginx conf update"
 	},
 	"/websites/operate": {
@@ -4608,7 +4197,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "[operate] 网站 [domain]",
 		"formatEN": "[operate] website [domain]"
 	},
 	"/websites/php/version": {
@@ -4626,7 +4214,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "php 版本变更 [domain]",
 		"formatEN": "php version update [domain]"
 	},
 	"/websites/proxies/delete": {
@@ -4645,7 +4232,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "删除网站 [domain] 反向代理配置 [name] ",
 		"formatEN": "Delete domain [domain] proxy config [name]"
 	},
 	"/websites/proxies/file": {
@@ -4664,7 +4250,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "修改网站 [domain] 反向代理配置文件 [name] ",
 		"formatEN": "Update domain [domain] proxy config file [name]"
 	},
 	"/websites/proxies/status": {
@@ -4684,7 +4269,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "修改网站 [domain] 反向代理配置 [name] 状态 [status] ",
 		"formatEN": "Update domain [domain] proxy config [name] status [status]"
 	},
 	"/websites/proxies/update": {
@@ -4704,14 +4288,12 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "修改 [operate] 网站 [domain] 反向代理配置 [name] ",
 		"formatEN": "Update [operate] domain [domain] proxy config [name]"
 	},
 	"/websites/proxy/clear": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清理 Openresty 代理缓存",
 		"formatEN": "Clear nginx proxy cache"
 	},
 	"/websites/realip/config": {
@@ -4729,7 +4311,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "修改 [domain] 网站真实IP配置 ",
 		"formatEN": "Modify the real IP configuration of [domain] website"
 	},
 	"/websites/redirect/file": {
@@ -4747,7 +4328,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "更新重定向文件 [domain]",
 		"formatEN": "Nginx conf redirect file update [domain]"
 	},
 	"/websites/redirect/update": {
@@ -4765,7 +4345,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "修改网站 [domain] 重定向配置 ",
 		"formatEN": "Update domain [domain] redirect config"
 	},
 	"/websites/rewrite/update": {
@@ -4783,7 +4362,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "伪静态配置修改 [domain]",
 		"formatEN": "Nginx conf rewrite update [domain]"
 	},
 	"/websites/ssl": {
@@ -4792,7 +4370,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建网站 ssl [primaryDomain]",
 		"formatEN": "Create website ssl [primaryDomain]"
 	},
 	"/websites/ssl/del": {
@@ -4810,7 +4387,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "删除 ssl [domain]",
 		"formatEN": "Delete ssl [domain]"
 	},
 	"/websites/ssl/download": {
@@ -4828,7 +4404,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "下载证书文件 [domain]",
 		"formatEN": "download ssl file [domain]"
 	},
 	"/websites/ssl/import": {
@@ -4837,7 +4412,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导入主节点证书 [primaryDomain]",
 		"formatEN": "import master SSL [primaryDomain]"
 	},
 	"/websites/ssl/obtain": {
@@ -4855,7 +4429,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "申请证书  [domain]",
 		"formatEN": "apply ssl [domain]"
 	},
 	"/websites/ssl/push": {
@@ -4873,7 +4446,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "推送证书到节点 [domain]",
 		"formatEN": "Push ssl to nodes [domain]"
 	},
 	"/websites/ssl/update": {
@@ -4891,7 +4463,6 @@
 				"output_value": "domain"
 			}
 		],
-		"formatZH": "更新证书设置 [domain]",
 		"formatEN": "Update ssl config [domain]"
 	},
 	"/websites/ssl/upload": {
@@ -4900,7 +4471,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "上传 ssl [type]",
 		"formatEN": "Upload ssl [type]"
 	},
 	"/websites/ssl/upload/file": {
@@ -4909,7 +4479,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "上传 ssl 文件 [type]",
 		"formatEN": "Upload ssl file [type]"
 	},
 	"/websites/templates": {
@@ -4918,7 +4487,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建网站模板 [name]",
 		"formatEN": "Create website template [name]"
 	},
 	"/websites/templates/del": {
@@ -4936,7 +4504,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除网站模板 [name]",
 		"formatEN": "Delete website template [name]"
 	},
 	"/websites/templates/outputs": {
@@ -4945,7 +4512,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "生成模板产物 [name]",
 		"formatEN": "Generate template output [name]"
 	},
 	"/websites/templates/outputs/del": {
@@ -4963,7 +4529,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除模板产物 [name]",
 		"formatEN": "Delete template output [name]"
 	},
 	"/websites/templates/update": {
@@ -4972,7 +4537,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新网站模板 [name]",
 		"formatEN": "Update website template [name]"
 	},
 	"/websites/update": {
@@ -4981,7 +4545,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新网站 [primaryDomain]",
 		"formatEN": "Update website [primaryDomain]"
 	},
 	"/xpack/alert/logs/sync": {
@@ -4990,14 +4553,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步短信告警信息 [id]",
 		"formatEN": "sync SMS alert info [id]"
 	},
 	"/xpack/alert/logs/sync/all": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步全部短信告警信息",
 		"formatEN": "sync all SMS alert info"
 	},
 	"/xpack/alert/offline/update": {
@@ -5008,28 +4569,24 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新离线告警日志 [id]",
 		"formatEN": "update offline alert log [id]"
 	},
 	"/xpack/monitor/config/global": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新全局设置",
 		"formatEN": "update global config"
 	},
 	"/xpack/monitor/config/site/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新网站设置",
 		"formatEN": "update website config"
 	},
 	"/xpack/monitor/logs/clear": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清空日志",
 		"formatEN": "clear log"
 	},
 	"/xpack/tampers/del": {
@@ -5040,7 +4597,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除防篡改 [website][path]",
 		"formatEN": "delete tamper [website][path]"
 	},
 	"/xpack/tampers/template": {
@@ -5050,7 +4606,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "保存防篡改模版 [name] - [content]",
 		"formatEN": "save tamper template info  [name] - [content]"
 	},
 	"/xpack/tampers/template/del": {
@@ -5068,7 +4623,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除防篡改模版 [name]",
 		"formatEN": "delete tamper template [name]"
 	},
 	"/xpack/tampers/update": {
@@ -5079,7 +4633,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新防篡改信息 [website][path] =\u003e [status]",
 		"formatEN": "update tamper info [website][path] =\u003e [status]"
 	},
 	"/xpack/vllm/command-template/create": {
@@ -5089,7 +4642,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 vLLM 命令模板 [name]",
 		"formatEN": "create vLLM command template [name]"
 	},
 	"/xpack/vllm/command-template/delete": {
@@ -5107,7 +4659,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除 vLLM 命令模板 [name]",
 		"formatEN": "delete vLLM command template [name]"
 	},
 	"/xpack/vllm/command-template/update": {
@@ -5117,7 +4668,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 vLLM 命令模板 [name]",
 		"formatEN": "update vLLM command template [name]"
 	},
 	"/xpack/vllm/create": {
@@ -5127,7 +4677,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 vLLM [name]",
 		"formatEN": "create vLLM [name]"
 	},
 	"/xpack/vllm/operate": {
@@ -5146,7 +4695,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "操作 vLLM [name] [operate]",
 		"formatEN": "operate vLLM [name] [operate]"
 	},
 	"/xpack/vllm/update": {
@@ -5156,7 +4704,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 vLLM [name]",
 		"formatEN": "update vLLM [name]"
 	},
 	"/vms": {
@@ -5165,7 +4712,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建虚拟机 [name]",
 		"formatEN": "create VM [name]"
 	},
 	"/vms/del": {
@@ -5183,7 +4729,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除虚拟机 [name]",
 		"formatEN": "delete VM [name]"
 	},
 	"/vms/disks/resize": {
@@ -5194,14 +4739,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "扩容虚拟机 [name] 磁盘 [target] 至 [sizeGiB] GiB",
 		"formatEN": "expand VM [name] disk [target] to [sizeGiB] GiB"
 	},
 	"/vms/environment/enable": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "启用虚拟机运行环境",
 		"formatEN": "enable VM runtime environment"
 	},
 	"/vms/iso": {
@@ -5211,7 +4754,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建虚拟机镜像 [name] [type]",
 		"formatEN": "create VM ISO [name] [type]"
 	},
 	"/vms/iso/del": {
@@ -5229,7 +4771,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除虚拟机镜像 [name]",
 		"formatEN": "delete VM ISO [name]"
 	},
 	"/vms/iso/update": {
@@ -5239,7 +4780,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新虚拟机镜像 [name] [type]",
 		"formatEN": "update VM ISO [name] [type]"
 	},
 	"/vms/networks": {
@@ -5249,7 +4789,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建虚拟机网络 [name] [type]",
 		"formatEN": "create VM network [name] [type]"
 	},
 	"/vms/networks/del": {
@@ -5267,7 +4806,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除虚拟机网络 [name]",
 		"formatEN": "delete VM network [name]"
 	},
 	"/vms/networks/update": {
@@ -5285,7 +4823,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新虚拟机网络 [name]",
 		"formatEN": "update VM network [name]"
 	},
 	"/vms/operate": {
@@ -5295,14 +4832,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "操作虚拟机 [name] [operate]",
 		"formatEN": "operate VM [name] [operate]"
 	},
 	"/vms/orphans/clean": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清理虚拟机孤立数据",
 		"formatEN": "clean VM orphaned data"
 	},
 	"/vms/rename": {
@@ -5312,7 +4847,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "重命名虚拟机 [name] 为 [newName]",
 		"formatEN": "rename VM [name] to [newName]"
 	},
 	"/vms/snapshots": {
@@ -5322,7 +4856,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建虚拟机 [name] 快照 [snapshotName]",
 		"formatEN": "create VM [name] snapshot [snapshotName]"
 	},
 	"/vms/snapshots/del": {
@@ -5332,7 +4865,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除虚拟机 [name] 快照 [snapshotName]",
 		"formatEN": "delete VM [name] snapshot [snapshotName]"
 	},
 	"/vms/snapshots/recover": {
@@ -5342,7 +4874,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "恢复虚拟机 [name] 快照 [snapshotName]",
 		"formatEN": "recover VM [name] snapshot [snapshotName]"
 	},
 	"/vms/storages": {
@@ -5352,7 +4883,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建虚拟机存储 [name] [type]",
 		"formatEN": "create VM storage [name] [type]"
 	},
 	"/vms/storages/del": {
@@ -5370,7 +4900,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除虚拟机存储 [name]",
 		"formatEN": "delete VM storage [name]"
 	},
 	"/vms/storages/update": {
@@ -5388,14 +4917,12 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "更新虚拟机存储 [name]",
 		"formatEN": "update VM storage [name]"
 	},
 	"/vms/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "同步虚拟机",
 		"formatEN": "sync virtual machines"
 	},
 	"/vms/templates": {
@@ -5405,7 +4932,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建虚拟机 [name] 模板 [templateName]",
 		"formatEN": "create VM [name] template [templateName]"
 	},
 	"/vms/templates/del": {
@@ -5423,7 +4949,6 @@
 				"output_value": "name"
 			}
 		],
-		"formatZH": "删除虚拟机模板 [name]",
 		"formatEN": "delete VM template [name]"
 	},
 	"/vms/update": {
@@ -5432,14 +4957,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新虚拟机 [name]",
 		"formatEN": "update VM [name]"
 	},
 	"/xpack/waf/block/export": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导出 WAF 封锁 IP",
 		"formatEN": "export WAF blocked IP"
 	},
 	"/xpack/waf/block/remove": {
@@ -5448,14 +4971,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "解封 IP [ip]",
 		"formatEN": "unblock ip [ip]"
 	},
 	"/xpack/waf/cdn/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 CDN 配置",
 		"formatEN": "update CDN config"
 	},
 	"/xpack/waf/config/global/spider": {
@@ -5464,7 +4985,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新全局蜘蛛允许列表",
 		"formatEN": "update global spider allowlist"
 	},
 	"/xpack/waf/config/global/state": {
@@ -5474,7 +4994,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [state]全局配置[scope]",
 		"formatEN": "update [state] global config [scope]"
 	},
 	"/xpack/waf/config/website/state": {
@@ -5485,7 +5004,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 [state]网站配置[scope]",
 		"formatEN": "update [state] website config [scope]"
 	},
 	"/xpack/waf/html/revert": {
@@ -5494,7 +5012,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "回滚拦截页面 [name]",
 		"formatEN": "revert html res [name]"
 	},
 	"/xpack/waf/html/update": {
@@ -5503,7 +5020,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新拦截页面 [name]",
 		"formatEN": "update html res [name]"
 	},
 	"/xpack/waf/ip/default": {
@@ -5513,7 +5029,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加 IP [ip] 到默认[type]组",
 		"formatEN": "add ip [ip] to default[type]group"
 	},
 	"/xpack/waf/ip/group/create": {
@@ -5522,7 +5037,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 IP 组 [name]",
 		"formatEN": "create ip group [name]"
 	},
 	"/xpack/waf/ip/group/delete": {
@@ -5531,7 +5045,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 IP 组 [name]",
 		"formatEN": "delete ip group [name]"
 	},
 	"/xpack/waf/ip/group/export": {
@@ -5540,14 +5053,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导出 IP 组 [name]",
 		"formatEN": "export IP group [name]"
 	},
 	"/xpack/waf/ip/group/import": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导入 IP 组",
 		"formatEN": "import IP group"
 	},
 	"/xpack/waf/ip/group/update": {
@@ -5556,7 +5067,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 IP 组 [name]",
 		"formatEN": "update ip group [name]"
 	},
 	"/xpack/waf/location/update": {
@@ -5565,21 +5075,18 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新[type]地址库信息",
 		"formatEN": "update [type] location"
 	},
 	"/xpack/waf/log/clear": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "清空 WAF 日志",
 		"formatEN": "clear waf log"
 	},
 	"/xpack/waf/log/export": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导出 WAF 日志",
 		"formatEN": "export WAF log"
 	},
 	"/xpack/waf/rule/acl/create": {
@@ -5588,7 +5095,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建自定义规则 [name]",
 		"formatEN": "create acl [name]"
 	},
 	"/xpack/waf/rule/acl/delete": {
@@ -5597,7 +5103,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除自定义规则 [name]",
 		"formatEN": "delete acl [name]"
 	},
 	"/xpack/waf/rule/acl/update": {
@@ -5606,7 +5111,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新自定义规则 [name]",
 		"formatEN": "update acl [name]"
 	},
 	"/xpack/waf/rule/app/update": {
@@ -5616,7 +5120,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新应用规则 [name] 状态 [state]",
 		"formatEN": "update app rule [name] state [state]"
 	},
 	"/xpack/waf/rule/cc": {
@@ -5625,7 +5128,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新[scope]频率访问限制",
 		"formatEN": "update [scope] CC config"
 	},
 	"/xpack/waf/rule/common/apply": {
@@ -5634,7 +5136,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "应用规则 [scope] 到网站",
 		"formatEN": "apply rule [scope] to websites"
 	},
 	"/xpack/waf/rule/common/create": {
@@ -5643,7 +5144,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建规则 [scope]",
 		"formatEN": "create rule [scope]"
 	},
 	"/xpack/waf/rule/common/delete": {
@@ -5652,7 +5152,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除规则 [scope]",
 		"formatEN": "delete rule [scope]"
 	},
 	"/xpack/waf/rule/common/export": {
@@ -5661,7 +5160,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导出规则 [scope]",
 		"formatEN": "export rule [scope]"
 	},
 	"/xpack/waf/rule/common/import": {
@@ -5670,7 +5168,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "导入规则 [scope]",
 		"formatEN": "import rule [scope]"
 	},
 	"/xpack/waf/rule/common/update": {
@@ -5679,14 +5176,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新规则 [scope]",
 		"formatEN": "update rule [scope]"
 	},
 	"/xpack/waf/rule/geo": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新地区访问限制",
 		"formatEN": "update geo restrict"
 	},
 	"/xpack/waf/rule/ip/create": {
@@ -5695,7 +5190,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建[scope] IP 规则",
 		"formatEN": "create [scope] IP rule"
 	},
 	"/xpack/waf/rule/ip/delete": {
@@ -5704,7 +5198,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除[scope] IP 规则",
 		"formatEN": "delete [scope] IP rule"
 	},
 	"/xpack/waf/rule/ip/update": {
@@ -5713,14 +5206,12 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新[scope] IP 规则",
 		"formatEN": "update [scope] IP rule"
 	},
 	"/xpack/waf/rule/log": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新日志配置",
 		"formatEN": "update waf log config"
 	},
 	"/xpack/waf/rule/simple/create": {
@@ -5729,28 +5220,24 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建规则 [scope]",
 		"formatEN": "create rule [scope]"
 	},
 	"/xpack/waf/rule/urlcc/create": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "创建 URL 频率访问限制规则",
 		"formatEN": "create URL CC rule"
 	},
 	"/xpack/waf/rule/urlcc/delete": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "删除 URL 频率访问限制规则",
 		"formatEN": "delete URL CC rule"
 	},
 	"/xpack/waf/rule/urlcc/update": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新 URL 频率访问限制规则",
 		"formatEN": "update URL CC rule"
 	},
 	"/xpack/waf/rule/vuln/update": {
@@ -5760,7 +5247,6 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新漏洞规则 [id] 状态 [state]",
 		"formatEN": "update vuln rule [id] state [state]"
 	},
 	"/xpack/waf/url/default": {
@@ -5770,28 +5256,24 @@
 		],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "添加 URL [url] 到默认[type]组",
 		"formatEN": "add URL [url] to default[type]group"
 	},
 	"/xpack/waf/website/rule/cc": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新网站频率访问限制",
 		"formatEN": "update website CC config"
 	},
 	"/xpack/waf/website/rule/geo": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "更新网站地区访问限制",
 		"formatEN": "update geo restrict"
 	},
 	"/xpack/xsetting/sync": {
 		"bodyKeys": [],
 		"paramKeys": [],
 		"beforeFunctions": [],
-		"formatZH": "从主节点同步设置",
 		"formatEN": "sync settings from master"
 	}
 }

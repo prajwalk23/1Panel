@@ -2860,7 +2860,6 @@ const docTemplate = `{
 						"domain"
 					],
 					"formatEN": "update Ollama bind domain [domain]",
-					"formatZH": "更新 Ollama 绑定域名 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -3464,7 +3463,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "update featured model automatic synchronization [value]",
-					"formatZH": "更新推荐模型自动同步 [value]",
 					"paramKeys": []
 				}
 			}
@@ -3516,7 +3514,6 @@ const docTemplate = `{
 						"revision"
 					],
 					"formatEN": "download Hugging Face model [repoID]",
-					"formatZH": "下载 Hugging Face 模型 [repoID]",
 					"paramKeys": []
 				}
 			}
@@ -3660,7 +3657,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "delete local model [name]",
-					"formatZH": "删除本地模型 [name]",
 					"paramKeys": []
 				}
 			}
@@ -3768,7 +3764,6 @@ const docTemplate = `{
 						"revision"
 					],
 					"formatEN": "download ModelScope model [repoID]",
-					"formatZH": "下载 ModelScope 模型 [repoID]",
 					"paramKeys": []
 				}
 			}
@@ -3938,7 +3933,6 @@ const docTemplate = `{
 						"modelDir"
 					],
 					"formatEN": "update model downloader settings [modelDir]",
-					"formatZH": "更新模型下载设置 [modelDir]",
 					"paramKeys": []
 				}
 			}
@@ -3995,7 +3989,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "cancel model download task [repoID]",
-					"formatZH": "取消模型下载任务 [repoID]",
 					"paramKeys": []
 				}
 			}
@@ -4052,7 +4045,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "remove model download task [repoID]",
-					"formatZH": "移除模型下载任务 [repoID]",
 					"paramKeys": []
 				}
 			}
@@ -4112,7 +4104,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "retry model download task [repoID]",
-					"formatZH": "重试模型下载任务 [repoID]",
 					"paramKeys": []
 				}
 			}
@@ -4213,7 +4204,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "close conn for Ollama model [name]",
-					"formatZH": "关闭 Ollama 模型连接 [name]",
 					"paramKeys": []
 				}
 			}
@@ -4257,7 +4247,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "add Ollama model [name]",
-					"formatZH": "添加 Ollama 模型 [name]",
 					"paramKeys": []
 				}
 			}
@@ -4310,7 +4299,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "remove Ollama model [names]",
-					"formatZH": "删除 Ollama 模型 [names]",
 					"paramKeys": []
 				}
 			}
@@ -4392,7 +4380,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "re-add Ollama model [name]",
-					"formatZH": "添加 Ollama 模型重试 [name]",
 					"paramKeys": []
 				}
 			}
@@ -4474,7 +4461,6 @@ const docTemplate = `{
 						"title"
 					],
 					"formatEN": "create alert [title]",
-					"formatZH": "创建告警任务 [title]",
 					"paramKeys": []
 				}
 			}
@@ -4537,7 +4523,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "delete alert config [name]",
-					"formatZH": "删除告警配置 [name]",
 					"paramKeys": []
 				}
 			}
@@ -4637,7 +4622,6 @@ const docTemplate = `{
 						"status"
 					],
 					"formatEN": "update alert config status [name][status]",
-					"formatZH": "更新告警配置状态 [name][status]",
 					"paramKeys": []
 				}
 			}
@@ -4716,7 +4700,6 @@ const docTemplate = `{
 						"displayName"
 					],
 					"formatEN": "update alert config [displayName]",
-					"formatZH": "更新告警配置 [displayName]",
 					"paramKeys": []
 				}
 			}
@@ -4795,7 +4778,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete alert [id]",
-					"formatZH": "删除告警任务 [id]",
 					"paramKeys": []
 				}
 			}
@@ -4844,7 +4826,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "clean alert logs",
-					"formatZH": "清空告警日志",
 					"paramKeys": []
 				}
 			}
@@ -4959,7 +4940,6 @@ const docTemplate = `{
 						"status"
 					],
 					"formatEN": "update alert [id] status [status]",
-					"formatZH": "更新告警任务 [id] 状态 [status]",
 					"paramKeys": []
 				}
 			}
@@ -5003,7 +4983,6 @@ const docTemplate = `{
 						"title"
 					],
 					"formatEN": "update alert [title]",
-					"formatZH": "更新告警任务 [title]",
 					"paramKeys": []
 				}
 			}
@@ -5082,14 +5061,14 @@ const docTemplate = `{
 						"type": "integer"
 					},
 					{
-						"description": "app 版本",
+						"description": "app version",
 						"in": "path",
 						"name": "version",
 						"required": true,
 						"type": "string"
 					},
 					{
-						"description": "app 类型",
+						"description": "app type",
 						"in": "path",
 						"name": "type",
 						"required": true,
@@ -5273,7 +5252,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Cancel ignore application upgrade",
-					"formatZH": "取消忽略应用升级",
 					"paramKeys": []
 				}
 			}
@@ -5350,7 +5328,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Install app [name]",
-					"formatZH": "安装应用 [name]",
 					"paramKeys": []
 				}
 			}
@@ -5471,7 +5448,6 @@ const docTemplate = `{
 						"webUI"
 					],
 					"formatEN": "Application config update [installID]",
-					"formatZH": "应用配置更新 [installID]",
 					"paramKeys": []
 				}
 			}
@@ -5590,7 +5566,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Ignore application upgrade",
-					"formatZH": "忽略应用升级",
 					"paramKeys": []
 				}
 			}
@@ -5764,7 +5739,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "[operate] App [appKey][appName]",
-					"formatZH": "[operate] 应用 [appKey][appName]",
 					"paramKeys": []
 				}
 			}
@@ -5853,7 +5827,6 @@ const docTemplate = `{
 						"installId"
 					],
 					"formatEN": "Application param update [name]",
-					"formatZH": "应用参数修改 [name]",
 					"paramKeys": []
 				}
 			}
@@ -5899,7 +5872,6 @@ const docTemplate = `{
 						"port"
 					],
 					"formatEN": "Application port update [key]-[name] =\u003e [port]",
-					"formatZH": "应用端口修改 [key]-[name] =\u003e [port]",
 					"paramKeys": []
 				}
 			}
@@ -5979,7 +5951,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "update installed app sort",
-					"formatZH": "更新已安装应用排序",
 					"paramKeys": []
 				}
 			}
@@ -6007,7 +5978,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Sync the list of installed apps",
-					"formatZH": "同步已安装应用列表",
 					"paramKeys": []
 				}
 			}
@@ -6153,7 +6123,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "App store synchronization",
-					"formatZH": "应用商店同步",
 					"paramKeys": []
 				}
 			}
@@ -6181,7 +6150,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "App store synchronization",
-					"formatZH": "应用商店同步",
 					"paramKeys": []
 				}
 			}
@@ -6246,7 +6214,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create backup account [type]",
-					"formatZH": "创建备份账号 [type]",
 					"paramKeys": []
 				}
 			}
@@ -6292,7 +6259,6 @@ const docTemplate = `{
 						"detailName"
 					],
 					"formatEN": "backup [type] data [name][detailName]",
-					"formatZH": "备份 [type] 数据 [name][detailName]",
 					"paramKeys": []
 				}
 			}
@@ -6451,7 +6417,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete backup account [types]",
-					"formatZH": "删除备份账号 [types]",
 					"paramKeys": []
 				}
 			}
@@ -6558,7 +6523,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete backup records [files]",
-					"formatZH": "删除备份记录 [files]",
 					"paramKeys": []
 				}
 			}
@@ -6641,7 +6605,6 @@ const docTemplate = `{
 						"fileName"
 					],
 					"formatEN": "download backup records [source][fileName]",
-					"formatZH": "下载备份记录 [source][fileName]",
 					"paramKeys": []
 				}
 			}
@@ -6805,7 +6768,6 @@ const docTemplate = `{
 						"file"
 					],
 					"formatEN": "recover [type] data [name][detailName] from [file]",
-					"formatZH": "从 [file] 恢复 [type] 数据 [name][detailName]",
 					"paramKeys": []
 				}
 			}
@@ -6852,7 +6814,6 @@ const docTemplate = `{
 						"file"
 					],
 					"formatEN": "recover [type] data [name][detailName] from [file]",
-					"formatZH": "从 [file] 恢复 [type] 数据 [name][detailName]",
 					"paramKeys": []
 				}
 			}
@@ -7007,7 +6968,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "update backup account [type]",
-					"formatZH": "更新备份账号 [type]",
 					"paramKeys": []
 				}
 			}
@@ -7051,7 +7011,6 @@ const docTemplate = `{
 						"filePath"
 					],
 					"formatEN": "upload backup file [filePath]",
-					"formatZH": "上传备份文件 [filePath]",
 					"paramKeys": []
 				}
 			}
@@ -7096,7 +7055,6 @@ const docTemplate = `{
 						"image"
 					],
 					"formatEN": "create container [name][image]",
-					"formatZH": "创建容器 [name][image]",
 					"paramKeys": []
 				}
 			}
@@ -7140,7 +7098,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "clean container [name] logs",
-					"formatZH": "清理容器 [name] 日志",
 					"paramKeys": []
 				}
 			}
@@ -7219,7 +7176,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create compose [name]",
-					"formatZH": "创建 compose [name]",
 					"paramKeys": []
 				}
 			}
@@ -7263,7 +7219,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "clean compose [name] logs",
-					"formatZH": "清理容器编排 [name] 日志",
 					"paramKeys": []
 				}
 			}
@@ -7349,7 +7304,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "compose [operation] [name]",
-					"formatZH": "compose [operation] [name]",
 					"paramKeys": []
 				}
 			}
@@ -7469,7 +7423,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "check compose [name]",
-					"formatZH": "检测 compose [name] 格式",
 					"paramKeys": []
 				}
 			}
@@ -7513,7 +7466,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "update compose information [name]",
-					"formatZH": "更新 compose [name]",
 					"paramKeys": []
 				}
 			}
@@ -7612,7 +7564,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "Updated configuration [key]",
-					"formatZH": "更新配置 [key]",
 					"paramKeys": []
 				}
 			}
@@ -7654,7 +7605,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Updated configuration file",
-					"formatZH": "更新配置文件",
 					"paramKeys": []
 				}
 			}
@@ -7698,7 +7648,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] docker service",
-					"formatZH": "docker 服务 [operation]",
 					"paramKeys": []
 				}
 			}
@@ -7843,7 +7792,6 @@ const docTemplate = `{
 						"paths"
 					],
 					"formatEN": "Delete files [paths] in container [containerID]",
-					"formatZH": "删除容器 [containerID] 文件 [paths]",
 					"paramKeys": []
 				}
 			}
@@ -7884,7 +7832,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Download file [path] from container [containerID]",
-					"formatZH": "下载容器 [containerID] 文件 [path]",
 					"paramKeys": []
 				}
 			}
@@ -8020,7 +7967,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Upload file to [path] in container [containerID]",
-					"formatZH": "容器 [containerID] 上传文件到 [path]",
 					"paramKeys": []
 				}
 			}
@@ -8127,7 +8073,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "build image [name]",
-					"formatZH": "构建镜像 [name]",
 					"paramKeys": []
 				}
 			}
@@ -8171,7 +8116,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "load image from [path]",
-					"formatZH": "从 [path] 加载镜像",
 					"paramKeys": []
 				}
 			}
@@ -8225,7 +8169,6 @@ const docTemplate = `{
 						"imageName"
 					],
 					"formatEN": "image pull [reponame][imageName]",
-					"formatZH": "镜像拉取 [reponame][imageName]",
 					"paramKeys": []
 				}
 			}
@@ -8280,7 +8223,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "push [tagName] to [reponame][name]",
-					"formatZH": "[tagName] 推送到 [reponame][name]",
 					"paramKeys": []
 				}
 			}
@@ -8324,7 +8266,6 @@ const docTemplate = `{
 						"names"
 					],
 					"formatEN": "remove image [names]",
-					"formatZH": "移除镜像 [names]",
 					"paramKeys": []
 				}
 			}
@@ -8370,7 +8311,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "save [tagName] as [path]/[name]",
-					"formatZH": "保留 [tagName] 为 [path]/[name]",
 					"paramKeys": []
 				}
 			}
@@ -8465,7 +8405,6 @@ const docTemplate = `{
 						"targetName"
 					],
 					"formatEN": "tag image [reponame][targetName]",
-					"formatZH": "tag 镜像 [reponame][targetName]",
 					"paramKeys": []
 				}
 			}
@@ -8583,7 +8522,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Updated the ipv6 option",
-					"formatZH": "更新 ipv6 配置",
 					"paramKeys": []
 				}
 			}
@@ -8788,7 +8726,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Updated the log option",
-					"formatZH": "更新日志配置",
 					"paramKeys": []
 				}
 			}
@@ -8863,7 +8800,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create container network [name]",
-					"formatZH": "创建容器网络 name",
 					"paramKeys": []
 				}
 			}
@@ -8907,7 +8843,6 @@ const docTemplate = `{
 						"names"
 					],
 					"formatEN": "delete container network [names]",
-					"formatZH": "删除容器网络 [names]",
 					"paramKeys": []
 				}
 			}
@@ -8993,7 +8928,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "container [operation] [names]",
-					"formatZH": "容器 [names] 执行 [operation]",
 					"paramKeys": []
 				}
 			}
@@ -9037,7 +8971,6 @@ const docTemplate = `{
 						"pruneType"
 					],
 					"formatEN": "clean container [pruneType]",
-					"formatZH": "清理容器 [pruneType]",
 					"paramKeys": []
 				}
 			}
@@ -9082,7 +9015,6 @@ const docTemplate = `{
 						"newName"
 					],
 					"formatEN": "rename container [name] =\u003e [newName]",
-					"formatZH": "容器重命名 [name] =\u003e [newName]",
 					"paramKeys": []
 				}
 			}
@@ -9157,7 +9089,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create image repo [name]",
-					"formatZH": "创建镜像仓库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -9213,7 +9144,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete image repo [name]",
-					"formatZH": "删除镜像仓库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -9348,7 +9278,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "update image repo information [name]",
-					"formatZH": "更新镜像仓库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -9398,31 +9327,31 @@ const docTemplate = `{
 			"get": {
 				"parameters": [
 					{
-						"description": "容器名称",
+						"description": "container name",
 						"in": "query",
 						"name": "container",
 						"type": "string"
 					},
 					{
-						"description": "时间筛选",
+						"description": "time filter",
 						"in": "query",
 						"name": "since",
 						"type": "string"
 					},
 					{
-						"description": "是否追踪",
+						"description": "whether to follow",
 						"in": "query",
 						"name": "follow",
 						"type": "string"
 					},
 					{
-						"description": "显示行号",
+						"description": "number of lines to show",
 						"in": "query",
 						"name": "tail",
 						"type": "string"
 					},
 					{
-						"description": "是否显示时间",
+						"description": "whether to show timestamps",
 						"in": "query",
 						"name": "timestamp",
 						"type": "string"
@@ -9451,7 +9380,7 @@ const docTemplate = `{
 			"get": {
 				"parameters": [
 					{
-						"description": "容器id",
+						"description": "container id",
 						"in": "path",
 						"name": "id",
 						"required": true,
@@ -9585,7 +9514,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create compose template [name]",
-					"formatZH": "创建 compose 模版 [name]",
 					"paramKeys": []
 				}
 			}
@@ -9627,7 +9555,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "batch import compose templates",
-					"formatZH": "批量导入编排模版",
 					"paramKeys": []
 				}
 			}
@@ -9680,7 +9607,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete compose template [names]",
-					"formatZH": "删除 compose 模版 [names]",
 					"paramKeys": []
 				}
 			}
@@ -9774,7 +9700,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "update compose template information [name]",
-					"formatZH": "更新 compose 模版 [name]",
 					"paramKeys": []
 				}
 			}
@@ -9819,7 +9744,6 @@ const docTemplate = `{
 						"image"
 					],
 					"formatEN": "update container [name][image]",
-					"formatZH": "更新容器 [name][image]",
 					"paramKeys": []
 				}
 			}
@@ -9864,7 +9788,6 @@ const docTemplate = `{
 						"image"
 					],
 					"formatEN": "upgrade container image [names][image]",
-					"formatZH": "更新容器镜像 [names][image]",
 					"paramKeys": []
 				}
 			}
@@ -9983,7 +9906,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create container volume [name]",
-					"formatZH": "创建容器存储卷 [name]",
 					"paramKeys": []
 				}
 			}
@@ -10027,7 +9949,6 @@ const docTemplate = `{
 						"names"
 					],
 					"formatEN": "delete container volume [names]",
-					"formatZH": "删除容器存储卷 [names]",
 					"paramKeys": []
 				}
 			}
@@ -10122,7 +10043,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "generate api key",
-					"formatZH": "生成 API 接口密钥",
 					"paramKeys": []
 				}
 			}
@@ -10722,7 +10642,6 @@ const docTemplate = `{
 						"apiTrustedProxies"
 					],
 					"formatEN": "update api config =\u003e IP Allowlist: [ipWhiteList], API Trusted Proxies: [apiTrustedProxies]",
-					"formatZH": "更新 API 接口配置 =\u003e IP 白名单: [ipWhiteList], API 可信代理: [apiTrustedProxies]",
 					"paramKeys": []
 				}
 			}
@@ -10839,7 +10758,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "reset an expired Password",
-					"formatZH": "重置过期密码",
 					"paramKeys": []
 				}
 			}
@@ -10851,7 +10769,7 @@ const docTemplate = `{
 				],
 				"parameters": [
 					{
-						"description": "安全入口 base64 加密串",
+						"description": "entrance code, base64 encoded",
 						"in": "header",
 						"name": "EntranceCode",
 						"required": true,
@@ -10977,7 +10895,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "bind mfa",
-					"formatZH": "mfa 绑定",
 					"paramKeys": []
 				}
 			}
@@ -11008,7 +10925,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "close mfa",
-					"formatZH": "mfa 关闭",
 					"paramKeys": []
 				}
 			}
@@ -11034,7 +10950,7 @@ const docTemplate = `{
 						"description": "OK",
 						"headers": {
 							"EntranceCode": {
-								"description": "安全入口",
+								"description": "entrance code",
 								"type": "string"
 							}
 						},
@@ -11246,7 +11162,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create backup account [type]",
-					"formatZH": "创建备份账号 [type]",
 					"paramKeys": []
 				}
 			}
@@ -11326,7 +11241,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "delete backup account [name]",
-					"formatZH": "删除备份账号 [name]",
 					"paramKeys": []
 				}
 			}
@@ -11405,7 +11319,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "update backup account [type]",
-					"formatZH": "更新备份账号 [type]",
 					"paramKeys": []
 				}
 			}
@@ -11450,7 +11363,6 @@ const docTemplate = `{
 						"command"
 					],
 					"formatEN": "create quick command [name][command]",
-					"formatZH": "创建快捷命令 [name][command]",
 					"paramKeys": []
 				}
 			}
@@ -11503,7 +11415,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete quick command [names]",
-					"formatZH": "删除快捷命令 [names]",
 					"paramKeys": []
 				}
 			}
@@ -11534,7 +11445,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "export quick commands",
-					"formatZH": "导出快速命令",
 					"paramKeys": []
 				}
 			}
@@ -11565,7 +11475,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "import quick commands",
-					"formatZH": "导入快速命令",
 					"paramKeys": []
 				}
 			}
@@ -11726,7 +11635,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "update quick command [name]",
-					"formatZH": "更新快捷命令 [name]",
 					"paramKeys": []
 				}
 			}
@@ -11757,7 +11665,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "upload quick commands with csv",
-					"formatZH": "上传快速命令文件",
 					"paramKeys": []
 				}
 			}
@@ -11802,7 +11709,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create group [name][type]",
-					"formatZH": "创建组 [name][type]",
 					"paramKeys": []
 				}
 			}
@@ -11863,7 +11769,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete group [type][name]",
-					"formatZH": "删除组 [type][name]",
 					"paramKeys": []
 				}
 			}
@@ -11949,7 +11854,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "update group [name][type]",
-					"formatZH": "更新组 [name][type]",
 					"paramKeys": []
 				}
 			}
@@ -12079,7 +11983,6 @@ const docTemplate = `{
 						"logType"
 					],
 					"formatEN": "Clean the [logType] log information",
-					"formatZH": "清空 [logType] 日志信息",
 					"paramKeys": []
 				}
 			}
@@ -12199,7 +12102,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "add script [name]",
-					"formatZH": "添加脚本库脚本 [name]",
 					"paramKeys": []
 				}
 			}
@@ -12252,7 +12154,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete script [names]",
-					"formatZH": "删除脚本库脚本 [names]",
 					"paramKeys": []
 				}
 			}
@@ -12379,7 +12280,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "sync scripts",
-					"formatZH": "同步脚本库脚本",
 					"paramKeys": []
 				}
 			}
@@ -12432,7 +12332,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "update script [name]",
-					"formatZH": "更新脚本库脚本 [name]",
 					"paramKeys": []
 				}
 			}
@@ -12535,8 +12434,7 @@ const docTemplate = `{
 						"ipv6",
 						"bindAddress"
 					],
-					"formatEN": "update system bind info =\u003e ipv6: [ipv6], 监听 IP: [bindAddress]",
-					"formatZH": "修改系统监听信息 =\u003e ipv6: [ipv6], 监听 IP: [bindAddress]",
+					"formatEN": "update system bind info =\u003e ipv6: [ipv6], listen IP: [bindAddress]",
 					"paramKeys": []
 				}
 			}
@@ -12671,7 +12569,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "update dashboard memo",
-					"formatZH": "更新仪表盘备忘录",
 					"paramKeys": []
 				}
 			}
@@ -12702,7 +12599,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Init menu.",
-					"formatZH": "初始化菜单",
 					"paramKeys": []
 				}
 			}
@@ -12744,7 +12640,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Hide advanced feature menu.",
-					"formatZH": "隐藏高级功能菜单",
 					"paramKeys": []
 				}
 			}
@@ -12788,7 +12683,6 @@ const docTemplate = `{
 						"serverPort"
 					],
 					"formatEN": "update system port =\u003e [serverPort]",
-					"formatZH": "修改系统端口 =\u003e [serverPort]",
 					"paramKeys": []
 				}
 			}
@@ -12833,7 +12727,6 @@ const docTemplate = `{
 						"proxyPort"
 					],
 					"formatEN": "set proxy [proxyPort]:[proxyPort].",
-					"formatZH": "服务器代理配置 [proxyPort]:[proxyPort]",
 					"paramKeys": []
 				}
 			}
@@ -12975,7 +12868,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "reload system SSL",
-					"formatZH": "重载系统 SSL",
 					"paramKeys": []
 				}
 			}
@@ -13019,7 +12911,6 @@ const docTemplate = `{
 						"ssl"
 					],
 					"formatEN": "update system ssl =\u003e [ssl]",
-					"formatZH": "修改系统 ssl =\u003e [ssl]",
 					"paramKeys": []
 				}
 			}
@@ -13085,7 +12976,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "update system terminal setting",
-					"formatZH": "修改系统终端配置",
 					"paramKeys": []
 				}
 			}
@@ -13130,7 +13020,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "update system setting [key] =\u003e [value]",
-					"formatZH": "修改系统配置 [key] =\u003e [value]",
 					"paramKeys": []
 				}
 			}
@@ -13196,7 +13085,6 @@ const docTemplate = `{
 						"version"
 					],
 					"formatEN": "upgrade system =\u003e [version]",
-					"formatZH": "更新系统 =\u003e [version]",
 					"paramKeys": []
 				}
 			}
@@ -13306,7 +13194,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create cronjob [type][name]",
-					"formatZH": "创建计划任务 [type][name]",
 					"paramKeys": []
 				}
 			}
@@ -13359,7 +13246,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete cronjob [names]",
-					"formatZH": "删除计划任务 [names]",
 					"paramKeys": []
 				}
 			}
@@ -13447,7 +13333,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "update cronjob group [name]",
-					"formatZH": "更新计划任务分组 [name]",
 					"paramKeys": []
 				}
 			}
@@ -13500,7 +13385,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "manually execute the cronjob [name]",
-					"formatZH": "手动执行计划任务 [name]",
 					"paramKeys": []
 				}
 			}
@@ -13658,7 +13542,6 @@ const docTemplate = `{
 						"cronjobID"
 					],
 					"formatEN": "clean cronjob [name] records",
-					"formatZH": "清空计划任务记录 [name]",
 					"paramKeys": []
 				}
 			}
@@ -13853,7 +13736,6 @@ const docTemplate = `{
 						"status"
 					],
 					"formatEN": "change the status of cronjob [name] to [status].",
-					"formatZH": "修改计划任务 [name] 状态为 [status]",
 					"paramKeys": []
 				}
 			}
@@ -13941,7 +13823,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "update cronjob [name]",
-					"formatZH": "更新计划任务 [name]",
 					"paramKeys": []
 				}
 			}
@@ -14057,7 +13938,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "app launcher [key] =\u003e show: [value]",
-					"formatZH": "首页应用 [key] =\u003e 显示：[value]",
 					"paramKeys": []
 				}
 			}
@@ -14290,7 +14170,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "change quick jump",
-					"formatZH": "切换快速跳转",
 					"paramKeys": []
 				}
 			}
@@ -14524,7 +14403,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create mysql database [name]",
-					"formatZH": "创建 mysql 数据库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -14568,7 +14446,6 @@ const docTemplate = `{
 						"database"
 					],
 					"formatEN": "Update database [database] root access",
-					"formatZH": "更新数据库 [database] root 访问权限",
 					"paramKeys": []
 				}
 			}
@@ -14612,7 +14489,6 @@ const docTemplate = `{
 						"database"
 					],
 					"formatEN": "Update database [database] root password",
-					"formatZH": "更新数据库 [database] root 密码",
 					"paramKeys": []
 				}
 			}
@@ -14733,7 +14609,6 @@ const docTemplate = `{
 						"database"
 					],
 					"formatEN": "update the [type] [database] database configuration information",
-					"formatZH": "更新 [type] 数据库 [database] 配置信息",
 					"paramKeys": []
 				}
 			}
@@ -14778,7 +14653,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create database [name][type]",
-					"formatZH": "创建远程数据库 [name][type]",
 					"paramKeys": []
 				}
 			}
@@ -14859,7 +14733,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "check if database [name][type] is connectable",
-					"formatZH": "检测远程数据库 [name][type] 连接性",
 					"paramKeys": []
 				}
 			}
@@ -14912,7 +14785,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete database [names]",
-					"formatZH": "删除远程数据库 [names]",
 					"paramKeys": []
 				}
 			}
@@ -15107,7 +14979,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "update database [name]",
-					"formatZH": "更新远程数据库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -15160,7 +15031,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete mysql database [name]",
-					"formatZH": "删除 mysql 数据库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -15255,7 +15125,6 @@ const docTemplate = `{
 						"description"
 					],
 					"formatEN": "The description of the mysql database [name] is modified =\u003e [description]",
-					"formatZH": "mysql 数据库 [name] 描述信息修改 [description]",
 					"paramKeys": []
 				}
 			}
@@ -15343,7 +15212,6 @@ const docTemplate = `{
 						"host"
 					],
 					"formatEN": "grant mysql database [database] user [username]@[host] access to [db]",
-					"formatZH": "授权 mysql 数据库 [database] 用户 [username]@[host] 访问 [db]",
 					"paramKeys": []
 				}
 			}
@@ -15390,7 +15258,6 @@ const docTemplate = `{
 						"host"
 					],
 					"formatEN": "revoke mysql database [database] user [username]@[host] access to [db]",
-					"formatZH": "取消 mysql 数据库 [database] 用户 [username]@[host] 对 [db] 的授权",
 					"paramKeys": []
 				}
 			}
@@ -15554,7 +15421,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create mongodb database [name]",
-					"formatZH": "创建 mongodb 数据库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -15600,7 +15466,6 @@ const docTemplate = `{
 						"username"
 					],
 					"formatEN": "bind mongodb database [database] [name] user [username]",
-					"formatZH": "绑定 mongodb 数据库 [database] [name] 用户 [username]",
 					"paramKeys": []
 				}
 			}
@@ -15653,7 +15518,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete mongodb database [name]",
-					"formatZH": "删除 mongodb 数据库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -15748,7 +15612,6 @@ const docTemplate = `{
 						"description"
 					],
 					"formatEN": "The description of the mongodb database [name] is modified =\u003e [description]",
-					"formatZH": "mongodb 数据库 [name] 描述信息修改 [description]",
 					"paramKeys": []
 				}
 			}
@@ -15828,7 +15691,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "update mongodb database [database] [name] password",
-					"formatZH": "更新 mongodb 数据库 [database] [name] 密码",
 					"paramKeys": []
 				}
 			}
@@ -15911,7 +15773,6 @@ const docTemplate = `{
 						"username"
 					],
 					"formatEN": "update mongodb database [database] user [username] privileges",
-					"formatZH": "更新 mongodb 数据库 [database] 用户 [username] 权限",
 					"paramKeys": []
 				}
 			}
@@ -15955,7 +15816,6 @@ const docTemplate = `{
 						"database"
 					],
 					"formatEN": "update mongodb database [database] root password",
-					"formatZH": "更新 mongodb 数据库 [database] root 密码",
 					"paramKeys": []
 				}
 			}
@@ -16037,7 +15897,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create postgresql database [name]",
-					"formatZH": "创建 postgresql 数据库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -16124,7 +15983,6 @@ const docTemplate = `{
 						"username"
 					],
 					"formatEN": "bind postgresql database [name] user [username]",
-					"formatZH": "绑定 postgresql 数据库 [name] 用户 [username]",
 					"paramKeys": []
 				}
 			}
@@ -16177,7 +16035,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete postgresql database [name]",
-					"formatZH": "删除 postgresql 数据库 [name]",
 					"paramKeys": []
 				}
 			}
@@ -16272,7 +16129,6 @@ const docTemplate = `{
 						"description"
 					],
 					"formatEN": "The description of the postgresql database [name] is modified =\u003e [description]",
-					"formatZH": "postgresql 数据库 [name] 描述信息修改 [description]",
 					"paramKeys": []
 				}
 			}
@@ -16325,7 +16181,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Update database [name] password",
-					"formatZH": "更新数据库 [name] 密码",
 					"paramKeys": []
 				}
 			}
@@ -16370,7 +16225,6 @@ const docTemplate = `{
 						"username"
 					],
 					"formatEN": "Update [username] privileges of database [database]",
-					"formatZH": "更新数据库 [database] 用户 [username] 权限",
 					"paramKeys": []
 				}
 			}
@@ -16509,7 +16363,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "update the redis database configuration information",
-					"formatZH": "更新 redis 数据库配置信息",
 					"paramKeys": []
 				}
 			}
@@ -16589,7 +16442,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "change the password of the redis database",
-					"formatZH": "修改 redis 数据库密码",
 					"paramKeys": []
 				}
 			}
@@ -16669,7 +16521,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "redis database persistence configuration update",
-					"formatZH": "redis 数据库持久化配置更新",
 					"paramKeys": []
 				}
 			}
@@ -16867,7 +16718,6 @@ const docTemplate = `{
 						"host"
 					],
 					"formatEN": "create mysql database [database] user [username]@[host]",
-					"formatZH": "创建 mysql 数据库 [database] 用户 [username]@[host]",
 					"paramKeys": []
 				}
 			}
@@ -16913,7 +16763,6 @@ const docTemplate = `{
 						"host"
 					],
 					"formatEN": "delete mysql database [database] user [username]@[host]",
-					"formatZH": "删除 mysql 数据库 [database] 用户 [username]@[host]",
 					"paramKeys": []
 				}
 			}
@@ -16959,7 +16808,6 @@ const docTemplate = `{
 						"host"
 					],
 					"formatEN": "update mysql database [database] user [username]@[host] password",
-					"formatZH": "更新 mysql 数据库 [database] 用户 [username]@[host] 密码",
 					"paramKeys": []
 				}
 			}
@@ -17005,7 +16853,6 @@ const docTemplate = `{
 						"host"
 					],
 					"formatEN": "save mysql database [database] user [username]@[host] password locally",
-					"formatZH": "补充 mysql 数据库 [database] 用户 [username]@[host] 密码",
 					"paramKeys": []
 				}
 			}
@@ -17094,7 +16941,6 @@ const docTemplate = `{
 						"description"
 					],
 					"formatEN": "update mysql database [database] user [username] access [host] =\u003e [newHost] description [description]",
-					"formatZH": "更新 mysql 数据库 [database] 用户 [username] 访问权限 [host] =\u003e [newHost] 描述 [description]",
 					"paramKeys": []
 				}
 			}
@@ -17174,7 +17020,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "adjust mysql database performance parameters",
-					"formatZH": "调整 mysql 数据库性能参数",
 					"paramKeys": []
 				}
 			}
@@ -17218,7 +17063,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Create dir or file [path]",
-					"formatZH": "创建文件/文件夹 [path]",
 					"paramKeys": []
 				}
 			}
@@ -17342,7 +17186,6 @@ const docTemplate = `{
 						"paths"
 					],
 					"formatEN": "Batch delete dir or file [paths]",
-					"formatZH": "批量删除文件/文件夹 [paths]",
 					"paramKeys": []
 				}
 			}
@@ -17389,7 +17232,6 @@ const docTemplate = `{
 						"group"
 					],
 					"formatEN": "Batch change file mode and owner [paths] =\u003e [mode]/[user]/[group]",
-					"formatZH": "批量修改文件权限和用户/组 [paths] =\u003e [mode]/[user]/[group]",
 					"paramKeys": []
 				}
 			}
@@ -17471,7 +17313,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Download file [name]",
-					"formatZH": "下载文件 [name]",
 					"paramKeys": []
 				}
 			}
@@ -17545,7 +17386,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Compress file [name]",
-					"formatZH": "压缩文件 [name]",
 					"paramKeys": []
 				}
 			}
@@ -17627,7 +17467,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Load file content [path]",
-					"formatZH": "获取文件内容 [path]",
 					"paramKeys": []
 				}
 			}
@@ -17741,7 +17580,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Decompress file [path]",
-					"formatZH": "解压 [path]",
 					"paramKeys": []
 				}
 			}
@@ -17820,7 +17658,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Delete dir or file [path]",
-					"formatZH": "删除文件/文件夹 [path]",
 					"paramKeys": []
 				}
 			}
@@ -17870,7 +17707,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Multi file size [path]",
-					"formatZH": "获取目录及其第一层子目录文件夹大小 [path]",
 					"paramKeys": []
 				}
 			}
@@ -17940,8 +17776,7 @@ const docTemplate = `{
 					"bodyKeys": [
 						"path"
 					],
-					"formatEN": "收藏文件/文件夹 [path]",
-					"formatZH": "收藏文件/文件夹 [path]",
+					"formatEN": "Favorite file or folder [path]",
 					"paramKeys": []
 				}
 			}
@@ -17994,7 +17829,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete avorite [path]",
-					"formatZH": "删除收藏 [path]",
 					"paramKeys": []
 				}
 			}
@@ -18226,7 +18060,6 @@ const docTemplate = `{
 						"mode"
 					],
 					"formatEN": "Change mode [path] =\u003e [mode]",
-					"formatZH": "修改权限 [path] =\u003e [mode]",
 					"paramKeys": []
 				}
 			}
@@ -18298,7 +18131,6 @@ const docTemplate = `{
 						"newPath"
 					],
 					"formatEN": "Move [oldPaths] =\u003e [newPath]",
-					"formatZH": "移动文件 [oldPaths] =\u003e [newPath]",
 					"paramKeys": []
 				}
 			}
@@ -18379,7 +18211,6 @@ const docTemplate = `{
 						"group"
 					],
 					"formatEN": "Change owner [path] =\u003e [user]/[group]",
-					"formatZH": "修改用户/组 [path] =\u003e [user]/[group]",
 					"paramKeys": []
 				}
 			}
@@ -18426,7 +18257,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Preview file content [path]",
-					"formatZH": "预览文件内容 [path]",
 					"paramKeys": []
 				}
 			}
@@ -18498,8 +18328,7 @@ const docTemplate = `{
 				"x-panel-log": {
 					"BeforeFunctions": [],
 					"bodyKeys": [],
-					"formatEN": "清空回收站",
-					"formatZH": "清空回收站",
+					"formatEN": "Clear recycle bin",
 					"paramKeys": []
 				}
 			}
@@ -18543,7 +18372,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Reduce RecycleBin file [name]",
-					"formatZH": "还原回收站文件 [name]",
 					"paramKeys": []
 				}
 			}
@@ -18726,7 +18554,6 @@ const docTemplate = `{
 						"newName"
 					],
 					"formatEN": "Rename [oldName] =\u003e [newName]",
-					"formatZH": "重命名 [oldName] =\u003e [newName]",
 					"paramKeys": []
 				}
 			}
@@ -18770,7 +18597,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Update file content [path]",
-					"formatZH": "更新文件内容 [path]",
 					"paramKeys": []
 				}
 			}
@@ -18887,7 +18713,6 @@ const docTemplate = `{
 						"expireMinutes"
 					],
 					"formatEN": "Create file share [path]",
-					"formatZH": "创建文件分享 [path]",
 					"paramKeys": []
 				}
 			}
@@ -18931,7 +18756,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Close file share [path]",
-					"formatZH": "关闭文件分享 [path]",
 					"paramKeys": []
 				}
 			}
@@ -19155,7 +18979,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "Load file size [path]",
-					"formatZH": "获取文件夹大小 [path]",
 					"paramKeys": []
 				}
 			}
@@ -19236,7 +19059,6 @@ const docTemplate = `{
 						"file"
 					],
 					"formatEN": "Upload file [path]/[file]",
-					"formatZH": "上传文件 [path]/[file]",
 					"paramKeys": []
 				}
 			}
@@ -19350,7 +19172,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Download url =\u003e [path]/[name]",
-					"formatZH": "下载 url =\u003e [path]/[name]",
 					"paramKeys": []
 				}
 			}
@@ -19439,7 +19260,6 @@ const docTemplate = `{
 						"keys"
 					],
 					"formatEN": "Remove finished download records [keys]",
-					"formatZH": "移除已结束下载记录 [keys]",
 					"paramKeys": []
 				}
 			}
@@ -19483,7 +19303,6 @@ const docTemplate = `{
 						"key"
 					],
 					"formatEN": "Stop wget task [key]",
-					"formatZH": "停止下载任务 [key]",
 					"paramKeys": []
 				}
 			}
@@ -19528,7 +19347,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create group [name][type]",
-					"formatZH": "创建组 [name][type]",
 					"paramKeys": []
 				}
 			}
@@ -19589,7 +19407,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete group [type][name]",
-					"formatZH": "删除组 [type][name]",
 					"paramKeys": []
 				}
 			}
@@ -19675,7 +19492,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "update group [name][type]",
-					"formatZH": "更新组 [name][type]",
 					"paramKeys": []
 				}
 			}
@@ -19741,7 +19557,6 @@ const docTemplate = `{
 						"addr"
 					],
 					"formatEN": "create host [name][addr]",
-					"formatZH": "创建主机 [name][addr]",
 					"paramKeys": []
 				}
 			}
@@ -19830,7 +19645,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete host [names]",
-					"formatZH": "删除主机 [names]",
 					"paramKeys": []
 				}
 			}
@@ -19990,7 +19804,6 @@ const docTemplate = `{
 						"mountPoint"
 					],
 					"formatEN": "Mount disk [device] to [mountPoint]",
-					"formatZH": "挂载磁盘 [device] 到 [mountPoint]",
 					"paramKeys": []
 				}
 			}
@@ -20040,7 +19853,6 @@ const docTemplate = `{
 						"mountPoint"
 					],
 					"formatEN": "Partition disk [device] with filesystem [filesystem], mount point [mountPoint]",
-					"formatZH": "对磁盘 [device] 进行分区，文件系统 [filesystem]，挂载点 [mountPoint]",
 					"paramKeys": []
 				}
 			}
@@ -20089,7 +19901,6 @@ const docTemplate = `{
 						"mountPoint"
 					],
 					"formatEN": "Unmount disk [device] from [mountPoint]",
-					"formatZH": "卸载磁盘 [device] 从 [mountPoint]",
 					"paramKeys": []
 				}
 			}
@@ -20201,7 +20012,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] Docker port guard",
-					"formatZH": "[operation] Docker 端口防护",
 					"paramKeys": []
 				}
 			}
@@ -20246,7 +20056,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "batch update Docker port guard policies",
-					"formatZH": "批量更新 Docker 端口防护策略",
 					"paramKeys": []
 				}
 			}
@@ -20291,7 +20100,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "delete Docker port guard policies",
-					"formatZH": "删除 Docker 端口防护策略",
 					"paramKeys": []
 				}
 			}
@@ -20364,7 +20172,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] [subsystem] [family] firewall chains",
-					"formatZH": "[operation] [subsystem] [family] 防火墙链",
 					"paramKeys": []
 				}
 			}
@@ -20411,7 +20218,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "[operate] firewall filter chain",
-					"formatZH": "[operate] 防火墙过滤链",
 					"paramKeys": []
 				}
 			}
@@ -20483,7 +20289,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "initialize and enable port forwarding",
-					"formatZH": "初始化并启用端口转发",
 					"paramKeys": []
 				}
 			}
@@ -20528,7 +20333,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "update port forward rules",
-					"formatZH": "更新端口转发规则",
 					"paramKeys": []
 				}
 			}
@@ -20613,7 +20417,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] firewall",
-					"formatZH": "[operation] 防火墙",
 					"paramKeys": []
 				}
 			}
@@ -20671,7 +20474,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "create firewall rules",
-					"formatZH": "添加防火墙规则",
 					"paramKeys": []
 				}
 			}
@@ -20761,7 +20563,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "delete firewall rules",
-					"formatZH": "删除防火墙规则",
 					"paramKeys": []
 				}
 			}
@@ -20853,7 +20654,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "reorder firewall rule",
-					"formatZH": "调整防火墙规则顺序",
 					"paramKeys": []
 				}
 			}
@@ -20904,7 +20704,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "reset firewall rules",
-					"formatZH": "重置防火墙规则",
 					"paramKeys": []
 				}
 			}
@@ -20996,7 +20795,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "update firewall rule",
-					"formatZH": "更新防火墙规则",
 					"paramKeys": []
 				}
 			}
@@ -21067,7 +20865,6 @@ const docTemplate = `{
 						"status"
 					],
 					"formatEN": "Set firewall IPv6 support to [status]",
-					"formatZH": "设置防火墙 IPv6 支持为 [status]",
 					"paramKeys": []
 				}
 			}
@@ -21113,7 +20910,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] firewall [subsystem] backend [backend]",
-					"formatZH": "防火墙子系统 [subsystem] 后端 [operation] [backend]",
 					"paramKeys": []
 				}
 			}
@@ -21158,7 +20954,6 @@ const docTemplate = `{
 						"rule"
 					],
 					"formatEN": "create firewall port whitelist",
-					"formatZH": "创建防火墙端口白名单",
 					"paramKeys": []
 				}
 			}
@@ -21203,7 +20998,6 @@ const docTemplate = `{
 						"rules"
 					],
 					"formatEN": "delete firewall port whitelist",
-					"formatZH": "删除防火墙端口白名单",
 					"paramKeys": []
 				}
 			}
@@ -21249,7 +21043,6 @@ const docTemplate = `{
 						"rule"
 					],
 					"formatEN": "update firewall port whitelist",
-					"formatZH": "编辑防火墙端口白名单",
 					"paramKeys": []
 				}
 			}
@@ -21325,7 +21118,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "clean [type] monitoring data",
-					"formatZH": "清空 [type] 监控数据",
 					"paramKeys": []
 				}
 			}
@@ -21471,7 +21263,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "update default monitor [key]-[value]",
-					"formatZH": "修改默认监控网卡 [key]-[value]",
 					"paramKeys": []
 				}
 			}
@@ -21548,7 +21339,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "generate SSH secret",
-					"formatZH": "生成 SSH 密钥 ",
 					"paramKeys": []
 				}
 			}
@@ -21590,7 +21380,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "delete SSH secret",
-					"formatZH": "删除 SSH 密钥 ",
 					"paramKeys": []
 				}
 			}
@@ -21656,7 +21445,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "sync SSH secret",
-					"formatZH": "同步 SSH 密钥 ",
 					"paramKeys": []
 				}
 			}
@@ -21698,7 +21486,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "generate SSH secret",
-					"formatZH": "生成 SSH 密钥 ",
 					"paramKeys": []
 				}
 			}
@@ -21780,7 +21567,6 @@ const docTemplate = `{
 						"key"
 					],
 					"formatEN": "update SSH conf [key]",
-					"formatZH": "修改 SSH 配置文件 [key]",
 					"paramKeys": []
 				}
 			}
@@ -21846,7 +21632,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "clean SSH login logs",
-					"formatZH": "清空 SSH 登录日志",
 					"paramKeys": []
 				}
 			}
@@ -21928,7 +21713,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] SSH",
-					"formatZH": "[operation] SSH ",
 					"paramKeys": []
 				}
 			}
@@ -21997,7 +21781,6 @@ const docTemplate = `{
 						"newValue"
 					],
 					"formatEN": "update SSH setting [key] =\u003e [newValue]",
-					"formatZH": "修改 SSH 配置 [key] =\u003e [newValue]",
 					"paramKeys": []
 				}
 			}
@@ -22360,7 +22143,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "update [type] tool config",
-					"formatZH": "更新 [type] 主机工具配置文件 ",
 					"paramKeys": []
 				}
 			}
@@ -22404,7 +22186,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create [type] config",
-					"formatZH": "创建 [type] 配置",
 					"paramKeys": []
 				}
 			}
@@ -22449,7 +22230,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "[operate] [type]",
-					"formatZH": "[operate] [type] ",
 					"paramKeys": []
 				}
 			}
@@ -22556,7 +22336,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "[operate] process",
-					"formatZH": "[operate] 守护进程 ",
 					"paramKeys": []
 				}
 			}
@@ -22603,7 +22382,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "[operate] Supervisor Process Config file",
-					"formatZH": "[operate] Supervisor 进程文件 ",
 					"paramKeys": []
 				}
 			}
@@ -22721,7 +22499,6 @@ const docTemplate = `{
 						"addr"
 					],
 					"formatEN": "update host [name][addr]",
-					"formatZH": "更新主机 [name][addr]",
 					"paramKeys": []
 				}
 			}
@@ -22775,7 +22552,6 @@ const docTemplate = `{
 						"groupID"
 					],
 					"formatEN": "update host [name] group",
-					"formatZH": "更新主机 [name] 分组",
 					"paramKeys": []
 				}
 			}
@@ -23063,7 +22839,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Build OpenResty",
-					"formatZH": "构建 OpenResty",
 					"paramKeys": []
 				}
 			}
@@ -23105,7 +22880,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Update nginx conf",
-					"formatZH": "更新 nginx 配置",
 					"paramKeys": []
 				}
 			}
@@ -23228,7 +23002,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Update OpenResty module",
-					"formatZH": "更新 OpenResty 模块",
 					"paramKeys": []
 				}
 			}
@@ -23346,7 +23119,6 @@ const docTemplate = `{
 						"websiteId"
 					],
 					"formatEN": "Update nginx conf [domain]",
-					"formatZH": "更新 nginx 配置 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -23407,8 +23179,7 @@ const docTemplate = `{
 					"bodyKeys": [
 						"PID"
 					],
-					"formatEN": "结束进程 [PID]",
-					"formatZH": "结束进程 [PID]",
+					"formatEN": "Kill process [PID]",
 					"paramKeys": []
 				}
 			}
@@ -23506,7 +23277,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Create runtime [name]",
-					"formatZH": "创建运行环境 [name]",
 					"paramKeys": []
 				}
 			}
@@ -23584,7 +23354,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Delete runtime [name]",
-					"formatZH": "删除运行环境 [name]",
 					"paramKeys": []
 				}
 			}
@@ -23793,7 +23562,6 @@ const docTemplate = `{
 						"ID"
 					],
 					"formatEN": "Operate runtime [name]",
-					"formatZH": "操作运行环境 [name]",
 					"paramKeys": []
 				}
 			}
@@ -23882,7 +23650,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "[domain] PHP conf update",
-					"formatZH": "[domain] PHP 配置修改",
 					"paramKeys": []
 				}
 			}
@@ -24401,7 +24168,6 @@ const docTemplate = `{
 						"websiteId"
 					],
 					"formatEN": "Nginx conf update [domain]",
-					"formatZH": "php 配置修改 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -24651,7 +24417,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Update runtime [name]",
-					"formatZH": "更新运行环境 [name]",
 					"paramKeys": []
 				}
 			}
@@ -24835,7 +24600,6 @@ const docTemplate = `{
 						"aiAccountId"
 					],
 					"formatEN": "update file manage AI setting [aiStatus][aiAccountId]",
-					"formatZH": "更新文件管理 AI 设置 [aiStatus][aiAccountId]",
 					"paramKeys": []
 				}
 			}
@@ -24925,7 +24689,6 @@ const docTemplate = `{
 						"description"
 					],
 					"formatEN": "Create system backup [description] to [from]",
-					"formatZH": "创建系统快照 [description] 到 [from]",
 					"paramKeys": []
 				}
 			}
@@ -24978,7 +24741,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "Delete system backup [name]",
-					"formatZH": "删除系统快照 [name]",
 					"paramKeys": []
 				}
 			}
@@ -25032,7 +24794,6 @@ const docTemplate = `{
 						"description"
 					],
 					"formatEN": "The description of the snapshot [name] is modified =\u003e [description]",
-					"formatZH": "快照 [name] 描述信息修改 [description]",
 					"paramKeys": []
 				}
 			}
@@ -25077,7 +24838,6 @@ const docTemplate = `{
 						"names"
 					],
 					"formatEN": "Sync system snapshots [names] from [from]",
-					"formatZH": "从 [from] 同步系统快照 [names]",
 					"paramKeys": []
 				}
 			}
@@ -25154,7 +24914,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Recover from system backup [name]",
-					"formatZH": "从系统快照 [name] 恢复",
 					"paramKeys": []
 				}
 			}
@@ -25207,7 +24966,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "recrete the snapshot [name]",
-					"formatZH": "重试创建快照 [name]",
 					"paramKeys": []
 				}
 			}
@@ -25260,7 +25018,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Rollback from system backup [name]",
-					"formatZH": "从系统快照 [name] 回滚",
 					"paramKeys": []
 				}
 			}
@@ -25432,7 +25189,6 @@ const docTemplate = `{
 						"defaultConn"
 					],
 					"formatEN": "update system default conn [defaultConn]",
-					"formatZH": "本地终端默认连接 [defaultConn]",
 					"paramKeys": []
 				}
 			}
@@ -25498,7 +25254,6 @@ const docTemplate = `{
 						"aiAccountId"
 					],
 					"formatEN": "update terminal AI setting [aiStatus][aiAccountId]",
-					"formatZH": "更新终端 AI 设置 [aiStatus][aiAccountId]",
 					"paramKeys": []
 				}
 			}
@@ -25543,7 +25298,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "update system setting [key] =\u003e [value]",
-					"formatZH": "修改系统配置 [key] =\u003e [value]",
 					"paramKeys": []
 				}
 			}
@@ -25612,7 +25366,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "create clam [name][path]",
-					"formatZH": "创建扫描规则 [name][path]",
 					"paramKeys": []
 				}
 			}
@@ -25692,7 +25445,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete clam [names]",
-					"formatZH": "删除扫描规则 [names]",
 					"paramKeys": []
 				}
 			}
@@ -25818,7 +25570,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "handle clam scan [name]",
-					"formatZH": "执行病毒扫描 [name]",
 					"paramKeys": []
 				}
 			}
@@ -25862,7 +25613,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] Clam",
-					"formatZH": "[operation] Clam",
 					"paramKeys": []
 				}
 			}
@@ -25915,7 +25665,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "clean clam record [name]",
-					"formatZH": "清空扫描报告 [name]",
 					"paramKeys": []
 				}
 			}
@@ -26045,7 +25794,6 @@ const docTemplate = `{
 						"status"
 					],
 					"formatEN": "change the status of clam [name] to [status].",
-					"formatZH": "修改扫描规则 [name] 状态为 [status]",
 					"paramKeys": []
 				}
 			}
@@ -26090,7 +25838,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "update clam [name][path]",
-					"formatZH": "修改扫描规则 [name][path]",
 					"paramKeys": []
 				}
 			}
@@ -26135,7 +25882,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Clean system junk files",
-					"formatZH": "清理系统垃圾文件",
 					"paramKeys": []
 				}
 			}
@@ -26318,7 +26064,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "update device conf [key] =\u003e [value]",
-					"formatZH": "修改主机参数 [key] =\u003e [value]",
 					"paramKeys": []
 				}
 			}
@@ -26349,7 +26094,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "update device host [key] =\u003e [value]",
-					"formatZH": "修改主机 Host [key] =\u003e [value]",
 					"paramKeys": []
 				}
 			}
@@ -26429,7 +26173,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "[operate] device swap [path]",
-					"formatZH": "[operate] 主机 swap [path]",
 					"paramKeys": []
 				}
 			}
@@ -26575,7 +26318,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] Fail2ban",
-					"formatZH": "[operation] Fail2ban",
 					"paramKeys": []
 				}
 			}
@@ -26696,7 +26438,6 @@ const docTemplate = `{
 						"value"
 					],
 					"formatEN": "update fail2ban conf [key] =\u003e [value]",
-					"formatZH": "修改 Fail2ban 配置 [key] =\u003e [value]",
 					"paramKeys": []
 				}
 			}
@@ -26776,7 +26517,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "create FTP [user][path]",
-					"formatZH": "创建 FTP 账户 [user][path]",
 					"paramKeys": []
 				}
 			}
@@ -26853,7 +26593,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "delete FTP users [users]",
-					"formatZH": "删除 FTP 账户 [users]",
 					"paramKeys": []
 				}
 			}
@@ -26935,7 +26674,6 @@ const docTemplate = `{
 						"operation"
 					],
 					"formatEN": "[operation] FTP",
-					"formatZH": "[operation] FTP",
 					"paramKeys": []
 				}
 			}
@@ -27015,7 +26753,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "sync FTP users",
-					"formatZH": "同步 FTP 账户",
 					"paramKeys": []
 				}
 			}
@@ -27060,7 +26797,6 @@ const docTemplate = `{
 						"path"
 					],
 					"formatEN": "update FTP [user][path]",
-					"formatZH": "修改 FTP 账户 [user][path]",
 					"paramKeys": []
 				}
 			}
@@ -27091,7 +26827,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "scan System Junk Files",
-					"formatZH": "扫描系统垃圾文件",
 					"paramKeys": []
 				}
 			}
@@ -27142,7 +26877,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "create VM [name]",
-					"formatZH": "创建虚拟机 [name]",
 					"paramKeys": []
 				}
 			}
@@ -27274,7 +27008,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete VM [name]",
-					"formatZH": "删除虚拟机 [name]",
 					"paramKeys": []
 				}
 			}
@@ -27327,7 +27060,6 @@ const docTemplate = `{
 						"sizeGiB"
 					],
 					"formatEN": "expand VM [name] disk [target] to [sizeGiB] GiB",
-					"formatZH": "扩容虚拟机 [name] 磁盘 [target] 至 [sizeGiB] GiB",
 					"paramKeys": []
 				}
 			}
@@ -27391,7 +27123,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "enable VM runtime environment",
-					"formatZH": "启用虚拟机运行环境",
 					"paramKeys": []
 				}
 			}
@@ -27521,7 +27252,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create VM ISO [name] [type]",
-					"formatZH": "创建虚拟机镜像 [name] [type]",
 					"paramKeys": []
 				}
 			}
@@ -27577,7 +27307,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete VM ISO [name]",
-					"formatZH": "删除虚拟机镜像 [name]",
 					"paramKeys": []
 				}
 			}
@@ -27797,7 +27526,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "update VM ISO [name] [type]",
-					"formatZH": "更新虚拟机镜像 [name] [type]",
 					"paramKeys": []
 				}
 			}
@@ -27845,7 +27573,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create VM network [name] [type]",
-					"formatZH": "创建虚拟机网络 [name] [type]",
 					"paramKeys": []
 				}
 			}
@@ -27934,7 +27661,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete VM network [name]",
-					"formatZH": "删除虚拟机网络 [name]",
 					"paramKeys": []
 				}
 			}
@@ -28056,7 +27782,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "update VM network [name]",
-					"formatZH": "更新虚拟机网络 [name]",
 					"paramKeys": []
 				}
 			}
@@ -28104,7 +27829,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "operate VM [name] [operate]",
-					"formatZH": "操作虚拟机 [name] [operate]",
 					"paramKeys": []
 				}
 			}
@@ -28155,7 +27879,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "clean VM orphaned data",
-					"formatZH": "清理虚拟机孤立数据",
 					"paramKeys": []
 				}
 			}
@@ -28240,7 +27963,6 @@ const docTemplate = `{
 						"newName"
 					],
 					"formatEN": "rename VM [name] to [newName]",
-					"formatZH": "重命名虚拟机 [name] 为 [newName]",
 					"paramKeys": []
 				}
 			}
@@ -28349,7 +28071,6 @@ const docTemplate = `{
 						"snapshotName"
 					],
 					"formatEN": "create VM [name] snapshot [snapshotName]",
-					"formatZH": "创建虚拟机 [name] 快照 [snapshotName]",
 					"paramKeys": []
 				}
 			}
@@ -28401,7 +28122,6 @@ const docTemplate = `{
 						"snapshotName"
 					],
 					"formatEN": "delete VM [name] snapshot [snapshotName]",
-					"formatZH": "删除虚拟机 [name] 快照 [snapshotName]",
 					"paramKeys": []
 				}
 			}
@@ -28497,7 +28217,6 @@ const docTemplate = `{
 						"snapshotName"
 					],
 					"formatEN": "recover VM [name] snapshot [snapshotName]",
-					"formatZH": "恢复虚拟机 [name] 快照 [snapshotName]",
 					"paramKeys": []
 				}
 			}
@@ -28586,7 +28305,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "create VM storage [name] [type]",
-					"formatZH": "创建虚拟机存储 [name] [type]",
 					"paramKeys": []
 				}
 			}
@@ -28642,7 +28360,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete VM storage [name]",
-					"formatZH": "删除虚拟机存储 [name]",
 					"paramKeys": []
 				}
 			}
@@ -28731,7 +28448,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "update VM storage [name]",
-					"formatZH": "更新虚拟机存储 [name]",
 					"paramKeys": []
 				}
 			}
@@ -28765,7 +28481,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "sync virtual machines",
-					"formatZH": "同步虚拟机",
 					"paramKeys": []
 				}
 			}
@@ -28817,7 +28532,6 @@ const docTemplate = `{
 						"templateName"
 					],
 					"formatEN": "create VM [name] template [templateName]",
-					"formatZH": "创建虚拟机 [name] 模板 [templateName]",
 					"paramKeys": []
 				}
 			}
@@ -28877,7 +28591,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "delete VM template [name]",
-					"formatZH": "删除虚拟机模板 [name]",
 					"paramKeys": []
 				}
 			}
@@ -28961,7 +28674,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "update VM [name]",
-					"formatZH": "更新虚拟机 [name]",
 					"paramKeys": []
 				}
 			}
@@ -29005,7 +28717,6 @@ const docTemplate = `{
 						"alias"
 					],
 					"formatEN": "Create website [alias]",
-					"formatZH": "创建网站 [alias]",
 					"paramKeys": []
 				}
 			}
@@ -29181,7 +28892,6 @@ const docTemplate = `{
 						"websiteId"
 					],
 					"formatEN": "Update website https [domain] conf",
-					"formatZH": "更新网站 [domain] https 配置",
 					"paramKeys": []
 				}
 			}
@@ -29228,7 +28938,6 @@ const docTemplate = `{
 						"email"
 					],
 					"formatEN": "Create website acme [email]",
-					"formatZH": "创建网站 acme [email]",
 					"paramKeys": []
 				}
 			}
@@ -29281,7 +28990,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Delete website acme [email]",
-					"formatZH": "删除网站 acme [email]",
 					"paramKeys": []
 				}
 			}
@@ -29375,7 +29083,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Update acme [email]",
-					"formatZH": "更新 acme [email]",
 					"paramKeys": []
 				}
 			}
@@ -29673,7 +29380,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Create website ca [name]",
-					"formatZH": "创建网站 ca [name]",
 					"paramKeys": []
 				}
 			}
@@ -29726,7 +29432,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Delete website ca [name]",
-					"formatZH": "删除网站 ca [name]",
 					"paramKeys": []
 				}
 			}
@@ -29779,7 +29484,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "download ca file [name]",
-					"formatZH": "下载 CA 证书文件 [name]",
 					"paramKeys": []
 				}
 			}
@@ -29867,7 +29571,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Obtain SSL [name]",
-					"formatZH": "自签 SSL 证书 [name]",
 					"paramKeys": []
 				}
 			}
@@ -29920,7 +29623,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Obtain SSL [name]",
-					"formatZH": "自签 SSL 证书 [name]",
 					"paramKeys": []
 				}
 			}
@@ -30159,7 +29861,6 @@ const docTemplate = `{
 						"websiteId"
 					],
 					"formatEN": "Nginx conf update [domain]",
-					"formatZH": "nginx 配置修改 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -30405,7 +30106,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "Update default html",
-					"formatZH": "更新默认 html",
 					"paramKeys": []
 				}
 			}
@@ -30459,7 +30159,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "Change default server =\u003e [domain]",
-					"formatZH": "修改默认 server =\u003e [domain]",
 					"paramKeys": []
 				}
 			}
@@ -30512,7 +30211,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Delete website [domain]",
-					"formatZH": "删除网站 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -30603,7 +30301,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Update  domain [domain] dir permission",
-					"formatZH": "更新网站 [domain] 目录权限",
 					"paramKeys": []
 				}
 			}
@@ -30656,7 +30353,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Update  domain [domain] dir",
-					"formatZH": "更新网站 [domain] 目录",
 					"paramKeys": []
 				}
 			}
@@ -30700,7 +30396,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Create website dns [name]",
-					"formatZH": "创建网站 dns [name]",
 					"paramKeys": []
 				}
 			}
@@ -30753,7 +30448,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Delete website dns [name]",
-					"formatZH": "删除网站 dns [name]",
 					"paramKeys": []
 				}
 			}
@@ -30835,7 +30529,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Update website dns [name]",
-					"formatZH": "更新网站 dns [name]",
 					"paramKeys": []
 				}
 			}
@@ -30882,7 +30575,6 @@ const docTemplate = `{
 						"domain"
 					],
 					"formatEN": "Create domain [domain]",
-					"formatZH": "创建域名 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -30974,7 +30666,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Delete domain [domain]",
-					"formatZH": "删除域名 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -31027,7 +30718,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Update domain [domain]",
-					"formatZH": "更新域名 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -31107,7 +30797,6 @@ const docTemplate = `{
 						"newGroup"
 					],
 					"formatEN": "change website group [group] to [newGroup]",
-					"formatZH": "网站分组 [group] 迁移到 [newGroup]",
 					"paramKeys": []
 				}
 			}
@@ -31401,7 +31090,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "[domain][operate] logs",
-					"formatZH": "[domain][operate] 日志",
 					"paramKeys": []
 				}
 			}
@@ -31492,7 +31180,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "[domain] Nginx conf update",
-					"formatZH": "[domain] Nginx 配置修改",
 					"paramKeys": []
 				}
 			}
@@ -31546,7 +31233,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "[operate] website [domain]",
-					"formatZH": "[operate] 网站 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -31626,7 +31312,6 @@ const docTemplate = `{
 						"websiteID"
 					],
 					"formatEN": "php version update [domain]",
-					"formatZH": "php 版本变更 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -31721,7 +31406,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Delete domain [domain] proxy config [name]",
-					"formatZH": "删除网站 [domain] 反向代理配置 [name] ",
 					"paramKeys": []
 				}
 			}
@@ -31775,7 +31459,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Update domain [domain] proxy config file [name]",
-					"formatZH": "修改网站 [domain] 反向代理配置文件 [name] ",
 					"paramKeys": []
 				}
 			}
@@ -31830,7 +31513,6 @@ const docTemplate = `{
 						"status"
 					],
 					"formatEN": "Update domain [domain] proxy config [name] status [status]",
-					"formatZH": "修改网站 [domain] 反向代理配置 [name] 状态 [status] ",
 					"paramKeys": []
 				}
 			}
@@ -31885,7 +31567,6 @@ const docTemplate = `{
 						"operate"
 					],
 					"formatEN": "Update [operate] domain [domain] proxy config [name]",
-					"formatZH": "修改 [operate] 网站 [domain] 反向代理配置 [name] ",
 					"paramKeys": []
 				}
 			}
@@ -31913,7 +31594,6 @@ const docTemplate = `{
 					"BeforeFunctions": [],
 					"bodyKeys": [],
 					"formatEN": "Clear nginx proxy cache",
-					"formatZH": "清理 Openresty 代理缓存",
 					"paramKeys": []
 				}
 			}
@@ -32037,7 +31717,6 @@ const docTemplate = `{
 						"websiteID"
 					],
 					"formatEN": "Modify the real IP configuration of [domain] website",
-					"formatZH": "修改 [domain] 网站真实IP配置 ",
 					"paramKeys": []
 				}
 			}
@@ -32167,7 +31846,6 @@ const docTemplate = `{
 						"websiteID"
 					],
 					"formatEN": "Nginx conf redirect file update [domain]",
-					"formatZH": "更新重定向文件 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -32220,7 +31898,6 @@ const docTemplate = `{
 						"websiteID"
 					],
 					"formatEN": "Update domain [domain] redirect config",
-					"formatZH": "修改网站 [domain] 重定向配置 ",
 					"paramKeys": []
 				}
 			}
@@ -32410,7 +32087,6 @@ const docTemplate = `{
 						"websiteID"
 					],
 					"formatEN": "Nginx conf rewrite update [domain]",
-					"formatZH": "伪静态配置修改 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -32495,7 +32171,6 @@ const docTemplate = `{
 						"primaryDomain"
 					],
 					"formatEN": "Create website ssl [primaryDomain]",
-					"formatZH": "创建网站 ssl [primaryDomain]",
 					"paramKeys": []
 				}
 			}
@@ -32584,7 +32259,6 @@ const docTemplate = `{
 						"ids"
 					],
 					"formatEN": "Delete ssl [domain]",
-					"formatZH": "删除 ssl [domain]",
 					"paramKeys": []
 				}
 			}
@@ -32637,7 +32311,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "download ssl file [domain]",
-					"formatZH": "下载证书文件 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -32681,7 +32354,6 @@ const docTemplate = `{
 						"primaryDomain"
 					],
 					"formatEN": "import master SSL [primaryDomain]",
-					"formatZH": "导入主节点证书 [primaryDomain]",
 					"paramKeys": []
 				}
 			}
@@ -32775,7 +32447,6 @@ const docTemplate = `{
 						"ID"
 					],
 					"formatEN": "apply ssl [domain]",
-					"formatZH": "申请证书  [domain]",
 					"paramKeys": []
 				}
 			}
@@ -32828,7 +32499,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Push ssl to nodes [domain]",
-					"formatZH": "推送证书到节点 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -32963,7 +32633,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Update ssl config [domain]",
-					"formatZH": "更新证书设置 [domain]",
 					"paramKeys": []
 				}
 			}
@@ -33007,7 +32676,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "Upload ssl [type]",
-					"formatZH": "上传 ssl [type]",
 					"paramKeys": []
 				}
 			}
@@ -33075,7 +32743,6 @@ const docTemplate = `{
 						"type"
 					],
 					"formatEN": "Upload ssl file [type]",
-					"formatZH": "上传 ssl 文件 [type]",
 					"paramKeys": []
 				}
 			}
@@ -33190,7 +32857,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Create website template [name]",
-					"formatZH": "创建网站模板 [name]",
 					"paramKeys": []
 				}
 			}
@@ -33243,7 +32909,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Delete website template [name]",
-					"formatZH": "删除网站模板 [name]",
 					"paramKeys": []
 				}
 			}
@@ -33325,7 +32990,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Generate template output [name]",
-					"formatZH": "生成模板产物 [name]",
 					"paramKeys": []
 				}
 			}
@@ -33378,7 +33042,6 @@ const docTemplate = `{
 						"id"
 					],
 					"formatEN": "Delete template output [name]",
-					"formatZH": "删除模板产物 [name]",
 					"paramKeys": []
 				}
 			}
@@ -33574,7 +33237,6 @@ const docTemplate = `{
 						"name"
 					],
 					"formatEN": "Update website template [name]",
-					"formatZH": "更新网站模板 [name]",
 					"paramKeys": []
 				}
 			}
@@ -33651,7 +33313,6 @@ const docTemplate = `{
 						"primaryDomain"
 					],
 					"formatEN": "Update website [primaryDomain]",
-					"formatZH": "更新网站 [primaryDomain]",
 					"paramKeys": []
 				}
 			}

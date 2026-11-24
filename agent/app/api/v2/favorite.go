@@ -39,7 +39,7 @@ func (b *BaseApi) SearchFavorite(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/favorite [post]
-// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"收藏文件/文件夹 [path]","formatEN":"收藏文件/文件夹 [path]"}
+// @x-panel-log {"bodyKeys":["path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Favorite file or folder [path]"}
 func (b *BaseApi) CreateFavorite(c *gin.Context) {
 	var req request.FavoriteCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -61,7 +61,7 @@ func (b *BaseApi) CreateFavorite(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /files/favorite/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"favorites","output_column":"path","output_value":"path"}],"formatZH":"删除收藏 [path]","formatEN":"delete avorite [path]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"favorites","output_column":"path","output_value":"path"}],"formatEN":"delete avorite [path]"}
 func (b *BaseApi) DeleteFavorite(c *gin.Context) {
 	var req request.FavoriteDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

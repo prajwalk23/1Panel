@@ -14,7 +14,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/template [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建 compose 模版 [name]","formatEN":"create compose template [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create compose template [name]"}
 func (b *BaseApi) CreateComposeTemplate(c *gin.Context) {
 	var req dto.ComposeTemplateCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -36,7 +36,7 @@ func (b *BaseApi) CreateComposeTemplate(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/template/batch [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"批量导入编排模版","formatEN":"batch import compose templates"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"batch import compose templates"}
 func (b *BaseApi) BatchComposeTemplate(c *gin.Context) {
 	var req dto.ComposeTemplateBatch
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -102,7 +102,7 @@ func (b *BaseApi) ListComposeTemplate(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/template/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"compose_templates","output_column":"name","output_value":"names"}],"formatZH":"删除 compose 模版 [names]","formatEN":"delete compose template [names]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"compose_templates","output_column":"name","output_value":"names"}],"formatEN":"delete compose template [names]"}
 func (b *BaseApi) DeleteComposeTemplate(c *gin.Context) {
 	var req dto.BatchDeleteReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -124,7 +124,7 @@ func (b *BaseApi) DeleteComposeTemplate(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/template/update [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"compose_templates","output_column":"name","output_value":"name"}],"formatZH":"更新 compose 模版 [name]","formatEN":"update compose template information [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"compose_templates","output_column":"name","output_value":"name"}],"formatEN":"update compose template information [name]"}
 func (b *BaseApi) UpdateComposeTemplate(c *gin.Context) {
 	var req dto.ComposeTemplateUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

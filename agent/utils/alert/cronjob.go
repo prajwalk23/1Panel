@@ -105,9 +105,9 @@ func cronJobTaskName(project string, params []dto.Param) string {
 }
 
 func CreateCronJobResultParam(result string) dto.Param {
-	value := "失败"
+	value := "Failed"
 	if result == CronJobAlertSuccess {
-		value = "成功"
+		value = "Success"
 	}
 	return dto.Param{Index: "2", Key: "result", Value: value}
 }
@@ -122,7 +122,7 @@ func CronJobAlertResultFromParams(params []dto.Param) string {
 		}
 	}
 	for _, param := range params {
-		if param.Index == "2" && param.Key == "result" && param.Value == "成功" {
+		if param.Index == "2" && param.Key == "result" && (param.Value == "Success" || param.Value == "成功") { // second form: legacy rows stored before alert results were English
 			return CronJobAlertSuccess
 		}
 	}

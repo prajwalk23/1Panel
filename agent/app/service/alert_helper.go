@@ -368,7 +368,7 @@ func loadPanelUpdate(alert dto.AlertDTO) {
 	sender.Send(version, []dto.Param{})
 }
 
-// 获取 CPU 使用率数据并发送到通道
+// Load CPU usage data and send it to the channel
 func loadCPUUsage(alert dto.AlertDTO) {
 	percent, err := cpu.Percent(time.Duration(CheckIntervalSec)*time.Second, false)
 	if err != nil {
@@ -395,7 +395,7 @@ func loadCPUUsage(alert dto.AlertDTO) {
 	}
 }
 
-// 获取内存使用情况数据并发送到通道
+// Load memory usage data and send it to the channel
 func loadMemUsage(alert dto.AlertDTO) {
 	memStat, err := mem.VirtualMemory()
 	if err != nil {
@@ -421,7 +421,7 @@ func loadMemUsage(alert dto.AlertDTO) {
 	shouldSendResourceAlert(alert, percent, memoryLoad, threshold)
 }
 
-// 获取系统负载数据并发送到通道
+// Load system load data and send it to the channel
 func loadLoadInfo(alert dto.AlertDTO) {
 	avgStat, err := load.Avg()
 	if err != nil {
@@ -975,9 +975,9 @@ func getModuleName(alertType string) string {
 	case "cpu":
 		module = " CPU "
 	case "memory", "memorySustained": // fork: memorySustained
-		module = "内存"
+		module = " Memory "
 	case "load":
-		module = "负载"
+		module = " Load "
 	default:
 	}
 	return module

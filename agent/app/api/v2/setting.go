@@ -57,7 +57,7 @@ func (b *BaseApi) GetSystemAvailable(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /settings/update [post]
-// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改系统配置 [key] => [value]","formatEN":"update system setting [key] => [value]"}
+// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update system setting [key] => [value]"}
 func (b *BaseApi) UpdateSetting(c *gin.Context) {
 	var req dto.AgentSettingUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -79,7 +79,7 @@ func (b *BaseApi) UpdateSetting(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /settings/terminal/ai/update [post]
-// @x-panel-log {"bodyKeys":["aiStatus","aiAccountId"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新终端 AI 设置 [aiStatus][aiAccountId]","formatEN":"update terminal AI setting [aiStatus][aiAccountId]"}
+// @x-panel-log {"bodyKeys":["aiStatus","aiAccountId"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update terminal AI setting [aiStatus][aiAccountId]"}
 func (b *BaseApi) UpdateTerminalAISetting(c *gin.Context) {
 	var req dto.TerminalAIInfo
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -116,7 +116,7 @@ func (b *BaseApi) GetFileManageAISettingInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /settings/files/ai/update [post]
-// @x-panel-log {"bodyKeys":["aiStatus","aiAccountId"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新文件管理 AI 设置 [aiStatus][aiAccountId]","formatEN":"update file manage AI setting [aiStatus][aiAccountId]"}
+// @x-panel-log {"bodyKeys":["aiStatus","aiAccountId"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update file manage AI setting [aiStatus][aiAccountId]"}
 func (b *BaseApi) UpdateFileManageAISetting(c *gin.Context) {
 	var req dto.FileManageAIInfo
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -216,7 +216,7 @@ func (b *BaseApi) CheckLocalConn(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /settings/ssh/default [post]
-// @x-panel-log {"bodyKeys":["defaultConn"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"本地终端默认连接 [defaultConn]","formatEN":"update system default conn [defaultConn]"}
+// @x-panel-log {"bodyKeys":["defaultConn"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update system default conn [defaultConn]"}
 func (b *BaseApi) SetDefaultIsConn(c *gin.Context) {
 	var req dto.SSHDefaultConn
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

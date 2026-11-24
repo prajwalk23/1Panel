@@ -18,7 +18,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/commands/upload [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"上传快速命令文件","formatEN":"upload quick commands with csv"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"upload quick commands with csv"}
 func (b *BaseApi) UploadCommandCsv(c *gin.Context) {
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -68,7 +68,7 @@ func (b *BaseApi) UploadCommandCsv(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/commands/export [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"导出快速命令","formatEN":"export quick commands"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"export quick commands"}
 func (b *BaseApi) ExportCommands(c *gin.Context) {
 	file, err := commandService.Export()
 	if err != nil {
@@ -84,7 +84,7 @@ func (b *BaseApi) ExportCommands(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/commands/import [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"导入快速命令","formatEN":"import quick commands"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"import quick commands"}
 func (b *BaseApi) ImportCommands(c *gin.Context) {
 	var req dto.CommandImport
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -110,7 +110,7 @@ func (b *BaseApi) ImportCommands(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/commands [post]
-// @x-panel-log {"bodyKeys":["name","command"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建快捷命令 [name][command]","formatEN":"create quick command [name][command]"}
+// @x-panel-log {"bodyKeys":["name","command"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create quick command [name][command]"}
 func (b *BaseApi) CreateCommand(c *gin.Context) {
 	var req dto.CommandOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -204,7 +204,7 @@ func (b *BaseApi) ListCommand(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/commands/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"commands","output_column":"name","output_value":"names"}],"formatZH":"删除快捷命令 [names]","formatEN":"delete quick command [names]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"commands","output_column":"name","output_value":"names"}],"formatEN":"delete quick command [names]"}
 func (b *BaseApi) DeleteCommand(c *gin.Context) {
 	var req dto.OperateByIDs
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -226,7 +226,7 @@ func (b *BaseApi) DeleteCommand(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/commands/update [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新快捷命令 [name]","formatEN":"update quick command [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update quick command [name]"}
 func (b *BaseApi) UpdateCommand(c *gin.Context) {
 	var req dto.CommandOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

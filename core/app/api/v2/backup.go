@@ -16,7 +16,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/backups [post]
-// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建备份账号 [type]","formatEN":"create backup account [type]"}
+// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create backup account [type]"}
 func (b *BaseApi) CreateBackup(c *gin.Context) {
 	var req dto.BackupOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -80,7 +80,7 @@ func (b *BaseApi) LoadBackupClientInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/backups/del [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除备份账号 [name]","formatEN":"delete backup account [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"delete backup account [name]"}
 func (b *BaseApi) DeleteBackup(c *gin.Context) {
 	var req dto.OperateByName
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -102,7 +102,7 @@ func (b *BaseApi) DeleteBackup(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/backups/update [post]
-// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新备份账号 [type]","formatEN":"update backup account [type]"}
+// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update backup account [type]"}
 func (b *BaseApi) UpdateBackup(c *gin.Context) {
 	var req dto.BackupOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

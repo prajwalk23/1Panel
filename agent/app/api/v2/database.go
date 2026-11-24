@@ -16,7 +16,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/db [post]
-// @x-panel-log {"bodyKeys":["name", "type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建远程数据库 [name][type]","formatEN":"create database [name][type]"}
+// @x-panel-log {"bodyKeys":["name", "type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create database [name][type]"}
 func (b *BaseApi) CreateDatabase(c *gin.Context) {
 	var req dto.DatabaseCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -46,7 +46,7 @@ func (b *BaseApi) CreateDatabase(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/db/check [post]
-// @x-panel-log {"bodyKeys":["name", "type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"检测远程数据库 [name][type] 连接性","formatEN":"check if database [name][type] is connectable"}
+// @x-panel-log {"bodyKeys":["name", "type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"check if database [name][type] is connectable"}
 func (b *BaseApi) CheckDatabase(c *gin.Context) {
 	var req dto.DatabaseCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -186,7 +186,7 @@ func (b *BaseApi) DeleteCheckDatabase(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/db/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"databases","output_column":"name","output_value":"names"}],"formatZH":"删除远程数据库 [names]","formatEN":"delete database [names]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"databases","output_column":"name","output_value":"names"}],"formatEN":"delete database [names]"}
 func (b *BaseApi) DeleteDatabase(c *gin.Context) {
 	var req dto.DatabaseDelete
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -208,7 +208,7 @@ func (b *BaseApi) DeleteDatabase(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /databases/db/update [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新远程数据库 [name]","formatEN":"update database [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update database [name]"}
 func (b *BaseApi) UpdateDatabase(c *gin.Context) {
 	var req dto.DatabaseUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

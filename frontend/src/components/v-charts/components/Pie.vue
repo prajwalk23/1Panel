@@ -166,7 +166,7 @@ function initChart() {
             },
         ],
     };
-    // 渲染数据
+    // Render data
     myChart.setOption(option, true);
 }
 

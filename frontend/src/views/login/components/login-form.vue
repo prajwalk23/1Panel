@@ -42,32 +42,6 @@
             <div v-else-if="showPasskeyOnly">
                 <div class="flex justify-between items-center mb-6">
                     <div class="text-2xl font-medium text-gray-900">{{ $t('commons.button.login') }}</div>
-                    <div class="cursor-pointer">
-                        <el-dropdown @command="handleCommand">
-                            <span class="flex items-center space-x-1">
-                                {{ dropdownText }}
-                                <el-icon>
-                                    <arrow-down />
-                                </el-icon>
-                            </span>
-                            <template #dropdown>
-                                <el-dropdown-menu>
-                                    <el-dropdown-item v-if="isIntl" command="en">English</el-dropdown-item>
-                                    <el-dropdown-item command="zh">中文(简体)</el-dropdown-item>
-                                    <el-dropdown-item command="zh-Hant">中文(繁體)</el-dropdown-item>
-                                    <el-dropdown-item v-if="!isIntl" command="en">English</el-dropdown-item>
-                                    <el-dropdown-item command="ja">日本語</el-dropdown-item>
-                                    <el-dropdown-item command="pt-BR">Português (Brasil)</el-dropdown-item>
-                                    <el-dropdown-item command="ko">한국어</el-dropdown-item>
-                                    <el-dropdown-item command="ru">Русский</el-dropdown-item>
-                                    <el-dropdown-item command="ms">Bahasa Melayu</el-dropdown-item>
-                                    <el-dropdown-item command="tr">Turkish</el-dropdown-item>
-                                    <el-dropdown-item command="fa">فارسی</el-dropdown-item>
-                                    <el-dropdown-item command="lo">ພາສາລາວ</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </template>
-                        </el-dropdown>
-                    </div>
                 </div>
                 <div class="space-y-6">
                     <el-form-item>
@@ -167,32 +141,6 @@
                         >
                             {{ $t('xpack.user.auth.ldap.backToLocalLogin') }}
                         </el-link>
-                    </div>
-                    <div class="cursor-pointer">
-                        <el-dropdown @command="handleCommand">
-                            <span class="flex items-center space-x-1">
-                                {{ dropdownText }}
-                                <el-icon>
-                                    <arrow-down />
-                                </el-icon>
-                            </span>
-                            <template #dropdown>
-                                <el-dropdown-menu>
-                                    <el-dropdown-item v-if="isIntl" command="en">English</el-dropdown-item>
-                                    <el-dropdown-item command="zh">中文(简体)</el-dropdown-item>
-                                    <el-dropdown-item command="zh-Hant">中文(繁體)</el-dropdown-item>
-                                    <el-dropdown-item v-if="!isIntl" command="en">English</el-dropdown-item>
-                                    <el-dropdown-item command="ja">日本語</el-dropdown-item>
-                                    <el-dropdown-item command="pt-BR">Português (Brasil)</el-dropdown-item>
-                                    <el-dropdown-item command="ko">한국어</el-dropdown-item>
-                                    <el-dropdown-item command="ru">Русский</el-dropdown-item>
-                                    <el-dropdown-item command="ms">Bahasa Melayu</el-dropdown-item>
-                                    <el-dropdown-item command="tr">Turkish</el-dropdown-item>
-                                    <el-dropdown-item command="fa">فارسی</el-dropdown-item>
-                                    <el-dropdown-item command="lo">ພາສາລາວ</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </template>
-                        </el-dropdown>
                     </div>
                 </div>
                 <el-form ref="loginFormRef" :model="loginForm" size="default" :rules="loginRules">
@@ -458,7 +406,7 @@ const loginForm = reactive({
     captchaID: '',
     authMethod: 'session',
     agreeLicense: false,
-    language: 'zh',
+    language: 'en',
 });
 
 const loginRules = reactive({
@@ -506,7 +454,6 @@ const captcha = reactive({
 
 const loading = ref<boolean>(false);
 const mfaShow = ref<boolean>(false);
-const dropdownText = ref('中文(简体)');
 
 const isAutoPasskeyEnabled = () => {
     try {
@@ -524,27 +471,6 @@ const disableAutoPasskey = () => {
     try {
         localStorage.removeItem(autoPasskeyEnabledKey);
     } catch (error) {}
-};
-
-const languageLabelMap: Record<string, string> = {
-    zh: '中文(简体)',
-    en: 'English',
-    'pt-BR': 'Português (Brasil)',
-    'zh-Hant': '中文(繁體)',
-    ko: '한국어',
-    ja: '日本語',
-    ru: 'Русский',
-    ms: 'Bahasa Melayu',
-    tr: 'Turkish',
-    'es-ES': 'España - Español',
-    fa: 'فارسی',
-    lo: 'ພາສາລາວ',
-};
-
-const handleCommand = async (command: string) => {
-    const activeLocale = await globalStore.updateLanguage(command);
-    loginForm.language = activeLocale;
-    dropdownText.value = languageLabelMap[activeLocale] || languageLabelMap.zh;
 };
 
 const agreeWithLogin = () => {
@@ -915,8 +841,6 @@ const getSetting = async () => {
     try {
         const res = await getLoginSetting();
         isDemo.value = res.data.isDemo;
-        const language = res.data.language || loginForm.language;
-        await handleCommand(language);
         isIntl.value = res.data.isIntl;
         isOffline.value = res.data.isOffline;
         isEnterprise.value = res.data.isEnterprise;
@@ -1002,7 +926,7 @@ onMounted(async () => {
     try {
         await getXpackSettingForTheme();
     } catch (error) {
-        // 即使获取失败也不影响登录，默认为之前的主题配置
+        // Login still works if this fails; keep the previous theme config
     }
     if (!loginViewActive) return;
     applyLoginButtonTheme();

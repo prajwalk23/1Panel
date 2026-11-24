@@ -68,7 +68,7 @@ func (b *BaseApi) ListWebsiteSSL(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ssl [post]
-// @x-panel-log {"bodyKeys":["primaryDomain"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建网站 ssl [primaryDomain]","formatEN":"Create website ssl [primaryDomain]"}
+// @x-panel-log {"bodyKeys":["primaryDomain"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Create website ssl [primaryDomain]"}
 func (b *BaseApi) CreateWebsiteSSL(c *gin.Context) {
 	var req request.WebsiteSSLCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -90,7 +90,7 @@ func (b *BaseApi) CreateWebsiteSSL(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ssl/obtain [post]
-// @x-panel-log {"bodyKeys":["ID"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ID","isList":false,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatZH":"申请证书  [domain]","formatEN":"apply ssl [domain]"}
+// @x-panel-log {"bodyKeys":["ID"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ID","isList":false,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatEN":"apply ssl [domain]"}
 func (b *BaseApi) ApplyWebsiteSSL(c *gin.Context) {
 	var req request.WebsiteSSLApply
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -132,7 +132,7 @@ func (b *BaseApi) GetDNSResolve(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ssl/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatZH":"删除 ssl [domain]","formatEN":"Delete ssl [domain]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatEN":"Delete ssl [domain]"}
 func (b *BaseApi) DeleteWebsiteSSL(c *gin.Context) {
 	var req request.WebsiteBatchDelReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -197,7 +197,7 @@ func (b *BaseApi) GetWebsiteSSLById(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ssl/update [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatZH":"更新证书设置 [domain]","formatEN":"Update ssl config [domain]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatEN":"Update ssl config [domain]"}
 func (b *BaseApi) UpdateWebsiteSSL(c *gin.Context) {
 	var req request.WebsiteSSLUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -218,7 +218,7 @@ func (b *BaseApi) UpdateWebsiteSSL(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ssl/push [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatZH":"推送证书到节点 [domain]","formatEN":"Push ssl to nodes [domain]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatEN":"Push ssl to nodes [domain]"}
 func (b *BaseApi) PushWebsiteSSLToNode(c *gin.Context) {
 	var req request.WebsiteSSLPush
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -239,7 +239,7 @@ func (b *BaseApi) PushWebsiteSSLToNode(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ssl/upload [post]
-// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"上传 ssl [type]","formatEN":"Upload ssl [type]"}
+// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Upload ssl [type]"}
 func (b *BaseApi) UploadWebsiteSSL(c *gin.Context) {
 	var req request.WebsiteSSLUpload
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -264,7 +264,7 @@ func (b *BaseApi) UploadWebsiteSSL(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ssl/upload/file [post]
-// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"上传 ssl 文件 [type]","formatEN":"Upload ssl file [type]"}
+// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Upload ssl file [type]"}
 func (b *BaseApi) UploadSSLFile(c *gin.Context) {
 	var req request.WebsiteSSLFileUpload
 
@@ -336,7 +336,7 @@ func readUploadedFile(fileHeader *multipart.FileHeader) ([]byte, error) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router  /websites/ssl/download [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatZH":"下载证书文件 [domain]","formatEN":"download ssl file [domain]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_ssls","output_column":"primary_domain","output_value":"domain"}],"formatEN":"download ssl file [domain]"}
 func (b *BaseApi) DownloadWebsiteSSL(c *gin.Context) {
 	var req request.WebsiteResourceReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -366,7 +366,7 @@ func (b *BaseApi) DownloadWebsiteSSL(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/ssl/import [post]
-// @x-panel-log {"bodyKeys":["primaryDomain"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"导入主节点证书 [primaryDomain]","formatEN":"import master SSL [primaryDomain]"}
+// @x-panel-log {"bodyKeys":["primaryDomain"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"import master SSL [primaryDomain]"}
 func (b *BaseApi) ImportMasterSSL(c *gin.Context) {
 	var req model.WebsiteSSL
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

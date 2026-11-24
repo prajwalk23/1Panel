@@ -311,31 +311,31 @@ func GetCronJobTypeName(cronJobType string) string {
 	module := cronJobType
 	switch cronJobType {
 	case "shell":
-		module = "Shell 脚本"
+		module = "Shell script"
 	case "app":
-		module = "备份应用"
+		module = "Backup app"
 	case "website":
-		module = "备份网站"
+		module = "Backup website"
 	case "database":
-		module = "备份数据库"
+		module = "Backup database"
 	case "log":
-		module = "备份日志"
+		module = "Backup log"
 	case "directory":
-		module = "备份目录"
+		module = "Backup directory"
 	case "curl":
-		module = "访问 URL"
+		module = "Access URL"
 	case "cutWebsiteLog":
-		module = "切割网站日志"
+		module = "Cut website log"
 	case "clean":
-		module = "缓存清理"
+		module = "Clean cache"
 	case "snapshot":
-		module = "系统快照"
+		module = "System snapshot"
 	case "ntp":
-		module = "同步服务器时间"
+		module = "Sync server time"
 	case "syncIpGroup":
-		module = "同步 IP 组"
+		module = "Sync IP group"
 	case "cleanLog":
-		module = "清理日志"
+		module = "Clean log"
 	default:
 	}
 	return module

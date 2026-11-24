@@ -24,7 +24,7 @@ type BaseApi struct{}
 // @Tags Auth
 // @Summary User login
 // @Accept json
-// @Param EntranceCode header string true "安全入口 base64 加密串"
+// @Param EntranceCode header string true "entrance code, base64 encoded"
 // @Param request body dto.Login true "request"
 // @Success 200 {object} dto.UserLoginInfo
 // @Router /core/auth/login [post]
@@ -89,7 +89,7 @@ func (b *BaseApi) Login(c *gin.Context) {
 // @Param request body dto.MFALogin true "request"
 // @Success 200 {object} dto.UserLoginInfo
 // @Router /core/auth/mfalogin [post]
-// @Header 200 {string} EntranceCode "安全入口"
+// @Header 200 {string} EntranceCode "entrance code"
 func (b *BaseApi) MFALogin(c *gin.Context) {
 	var req dto.MFALogin
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -362,7 +362,7 @@ func (b *BaseApi) LoadMFA(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/auth/mfa/bind [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"mfa 绑定","formatEN":"bind mfa"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"bind mfa"}
 func (b *BaseApi) MFABind(c *gin.Context) {
 	var req dto.MfaCredential
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -384,7 +384,7 @@ func (b *BaseApi) MFABind(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/auth/mfa/close [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"mfa 关闭","formatEN":"close mfa"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"close mfa"}
 func (b *BaseApi) MFAClose(c *gin.Context) {
 	if err := xpack.AuthProvider.MFAClose(c); err != nil {
 		helper.InternalServer(c, err)
@@ -403,7 +403,7 @@ func (b *BaseApi) MFAClose(c *gin.Context) {
 // @Header 200 {string} Cache-Control "no-store"
 // @Security PanelSession || CSRFToken
 // @Router /core/auth/api/generate [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"生成 API 接口密钥","formatEN":"generate api key"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"generate api key"}
 func (b *BaseApi) GenerateApiKey(c *gin.Context) {
 	if _, err := appauth.RequireAPIKeySession(c); err != nil {
 		helper.BadAuth(c, "ErrApiConfigDisable", nil)
@@ -432,7 +432,7 @@ func (b *BaseApi) GenerateApiKey(c *gin.Context) {
 // @Success 200 {object} dto.Response "code=200 on success; authentication and business errors use envelope code 400, 401 or 500"
 // @Security PanelSession || CSRFToken
 // @Router /core/auth/api/update [post]
-// @x-panel-log {"bodyKeys":["ipWhiteList","apiTrustedProxies"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新 API 接口配置 => IP 白名单: [ipWhiteList], API 可信代理: [apiTrustedProxies]","formatEN":"update api config => IP Allowlist: [ipWhiteList], API Trusted Proxies: [apiTrustedProxies]"}
+// @x-panel-log {"bodyKeys":["ipWhiteList","apiTrustedProxies"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update api config => IP Allowlist: [ipWhiteList], API Trusted Proxies: [apiTrustedProxies]"}
 func (b *BaseApi) UpdateApiConfig(c *gin.Context) {
 	if _, err := appauth.RequireAPIKeySession(c); err != nil {
 		helper.BadAuth(c, "ErrApiConfigDisable", nil)
@@ -512,7 +512,7 @@ func (b *BaseApi) UpdateCurrentUser(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/auth/expired/reset [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"重置过期密码","formatEN":"reset an expired Password"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"reset an expired Password"}
 func (b *BaseApi) ResetPassword(c *gin.Context) {
 	var req dto.PasswordUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

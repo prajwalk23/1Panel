@@ -301,10 +301,10 @@ function initChart() {
                       color: secondaryTextColor,
                   },
                   splitLine: {
-                      //分隔辅助线
+                      // Split guide lines
                       lineStyle: {
-                          type: 'dashed', //线的类型 虚线0
-                          opacity: isDarkTheme.value ? 0.1 : 1, //透明度
+                          type: 'dashed', // Line type (dashed)
+                          opacity: isDarkTheme.value ? 0.1 : 1, // Opacity
                           color: borderColor,
                       },
                   },
@@ -321,7 +321,7 @@ function initChart() {
             },
         ],
     };
-    // 渲染数据
+    // Render data
     itemChart.setOption(option, true);
 }
 

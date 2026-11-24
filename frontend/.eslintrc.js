@@ -7,9 +7,9 @@ module.exports = {
         node: true,
         es6: true,
     },
-    /* 指定如何解析语法 */
+    /* How to parse the syntax */
     parser: 'vue-eslint-parser',
-    /* 优先级低于 parse 的语法解析配置 */
+    /* Lower priority than the parser options */
     parserOptions: {
         parser: '@typescript-eslint/parser',
         ecmaVersion: 2020,
@@ -19,7 +19,7 @@ module.exports = {
             jsx: true,
         },
     },
-    /* 继承某些已有的规则 */
+    /* Extend existing rule sets */
     extends: [
         'plugin:vue/recommended',
         'plugin:@typescript-eslint/recommended',
@@ -27,50 +27,50 @@ module.exports = {
         'plugin:prettier/recommended',
     ],
     /*
-     * "off" 或 0    ==>  关闭规则
-     * "warn" 或 1   ==>  打开的规则作为警告（不影响代码执行）
-     * "error" 或 2  ==>  规则作为一个错误（代码不能执行，界面报错）
+     * "off" or 0    ==>  turn the rule off
+     * "warn" or 1   ==>  rule reports a warning (does not stop execution)
+     * "error" or 2  ==>  rule reports an error
      */
     rules: {
         // eslint (http://eslint.cn/docs/rules)
-        'no-var': 'error', // 要求使用 let 或 const 而不是 var
-        'no-multiple-empty-lines': ['error', { max: 1 }], // 不允许多个空行
-        'no-use-before-define': 'off', // 禁止在 函数/类/变量 定义之前使用它们
-        'prefer-const': 'off', // 此规则旨在标记使用 let 关键字声明但在初始分配后从未重新分配的变量，要求使用 const
-        'no-irregular-whitespace': 'off', // 禁止不规则的空白
+        'no-var': 'error', // Require let or const instead of var
+        'no-multiple-empty-lines': ['error', { max: 1 }], // Disallow multiple empty lines
+        'no-use-before-define': 'off', // Disallow use of functions/classes/variables before definition
+        'prefer-const': 'off', // Flag let variables never reassigned after initial assignment
+        'no-irregular-whitespace': 'off', // Disallow irregular whitespace
 
         // typeScript (https://typescript-eslint.io/rules)
-        '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none' }], // 保持现有 catch(error) 写法，不在依赖升级时强制清理
-        '@typescript-eslint/no-inferrable-types': 'off', // 可以轻松推断的显式类型可能会增加不必要的冗长
-        '@typescript-eslint/no-namespace': 'off', // 禁止使用自定义 TypeScript 模块和命名空间。
-        '@typescript-eslint/no-explicit-any': 'off', // 禁止使用 any 类型
-        '@typescript-eslint/ban-ts-ignore': 'off', // 禁止使用 @ts-ignore
-        '@typescript-eslint/ban-types': 'off', // 禁止使用特定类型
-        '@typescript-eslint/explicit-function-return-type': 'off', // 不允许对初始化为数字、字符串或布尔值的变量或参数进行显式类型声明
-        '@typescript-eslint/no-var-requires': 'off', // 不允许在 import 语句中使用 require 语句
-        '@typescript-eslint/no-empty-function': 'off', // 禁止空函数
-        '@typescript-eslint/no-empty-object-type': 'off', // 保持现有 {} 类型写法，不在规则升级时批量重构
-        '@typescript-eslint/no-use-before-define': 'off', // 禁止在变量定义之前使用它们
-        '@typescript-eslint/no-unused-expressions': 'off', // 保持现有短路表达式调用写法
-        '@typescript-eslint/no-unsafe-function-type': 'off', // 保持现有 Function 类型写法，不在本轮升级中扩散修改
-        '@typescript-eslint/ban-ts-comment': 'off', // 禁止 @ts-<directive> 使用注释或要求在指令后进行描述
-        '@typescript-eslint/no-non-null-assertion': 'off', // 不允许使用后缀运算符的非空断言(!)
-        '@typescript-eslint/explicit-module-boundary-types': 'off', // 要求导出函数和类的公共类方法的显式返回和参数类型
+        '@typescript-eslint/no-unused-vars': ['error', { caughtErrors: 'none' }], // Keep the existing catch(error) style; do not force cleanup on dependency upgrades
+        '@typescript-eslint/no-inferrable-types': 'off', // Explicit types that are easily inferred add needless verbosity
+        '@typescript-eslint/no-namespace': 'off', // Disallow custom TypeScript modules and namespaces
+        '@typescript-eslint/no-explicit-any': 'off', // Disallow the any type
+        '@typescript-eslint/ban-ts-ignore': 'off', // Disallow ts-ignore
+        '@typescript-eslint/ban-types': 'off', // Disallow specific types
+        '@typescript-eslint/explicit-function-return-type': 'off', // Disallow explicit types on variables or parameters initialized to number, string or boolean
+        '@typescript-eslint/no-var-requires': 'off', // Disallow require statements in imports
+        '@typescript-eslint/no-empty-function': 'off', // Disallow empty functions
+        '@typescript-eslint/no-empty-object-type': 'off', // Keep the existing {} type style; no bulk refactor on rule upgrades
+        '@typescript-eslint/no-use-before-define': 'off', // Disallow use of variables before definition
+        '@typescript-eslint/no-unused-expressions': 'off', // Keep the existing short-circuit expression style
+        '@typescript-eslint/no-unsafe-function-type': 'off', // Keep the existing Function type style
+        '@typescript-eslint/ban-ts-comment': 'off', // Disallow ts directive comments or require a description after the directive
+        '@typescript-eslint/no-non-null-assertion': 'off', // Disallow non-null assertions with the postfix operator (!)
+        '@typescript-eslint/explicit-module-boundary-types': 'off', // Require explicit return and argument types on exported functions and public class methods
 
         // vue (https://eslint.vuejs.org/rules)
-        'vue/no-v-html': 'off', // 禁止使用 v-html
-        'vue/v-slot-style': 'error', // 强制执行 v-slot 指令样式
-        'vue/no-mutating-props': 'off', // 不允许组件 prop的改变（明天找原因）
-        'vue/custom-event-name-casing': 'off', // 为自定义事件名称强制使用特定大小写
-        'vue/attributes-order': 'off', // vue api使用顺序，强制执行属性顺序
-        'vue/one-component-per-file': 'off', // 强制每个组件都应该在自己的文件中
-        'vue/html-closing-bracket-newline': 'off', // 在标签的右括号之前要求或禁止换行
-        'vue/max-attributes-per-line': 'off', // 强制每行的最大属性数
-        'vue/multiline-html-element-content-newline': 'off', // 在多行元素的内容之前和之后需要换行符
-        'vue/singleline-html-element-content-newline': 'off', // 在单行元素的内容之前和之后需要换行符
-        'vue/attribute-hyphenation': 'off', // 对模板中的自定义组件强制执行属性命名样式
-        'vue/require-default-prop': 'off', // 此规则要求为每个 prop 为必填时，必须提供默认值
-        'vue/multi-word-component-names': 'off', // 要求组件名称始终为 “-” 链接的单词
-        'vue/no-dupe-keys': 'off', // 保持现有仓库的 script/template 同名用法，不在依赖升级时引入额外改造
+        'vue/no-v-html': 'off', // Disallow v-html
+        'vue/v-slot-style': 'error', // Enforce v-slot directive style
+        'vue/no-mutating-props': 'off', // Disallow mutating component props
+        'vue/custom-event-name-casing': 'off', // Enforce casing for custom event names
+        'vue/attributes-order': 'off', // Enforce attribute order
+        'vue/one-component-per-file': 'off', // Require each component to be in its own file
+        'vue/html-closing-bracket-newline': 'off', // Require or disallow a newline before the closing bracket of a tag
+        'vue/max-attributes-per-line': 'off', // Enforce max attributes per line
+        'vue/multiline-html-element-content-newline': 'off', // Require newlines around the content of multi-line elements
+        'vue/singleline-html-element-content-newline': 'off', // Require newlines around the content of single-line elements
+        'vue/attribute-hyphenation': 'off', // Enforce attribute naming style on custom components in templates
+        'vue/require-default-prop': 'off', // Require default values for non-required props
+        'vue/multi-word-component-names': 'off', // Require component names to be multi-word
+        'vue/no-dupe-keys': 'off', // Keep the existing same-name script/template usage; no extra rework on dependency upgrades
     },
 };

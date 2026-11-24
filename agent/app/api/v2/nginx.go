@@ -51,7 +51,7 @@ func (b *BaseApi) GetNginxConfigByScope(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /openresty/update [post]
-// @x-panel-log {"bodyKeys":["websiteId"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"websiteId","isList":false,"db":"websites","output_column":"primary_domain","output_value":"domain"}],"formatZH":"更新 nginx 配置 [domain]","formatEN":"Update nginx conf [domain]"}
+// @x-panel-log {"bodyKeys":["websiteId"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"websiteId","isList":false,"db":"websites","output_column":"primary_domain","output_value":"domain"}],"formatEN":"Update nginx conf [domain]"}
 func (b *BaseApi) UpdateNginxConfigByScope(c *gin.Context) {
 	var req request.NginxConfigUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -87,7 +87,7 @@ func (b *BaseApi) GetNginxStatus(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /openresty/file [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新 nginx 配置","formatEN":"Update nginx conf"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Update nginx conf"}
 func (b *BaseApi) UpdateNginxFile(c *gin.Context) {
 	var req request.NginxConfigFileUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -109,7 +109,7 @@ func (b *BaseApi) UpdateNginxFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /openresty/build [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"构建 OpenResty","formatEN":"Build OpenResty"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Build OpenResty"}
 func (b *BaseApi) BuildNginx(c *gin.Context) {
 	var req request.NginxBuildReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -130,7 +130,7 @@ func (b *BaseApi) BuildNginx(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /openresty/modules/update [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新 OpenResty 模块","formatEN":"Update OpenResty module"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Update OpenResty module"}
 func (b *BaseApi) UpdateNginxModule(c *gin.Context) {
 	var req request.NginxModuleUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

@@ -35,7 +35,7 @@ func (b *BaseApi) ProcessWs(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /process/stop [post]
-// @x-panel-log {"bodyKeys":["PID"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"结束进程 [PID]","formatEN":"结束进程 [PID]"}
+// @x-panel-log {"bodyKeys":["PID"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Kill process [PID]"}
 func (b *BaseApi) StopProcess(c *gin.Context) {
 	var req request.ProcessReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

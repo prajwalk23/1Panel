@@ -78,7 +78,7 @@ func OperationLog(policies ...OperationLogPolicy) gin.HandlerFunc {
 			c.Next()
 			return
 		}
-		if len(operationDic.FormatZH) == 0 {
+		if len(operationDic.FormatEN) == 0 {
 			c.Next()
 			return
 		}
@@ -153,7 +153,7 @@ func OperationLog(policies ...OperationLogPolicy) gin.HandlerFunc {
 		}
 		fillOperationDetail(&operationDic, formatMap)
 		record.DetailEN = strings.ReplaceAll(operationDic.FormatEN, "[]", "")
-		record.DetailZH = strings.ReplaceAll(operationDic.FormatZH, "[]", "")
+		record.DetailZH = record.DetailEN
 
 		datas := writer.body.Bytes()
 		logRepo := repo.NewILogRepo()
@@ -237,7 +237,6 @@ func fillOperationDetail(operationDic *operationJson, formatMap map[string]inter
 		}
 		t := reflect.TypeOf(value)
 		if t == nil || (t.Kind() != reflect.Array && t.Kind() != reflect.Slice) {
-			operationDic.FormatZH = strings.ReplaceAll(operationDic.FormatZH, "["+key+"]", fmt.Sprintf("[%v]", value))
 			operationDic.FormatEN = strings.ReplaceAll(operationDic.FormatEN, "["+key+"]", fmt.Sprintf("[%v]", value))
 			continue
 		}
@@ -249,7 +248,6 @@ func fillOperationDetail(operationDic *operationJson, formatMap map[string]inter
 			elements = append(elements, fmt.Sprintf("%v", val.Index(i).Interface()))
 		}
 		replaced := fmt.Sprintf("[%v]", strings.Join(elements, ","))
-		operationDic.FormatZH = strings.ReplaceAll(operationDic.FormatZH, "["+key+"]", replaced)
 		operationDic.FormatEN = strings.ReplaceAll(operationDic.FormatEN, "["+key+"]", replaced)
 	}
 }
@@ -260,7 +258,6 @@ type operationJson struct {
 	BodyKeys        []string       `json:"bodyKeys"`
 	ParamKeys       []string       `json:"paramKeys"`
 	BeforeFunctions []functionInfo `json:"beforeFunctions"`
-	FormatZH        string         `json:"formatZH"`
 	FormatEN        string         `json:"formatEN"`
 }
 type functionInfo struct {

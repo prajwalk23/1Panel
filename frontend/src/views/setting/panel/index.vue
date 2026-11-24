@@ -87,23 +87,6 @@
                                 </el-input>
                             </el-form-item>
 
-                            <el-form-item :label="$t('setting.language')" prop="language">
-                                <el-select
-                                    class="sm:!w-1/2 !w-full"
-                                    @change="onSave('Language', form.language)"
-                                    v-model="form.language"
-                                >
-                                    <el-option
-                                        v-for="option in languageOptions"
-                                        :key="option.value"
-                                        :value="option.value"
-                                        :label="option.label"
-                                    >
-                                        {{ option.label }}
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-
                             <el-form-item :label="$t('setting.sessionTimeout')" prop="sessionTimeout">
                                 <el-input disabled v-model.number="form.sessionTimeout">
                                     <template #append>
@@ -272,7 +255,6 @@ const form = reactive({
     themeColor: {} as ThemeColor,
     menuTabs: '',
     menuAccordion: '',
-    language: '',
     sessionTimeout: 0,
     docSource: 'withByRegion',
     edition: '',
@@ -314,25 +296,6 @@ const themeColorRef = ref();
 const editionRef = ref();
 const unset = ref(i18n.global.t('setting.unSetting'));
 
-const languageOptions = ref([
-    { value: 'zh', label: '中文(简体)' },
-    { value: 'zh-Hant', label: '中文(繁體)' },
-    ...(!isIntl.value ? [{ value: 'en', label: 'English' }] : []),
-    { value: 'ja', label: '日本語' },
-    { value: 'pt-BR', label: 'Português (Brasil)' },
-    { value: 'ko', label: '한국어' },
-    { value: 'ru', label: 'Русский' },
-    { value: 'ms', label: 'Bahasa Melayu' },
-    { value: 'tr', label: 'Turkish' },
-    { value: 'es-ES', label: 'España - Español' },
-    { value: 'fa', label: 'فارسی' },
-    { value: 'lo', label: 'ພາສາລາວ' },
-]);
-
-if (isIntl.value) {
-    languageOptions.value.unshift({ value: 'en', label: 'English' });
-}
-
 const onChangeMemoryLimit = () => {
     memoryLimitRef.value.acceptParams(); // fork
 };
@@ -351,7 +314,6 @@ const search = async () => {
     menuAccordion.value = form.menuAccordion === 'Enable';
     applyPanelCacheSettings(res.data.panelCache);
     form.panelName = res.data.panelName;
-    form.language = res.data.language;
     form.sessionTimeout = Number(res.data.sessionTimeout || 0);
     form.docSource = res.data.docSource || 'withByRegion';
     form.edition = res.data.edition;
@@ -501,10 +463,6 @@ const onSave = async (key: string, val: any) => {
                 break;
             case 'MenuAccordion':
                 menuAccordion.value = val === 'Enable';
-                break;
-            case 'Language':
-                await globalStore.updateLanguage(val);
-                location.reload();
                 break;
         }
         MsgSuccess(i18n.global.t('commons.msg.operationSuccess'));

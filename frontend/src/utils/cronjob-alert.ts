@@ -70,5 +70,6 @@ export const getCronjobAlertResult = (params: unknown): 'success' | 'failed' => 
     const result = params.find((item) => item?.index === 'result');
     if (result) return result.value === 'success' ? 'success' : 'failed';
     const numberedResult = params.find((item) => item?.index === '2' && item?.key === 'result');
-    return numberedResult?.value === '成功' ? 'success' : 'failed';
+    // The second value matches legacy rows stored before alert results were English.
+    return ['Success', '成功'].includes(numberedResult?.value) ? 'success' : 'failed';
 };

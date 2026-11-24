@@ -34,7 +34,7 @@ func (b *BaseApi) LoadMonitor(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/monitor/clean [post]
-// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"清空 [type] 监控数据","formatEN":"clean [type] monitoring data"}
+// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"clean [type] monitoring data"}
 func (b *BaseApi) CleanMonitor(c *gin.Context) {
 	var req dto.MonitorClean
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -71,7 +71,7 @@ func (b *BaseApi) LoadMonitorSetting(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /hosts/monitor/setting/update [post]
-// @x-panel-log {"bodyKeys":["key", "value"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改默认监控网卡 [key]-[value]","formatEN":"update default monitor [key]-[value]"}
+// @x-panel-log {"bodyKeys":["key", "value"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update default monitor [key]-[value]"}
 func (b *BaseApi) UpdateMonitorSetting(c *gin.Context) {
 	var req dto.MonitorSettingUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

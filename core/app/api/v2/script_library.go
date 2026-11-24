@@ -29,7 +29,7 @@ import (
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/script [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"添加脚本库脚本 [name]","formatEN":"add script [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"add script [name]"}
 func (b *BaseApi) CreateScript(c *gin.Context) {
 	var req dto.ScriptOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -77,7 +77,7 @@ func (b *BaseApi) SearchScript(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/script/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"script_librarys","output_column":"name","output_value":"names"}],"formatZH":"删除脚本库脚本 [names]","formatEN":"delete script [names]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"script_librarys","output_column":"name","output_value":"names"}],"formatEN":"delete script [names]"}
 func (b *BaseApi) DeleteScript(c *gin.Context) {
 	var req dto.OperateByIDs
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -99,7 +99,7 @@ func (b *BaseApi) DeleteScript(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/script/sync [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"同步脚本库脚本","formatEN":"sync scripts"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"sync scripts"}
 func (b *BaseApi) SyncScript(c *gin.Context) {
 	var req dto.OperateByTaskID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -120,7 +120,7 @@ func (b *BaseApi) SyncScript(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/script/update [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatZH":"更新脚本库脚本 [name]","formatEN":"update script [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"cronjobs","output_column":"name","output_value":"name"}],"formatEN":"update script [name]"}
 func (b *BaseApi) UpdateScript(c *gin.Context) {
 	var req dto.ScriptOperate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

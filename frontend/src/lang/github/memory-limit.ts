@@ -13,18 +13,3 @@ export const memoryLimitEn = {
     appliedHelper: 'Applied immediately. The agent picks it up within one minute.',
     over: 'Above the limit',
 };
-
-export const memoryLimitZh = {
-    title: '内存上限',
-    help: 'core 与 agent 进程的 Go 堆软上限。接近上限时垃圾回收会更积极，而不是让内存继续增长。它不是硬性限制。',
-    envOverride: 'core 进程设置了 GOMEMLIMIT 环境变量，该进程以环境变量为准。',
-    usage: '当前使用（RSS）',
-    core: 'Core',
-    agent: 'Agent',
-    heap: '堆',
-    notRunning: '未运行',
-    limit: '上限 (GB)',
-    range: '范围 {0} - {1} GB，默认 {2} GB。',
-    appliedHelper: '立即生效，agent 会在一分钟内同步。',
-    over: '已超过上限',
-};

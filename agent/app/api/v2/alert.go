@@ -59,7 +59,7 @@ func (b *BaseApi) GetAlerts(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /alert [post]
-// @x-panel-log {"bodyKeys":["title"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建告警任务 [title]","formatEN":"create alert [title]"}
+// @x-panel-log {"bodyKeys":["title"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create alert [title]"}
 func (b *BaseApi) CreateAlert(c *gin.Context) {
 	var req dto.AlertCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -81,7 +81,7 @@ func (b *BaseApi) CreateAlert(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /alert/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除告警任务 [id]","formatEN":"delete alert [id]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"delete alert [id]"}
 func (b *BaseApi) DeleteAlert(c *gin.Context) {
 	var req dto.DeleteRequest
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -103,7 +103,7 @@ func (b *BaseApi) DeleteAlert(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /alert/update [post]
-// @x-panel-log {"bodyKeys":["title"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新告警任务 [title]","formatEN":"update alert [title]"}
+// @x-panel-log {"bodyKeys":["title"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update alert [title]"}
 func (b *BaseApi) UpdateAlert(c *gin.Context) {
 	var req dto.AlertUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -138,7 +138,7 @@ func (b *BaseApi) GetAlert(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /alert/status [post]
-// @x-panel-log {"bodyKeys":["id","status"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新告警任务 [id] 状态 [status]","formatEN":"update alert [id] status [status]"}
+// @x-panel-log {"bodyKeys":["id","status"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update alert [id] status [status]"}
 func (b *BaseApi) UpdateAlertStatus(c *gin.Context) {
 	var req dto.AlertUpdateStatus
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -197,7 +197,7 @@ func (b *BaseApi) PageAlertLogs(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /alert/logs/clean [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"清空告警日志","formatEN":"clean alert logs"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"clean alert logs"}
 func (b *BaseApi) CleanAlertLogs(c *gin.Context) {
 	if err := alertService.CleanAlertLogs(); err != nil {
 		helper.InternalServer(c, err)
@@ -293,7 +293,7 @@ func (b *BaseApi) PageAlertConfig(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /alert/config/update [post]
-// @x-panel-log {"bodyKeys":["displayName"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新告警配置 [displayName]","formatEN":"update alert config [displayName]"}
+// @x-panel-log {"bodyKeys":["displayName"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update alert config [displayName]"}
 func (b *BaseApi) UpdateAlertConfig(c *gin.Context) {
 	var req dto.AlertConfigUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -321,7 +321,7 @@ func (b *BaseApi) UpdateAlertConfig(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /alert/config/status [post]
-// @x-panel-log {"bodyKeys":["status"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新告警配置状态 [name][status]","formatEN":"update alert config status [name][status]"}
+// @x-panel-log {"bodyKeys":["status"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update alert config status [name][status]"}
 func (b *BaseApi) UpdateAlertConfigStatus(c *gin.Context) {
 	var req dto.AlertConfigStatusUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -355,7 +355,7 @@ func loadAuditUser(c *gin.Context) string {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /alert/config/del [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"删除告警配置 [name]","formatEN":"delete alert config [name]"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"delete alert config [name]"}
 func (b *BaseApi) DeleteAlertConfig(c *gin.Context) {
 	var req dto.DeleteRequest
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

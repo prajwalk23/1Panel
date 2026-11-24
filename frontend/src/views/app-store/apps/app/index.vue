@@ -125,7 +125,7 @@ const openInstall = (app: any) => {
     .content-middle {
         flex: 1;
         margin: 10px 0;
-        overflow: hidden; /* 防止内容溢出 */
+        overflow: hidden; /* Prevent content overflow */
     }
     .app-name {
         margin: 0;

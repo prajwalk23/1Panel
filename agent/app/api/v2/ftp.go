@@ -58,7 +58,7 @@ func (b *BaseApi) LoadFtpLogInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/ftp/operate [post]
-// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"[operation] FTP","formatEN":"[operation] FTP"}
+// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] FTP"}
 func (b *BaseApi) OperateFtp(c *gin.Context) {
 	var req dto.Operate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -107,7 +107,7 @@ func (b *BaseApi) SearchFtp(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/ftp [post]
-// @x-panel-log {"bodyKeys":["user", "path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建 FTP 账户 [user][path]","formatEN":"create FTP [user][path]"}
+// @x-panel-log {"bodyKeys":["user", "path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"create FTP [user][path]"}
 func (b *BaseApi) CreateFtp(c *gin.Context) {
 	var req dto.FtpCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -137,7 +137,7 @@ func (b *BaseApi) CreateFtp(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/ftp/del [post]
-// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"ftps","output_column":"user","output_value":"users"}],"formatZH":"删除 FTP 账户 [users]","formatEN":"delete FTP users [users]"}
+// @x-panel-log {"bodyKeys":["ids"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"ids","isList":true,"db":"ftps","output_column":"user","output_value":"users"}],"formatEN":"delete FTP users [users]"}
 func (b *BaseApi) DeleteFtp(c *gin.Context) {
 	var req dto.BatchDeleteReq
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -159,7 +159,7 @@ func (b *BaseApi) DeleteFtp(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/ftp/sync [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"同步 FTP 账户","formatEN":"sync FTP users"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"sync FTP users"}
 func (b *BaseApi) SyncFtp(c *gin.Context) {
 	if err := ftpService.Sync(); err != nil {
 		helper.InternalServer(c, err)
@@ -176,7 +176,7 @@ func (b *BaseApi) SyncFtp(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /toolbox/ftp/update [post]
-// @x-panel-log {"bodyKeys":["user", "path"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改 FTP 账户 [user][path]","formatEN":"update FTP [user][path]"}
+// @x-panel-log {"bodyKeys":["user", "path"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update FTP [user][path]"}
 func (b *BaseApi) UpdateFtp(c *gin.Context) {
 	var req dto.FtpUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

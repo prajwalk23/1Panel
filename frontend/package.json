@@ -2,7 +2,7 @@
     "name": "1panel-frontend",
     "private": true,
     "version": "2.0",
-    "description": "1Panel 前端",
+    "description": "1Panel frontend",
     "scripts": {
         "dev": "node --max-old-space-size=8192 ./node_modules/.bin/vite --host",
         "serve": "vite",
@@ -15,7 +15,7 @@
         "lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,ts,json,tsx,css,less,scss,vue,html,md}\"",
         "lint:lint-staged": "lint-staged",
         "release": "standard-version",
-        "prettier:comment": "自动格式化当前目录下的所有文件",
+        "prettier:comment": "Automatically format all files in the current directory",
         "prettier": "prettier --write ."
     },
     "dependencies": {

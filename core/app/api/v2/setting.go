@@ -133,7 +133,7 @@ func (b *BaseApi) GetSystemAvailable(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/update [post]
-// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改系统配置 [key] => [value]","formatEN":"update system setting [key] => [value]"}
+// @x-panel-log {"bodyKeys":["key","value"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update system setting [key] => [value]"}
 func (b *BaseApi) UpdateSetting(c *gin.Context) {
 	var req dto.SettingUpdate
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -212,7 +212,7 @@ func checkSettingValueRange(key, value string) bool {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/terminal/update [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改系统终端配置","formatEN":"update system terminal setting"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update system terminal setting"}
 func (b *BaseApi) UpdateTerminalSetting(c *gin.Context) {
 	var req dto.TerminalUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -234,7 +234,7 @@ func (b *BaseApi) UpdateTerminalSetting(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/proxy/update [post]
-// @x-panel-log {"bodyKeys":["proxyUrl","proxyPort"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"服务器代理配置 [proxyPort]:[proxyPort]","formatEN":"set proxy [proxyPort]:[proxyPort]."}
+// @x-panel-log {"bodyKeys":["proxyUrl","proxyPort"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"set proxy [proxyPort]:[proxyPort]."}
 func (b *BaseApi) UpdateProxy(c *gin.Context) {
 	var req dto.ProxyUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -265,7 +265,7 @@ func (b *BaseApi) UpdateProxy(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/menu/update [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"隐藏高级功能菜单","formatEN":"Hide advanced feature menu."}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Hide advanced feature menu."}
 func (b *BaseApi) UpdateMenu(c *gin.Context) {
 	var req dto.SettingUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -286,7 +286,7 @@ func (b *BaseApi) UpdateMenu(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/menu/default [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"初始化菜单","formatEN":"Init menu."}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Init menu."}
 func (b *BaseApi) DefaultMenu(c *gin.Context) {
 	if err := settingService.DefaultMenu(); err != nil {
 		helper.InternalServer(c, err)
@@ -303,7 +303,7 @@ func (b *BaseApi) DefaultMenu(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/ssl/update [post]
-// @x-panel-log {"bodyKeys":["ssl"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改系统 ssl => [ssl]","formatEN":"update system ssl => [ssl]"}
+// @x-panel-log {"bodyKeys":["ssl"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update system ssl => [ssl]"}
 func (b *BaseApi) UpdateSSL(c *gin.Context) {
 	var req dto.SSLUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -372,7 +372,7 @@ func (b *BaseApi) LoadInterfaceAddr(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/bind/update [post]
-// @x-panel-log {"bodyKeys":["ipv6", "bindAddress"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改系统监听信息 => ipv6: [ipv6], 监听 IP: [bindAddress]","formatEN":"update system bind info => ipv6: [ipv6], 监听 IP: [bindAddress]"}
+// @x-panel-log {"bodyKeys":["ipv6", "bindAddress"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update system bind info => ipv6: [ipv6], listen IP: [bindAddress]"}
 func (b *BaseApi) UpdateBindInfo(c *gin.Context) {
 	var req dto.BindInfo
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -394,7 +394,7 @@ func (b *BaseApi) UpdateBindInfo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/port/update [post]
-// @x-panel-log {"bodyKeys":["serverPort"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"修改系统端口 => [serverPort]","formatEN":"update system port => [serverPort]"}
+// @x-panel-log {"bodyKeys":["serverPort"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update system port => [serverPort]"}
 func (b *BaseApi) UpdatePort(c *gin.Context) {
 	var req dto.PortUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -414,7 +414,7 @@ func (b *BaseApi) UpdatePort(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/ssl/reload [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"重载系统 SSL","formatEN":"reload system SSL"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"reload system SSL"}
 func (b *BaseApi) ReloadSSL(c *gin.Context) {
 	clientIP := common.GetRealClientIP(c)
 	if ip := net.ParseIP(clientIP); ip == nil || !ip.IsLoopback() {
@@ -487,7 +487,7 @@ func (b *BaseApi) GetMemo(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /core/settings/memo [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新仪表盘备忘录","formatEN":"update dashboard memo"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"update dashboard memo"}
 func (b *BaseApi) UpdateMemo(c *gin.Context) {
 	var req dto.MemoUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

@@ -246,7 +246,7 @@ function onClose(isKeepShow: boolean = false) {
     }
 }
 
-// terminal 相关代码 start
+// terminal code start
 
 const initTerminal = (online: boolean = false): boolean => {
     newTerm();
@@ -300,9 +300,9 @@ function resizeTerminal() {
     }
 }
 
-// terminal 相关代码 end
+// terminal code end
 
-// websocket 相关代码 start
+// websocket code start
 
 const initWebSocket = async (endpoint_: string, args: string = '') => {
     const token = ++initWebSocketToken;
@@ -654,12 +654,12 @@ function showAINotice(level: string, message: string) {
     }, 2600);
 }
 
-// websocket 相关代码 end
+// websocket code end
 
 const resizeObserver = ref<ResizeObserver>();
 
 onMounted(() => {
-    // 使用 ResizeObserver 监听容器大小变化
+    // Watch container size changes with ResizeObserver
     resizeObserver.value = new ResizeObserver(() => {
         if (termReady.value && webSocketReady.value) {
             changeTerminalSize();

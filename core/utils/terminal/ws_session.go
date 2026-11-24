@@ -153,7 +153,7 @@ func (sws *LogicSshWsSession) receiveWsMsg(exitCh chan bool) {
 				}
 				sws.sendWebsocketInputCommandToSshSessionStdinPipe(decodeBytes)
 			case WsMsgHeartbeat:
-				// 接收到心跳包后将心跳包原样返回，可以用于网络延迟检测等情况
+				// Echo the heartbeat packet back unchanged; usable for network latency detection
 				err = wsConn.WriteMessage(websocket.TextMessage, wsData)
 				if err != nil {
 					global.LOG.Errorf("ssh sending heartbeat to webSocket failed, err: %v", err)

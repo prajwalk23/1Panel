@@ -41,7 +41,7 @@ func (b *BaseApi) PageWebsiteTemplate(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/templates [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"创建网站模板 [name]","formatEN":"Create website template [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Create website template [name]"}
 func (b *BaseApi) CreateWebsiteTemplate(c *gin.Context) {
 	var req request.WebsiteTemplateCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -62,7 +62,7 @@ func (b *BaseApi) CreateWebsiteTemplate(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/templates/update [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新网站模板 [name]","formatEN":"Update website template [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Update website template [name]"}
 func (b *BaseApi) UpdateWebsiteTemplate(c *gin.Context) {
 	var req request.WebsiteTemplateUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -83,7 +83,7 @@ func (b *BaseApi) UpdateWebsiteTemplate(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/templates/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_templates","output_column":"name","output_value":"name"}],"formatZH":"删除网站模板 [name]","formatEN":"Delete website template [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_templates","output_column":"name","output_value":"name"}],"formatEN":"Delete website template [name]"}
 func (b *BaseApi) DeleteWebsiteTemplate(c *gin.Context) {
 	var req dto.OperateByID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -203,7 +203,7 @@ func (b *BaseApi) PageWebsiteTemplateOutput(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/templates/outputs [post]
-// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"生成模板产物 [name]","formatEN":"Generate template output [name]"}
+// @x-panel-log {"bodyKeys":["name"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Generate template output [name]"}
 func (b *BaseApi) CreateWebsiteTemplateOutput(c *gin.Context) {
 	var req request.WebsiteTemplateOutputCreate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -224,7 +224,7 @@ func (b *BaseApi) CreateWebsiteTemplateOutput(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /websites/templates/outputs/del [post]
-// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_template_outputs","output_column":"name","output_value":"name"}],"formatZH":"删除模板产物 [name]","formatEN":"Delete template output [name]"}
+// @x-panel-log {"bodyKeys":["id"],"paramKeys":[],"BeforeFunctions":[{"input_column":"id","input_value":"id","isList":false,"db":"website_template_outputs","output_column":"name","output_value":"name"}],"formatEN":"Delete template output [name]"}
 func (b *BaseApi) DeleteWebsiteTemplateOutput(c *gin.Context) {
 	var req dto.OperateByID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

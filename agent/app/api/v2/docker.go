@@ -65,7 +65,7 @@ func (b *BaseApi) LoadDaemonJson(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/daemonjson/update [post]
-// @x-panel-log {"bodyKeys":["key", "value"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新配置 [key]","formatEN":"Updated configuration [key]"}
+// @x-panel-log {"bodyKeys":["key", "value"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Updated configuration [key]"}
 func (b *BaseApi) UpdateDaemonJson(c *gin.Context) {
 	var req dto.SettingUpdate
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -88,7 +88,7 @@ func (b *BaseApi) UpdateDaemonJson(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/logoption/update [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新日志配置","formatEN":"Updated the log option"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Updated the log option"}
 func (b *BaseApi) UpdateLogOption(c *gin.Context) {
 	var req dto.LogOption
 	if err := helper.CheckBind(&req, c); err != nil {
@@ -111,7 +111,7 @@ func (b *BaseApi) UpdateLogOption(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/ipv6option/update [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新 ipv6 配置","formatEN":"Updated the ipv6 option"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Updated the ipv6 option"}
 func (b *BaseApi) UpdateIpv6Option(c *gin.Context) {
 	var req dto.Ipv6Option
 	if err := helper.CheckBind(&req, c); err != nil {
@@ -134,7 +134,7 @@ func (b *BaseApi) UpdateIpv6Option(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/daemonjson/update/byfile [post]
-// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatZH":"更新配置文件","formatEN":"Updated configuration file"}
+// @x-panel-log {"bodyKeys":[],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Updated configuration file"}
 func (b *BaseApi) UpdateDaemonJsonByFile(c *gin.Context) {
 	var req dto.DaemonJsonUpdateByFile
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
@@ -157,7 +157,7 @@ func (b *BaseApi) UpdateDaemonJsonByFile(c *gin.Context) {
 // @Security ApiKeyAuth
 // @Security Timestamp
 // @Router /containers/docker/operate [post]
-// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatZH":"docker 服务 [operation]","formatEN":"[operation] docker service"}
+// @x-panel-log {"bodyKeys":["operation"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"[operation] docker service"}
 func (b *BaseApi) OperateDocker(c *gin.Context) {
 	var req dto.DockerOperation
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {

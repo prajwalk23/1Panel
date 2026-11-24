@@ -65,7 +65,7 @@
                         </el-select>
                     </el-form-item>
 
-                    <!--                        网站/证书或磁盘-->
+                    <!--                        Website/certificate or disk-->
                     <el-form-item
                         v-if="dialogData.rowData!.type === 'ssl'"
                         :label="$t('xpack.alert.certificate')"
@@ -209,7 +209,7 @@
                             {{ $t('firewall.quickJump') }}
                         </el-link>
                     </span>
-                    <!--                        网站或磁盘-->
+                    <!--                        Website or disk-->
 
                     <el-form-item
                         v-if="timeTypes.includes(dialogData.rowData!.type)"
