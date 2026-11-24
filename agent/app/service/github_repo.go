@@ -13,6 +13,7 @@ import (
 	"github.com/1Panel-dev/1Panel/agent/app/repo"
 	"github.com/1Panel-dev/1Panel/agent/buserr"
 	"github.com/1Panel-dev/1Panel/agent/utils/cmd"
+	"github.com/1Panel-dev/1Panel/agent/utils/encrypt"
 	githubutil "github.com/1Panel-dev/1Panel/agent/utils/github"
 )
 
@@ -35,6 +36,26 @@ func (g *GithubService) CheckRepo(req dto.GithubRepoCheck) (*dto.GithubRepoCheck
 		if githubutil.IsSSHCloneURL(cloneURL) {
 			return nil, buserr.New("ErrGithubKeyRequired")
 		}
+	case dto.GithubKeyModeToken:
+		if !githubutil.IsHTTPSCloneURL(cloneURL) {
+			return nil, buserr.New("ErrGithubTokenNeedsHTTPS")
+		}
+		token, user := strings.TrimSpace(req.Token), strings.TrimSpace(req.TokenUser)
+		if token == "" && req.ProjectID != 0 {
+			if project, err := githubRepo.GetProject(repo.WithByID(req.ProjectID)); err == nil && project.Token != "" {
+				token, _ = encrypt.StringDecrypt(project.Token)
+				if user == "" {
+					user = project.TokenUser
+				}
+			}
+		}
+		if token == "" {
+			return nil, buserr.New("ErrGithubTokenRequired")
+		}
+		if strings.ContainsAny(token, " \t\r\n\x00") || strings.ContainsAny(user, " \t\r\n\x00:") {
+			return nil, buserr.New("ErrGithubInvalidToken")
+		}
+		env = append(env, githubutil.TokenEnv(user, token)...)
 	case dto.GithubKeyModeShared:
 		setting := loadGithubSetting()
 		if setting.SharedKeyID == 0 {

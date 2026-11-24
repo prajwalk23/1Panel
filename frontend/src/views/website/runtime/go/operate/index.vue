@@ -40,7 +40,13 @@
                     {{ $t('runtime.goHelper') }}
                 </span>
             </el-form-item>
-            <GitConfig v-model="runtime" :mode="mode" />
+            <GitSource
+                v-if="mode === 'create'"
+                ref="gitRef"
+                :source="gitSource"
+                with-switch
+                v-model:enabled="gitEnabled"
+            />
             <el-form-item :label="$t('app.containerName')" prop="params.CONTAINER_NAME">
                 <el-input v-model.trim="runtime.params['CONTAINER_NAME']"></el-input>
             </el-form-item>
@@ -64,7 +70,9 @@
 import NodeConfig from '../../components/node-config.vue';
 import AppConfig from '@/views/website/runtime/app/index.vue';
 import FileList from '@/components/file-list/index.vue';
-import GitConfig from '@/views/website/runtime/components/git/index.vue';
+import GitSource from '@/views/github/components/git-source/index.vue';
+import { Github } from '@/api/interface/github';
+import { buildCloneURL, emptySource } from '@/views/github/composables/use-git-repo';
 
 import { App } from '@/api/interface/app';
 import { Runtime } from '@/api/interface/runtime';
@@ -87,6 +95,9 @@ const fileRef = ref();
 const runtimeForm = ref<FormInstance>();
 const loading = ref(false);
 const mode = ref('create');
+const gitRef = ref();
+const gitEnabled = ref(false);
+const gitSource = reactive<Github.Source>(emptySource());
 const editParams = ref<App.InstallParams[]>();
 const initData = (type: string) => ({
     name: '',
@@ -171,6 +182,21 @@ const submit = async (formEl: FormInstance | undefined) => {
         }
 
         if (mode.value == 'create') {
+            if (gitEnabled.value) {
+                if (!gitRef.value?.validate()) return;
+                Object.assign(runtime, {
+                    gitMode: 'git',
+                    gitCloneURL: buildCloneURL(gitSource),
+                    gitBranch: gitSource.branch,
+                    gitKeyID: gitSource.authMode === 'ssh' ? gitSource.keyID : 0,
+                    gitAuthMode: gitSource.authMode,
+                    gitTokenUser: gitSource.authMode === 'token' ? gitSource.tokenUser : '',
+                    gitToken: gitSource.authMode === 'token' ? gitSource.token : '',
+                    gitUpdateStrategy: 'ff-only',
+                });
+            } else {
+                runtime.gitMode = 'none';
+            }
             loading.value = true;
             const taskID = newUUID();
             runtime.taskID = taskID;
@@ -216,11 +242,6 @@ const getRuntime = async (id: number) => {
             codeDir: data.codeDir,
             port: data.port,
             remark: data.remark,
-            gitMode: data.gitMode,
-            gitCloneURL: data.gitCloneURL,
-            gitBranch: data.gitBranch,
-            gitKeyID: data.gitKeyID,
-            gitUpdateStrategy: data.gitUpdateStrategy,
         });
         runtime.exposedPorts = data.exposedPorts || [];
         runtime.environments = data.environments || [];
@@ -236,6 +257,8 @@ const acceptParams = async (props: OperateRrops) => {
     scripts.value = [];
     if (props.mode === 'create') {
         Object.assign(runtime, initData(props.type));
+        gitEnabled.value = false;
+        Object.assign(gitSource, emptySource());
         open.value = true;
     } else {
         getRuntime(props.id);

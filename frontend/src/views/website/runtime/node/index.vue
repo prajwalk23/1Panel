@@ -35,8 +35,9 @@
                                 v-if="row.gitMode === 'git'"
                                 size="small"
                                 type="info"
-                                class="ml-2"
+                                class="ml-2 cursor-pointer"
                                 :title="row.gitCloneURL"
+                                @click="gitRef.acceptParams({ runtimeId: row.id, name: row.name })"
                             >
                                 GitHub
                             </el-tag>
@@ -107,6 +108,7 @@
             </template>
         </LayoutContent>
         <OperateNode ref="operateRef" @close="search" @submit="openCreateTaskLog" />
+        <GitManagerDrawer ref="gitRef" />
         <Delete ref="deleteRef" @close="search" @task="openCreateTaskLog" />
         <ComposeLogs ref="composeLogRef" />
         <PortJumpDialog ref="dialogPortJumpRef" />
@@ -125,6 +127,7 @@ import { Runtime } from '@/api/interface/runtime';
 import { RuntimeDeleteCheck, SearchRuntimes, SyncRuntime } from '@/api/modules/runtime';
 import { dateFormat } from '@/utils/date';
 import OperateNode from '@/views/website/runtime/node/operate/index.vue';
+import GitManagerDrawer from '@/views/github/components/git-manager/drawer.vue';
 import Delete from '@/views/website/runtime/delete/index.vue';
 import i18n from '@/lang';
 import RouterMenu from '../index.vue';
@@ -147,6 +150,7 @@ const { isMobile } = useGlobalStore();
 const loading = ref(false);
 const items = ref<Runtime.RuntimeDTO[]>([]);
 const operateRef = ref();
+const gitRef = ref();
 const deleteRef = ref();
 const dialogPortJumpRef = ref();
 const composeLogRef = ref();
@@ -225,6 +229,16 @@ const buttons = [
         },
         disabled: function (row: Runtime.Runtime) {
             return disabledButton(row, 'edit');
+        },
+    },
+    {
+        label: i18n.global.t('github.gitManager'),
+        permission: true,
+        click: function (row: Runtime.Runtime) {
+            gitRef.value.acceptParams({ runtimeId: row.id, name: row.name });
+        },
+        disabled: function (row: Runtime.Runtime) {
+            return row.gitMode !== 'git';
         },
     },
     {

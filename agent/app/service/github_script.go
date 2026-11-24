@@ -16,6 +16,7 @@ import (
 	"github.com/1Panel-dev/1Panel/agent/app/repo"
 	"github.com/1Panel-dev/1Panel/agent/buserr"
 	"github.com/1Panel-dev/1Panel/agent/utils/encrypt"
+	githubutil "github.com/1Panel-dev/1Panel/agent/utils/github"
 )
 
 const (
@@ -190,7 +191,7 @@ func (g *GithubService) DeleteScript(id uint) error {
 }
 
 // ConfigureWebhook turns the webhook of a project on or off and links it to one script.
-// A new secret is created, and returned once, when the webhook is switched on.
+// An access key is created when the webhook is switched on the first time.
 func (g *GithubService) ConfigureWebhook(req dto.GithubWebhookConfig) (*dto.GithubProjectSecret, error) {
 	project, err := githubRepo.GetProject(repo.WithByID(req.ID))
 	if err != nil {
@@ -210,26 +211,85 @@ func (g *GithubService) ConfigureWebhook(req dto.GithubWebhookConfig) (*dto.Gith
 		return nil, err
 	}
 	vars["webhook_script_id"] = script.ID
-	if project.DomainMode == dto.GithubDomainNone || project.WebhookSecret == "" {
-		secret, err := githubNewSecret()
+	if project.WebhookTokenHash == "" || githubWebhookToken(project) == "" {
+		vars2, err := githubNewTokenVars()
 		if err != nil {
 			return nil, err
 		}
-		encrypted, err := encrypt.StringEncrypt(secret)
-		if err != nil {
-			return nil, err
+		for k, v := range vars2 {
+			vars[k] = v
 		}
-		vars["webhook_secret"] = encrypted
-		result.Secret = secret
 	}
 	vars["domain_mode"] = dto.GithubDomainDefault
 	if err := githubRepo.UpdateProject(project.ID, vars); err != nil {
 		return nil, err
 	}
-	project.WebhookScriptID, project.DomainMode = script.ID, dto.GithubDomainDefault
-	info := githubProjectInfo(project, loadGithubSetting())
+	fresh, err := githubRepo.GetProject(repo.WithByID(project.ID))
+	if err != nil {
+		return nil, err
+	}
+	info := githubProjectInfo(fresh, loadGithubSetting())
 	result.WebhookURL, result.PublicKey = info.WebhookURL, info.PublicKey
 	return result, nil
+}
+
+// githubNewTokenVars returns the columns of a fresh webhook access key.
+func githubNewTokenVars() (map[string]interface{}, error) {
+	token, err := githubutil.NewToken()
+	if err != nil {
+		return nil, err
+	}
+	encrypted, err := encrypt.StringEncrypt(token)
+	if err != nil {
+		return nil, err
+	}
+	return map[string]interface{}{
+		"webhook_token":      encrypted,
+		"webhook_token_hash": githubutil.TokenHash(token),
+	}, nil
+}
+
+// RefreshWebhookToken replaces the access key. The old URL stops working at once.
+func (g *GithubService) RefreshWebhookToken(id uint) (*dto.GithubProjectSecret, error) {
+	project, err := githubRepo.GetProject(repo.WithByID(id))
+	if err != nil {
+		return nil, buserr.New("ErrRecordNotFound")
+	}
+	vars, err := githubNewTokenVars()
+	if err != nil {
+		return nil, err
+	}
+	if err := githubRepo.UpdateProject(id, vars); err != nil {
+		return nil, err
+	}
+	fresh, err := githubRepo.GetProject(repo.WithByID(project.ID))
+	if err != nil {
+		return nil, err
+	}
+	info := githubProjectInfo(fresh, loadGithubSetting())
+	return &dto.GithubProjectSecret{ID: id, WebhookURL: info.WebhookURL, PublicKey: info.PublicKey}, nil
+}
+
+func (g *GithubService) LoadWebhookInfo(id uint) (*dto.GithubWebhookInfo, error) {
+	project, err := githubRepo.GetProject(repo.WithByID(id))
+	if err != nil {
+		return nil, buserr.New("ErrRecordNotFound")
+	}
+	target := githubWebhookTarget(project)
+	info := &dto.GithubWebhookInfo{
+		Enabled:     project.DomainMode != dto.GithubDomainNone,
+		ScriptID:    project.WebhookScriptID,
+		URL:         target.URL,
+		Path:        target.Path,
+		BindDomain:  target.BindDomain,
+		HTTPS:       target.HTTPS,
+		ContentType: "application/json",
+		Events:      "push",
+	}
+	if script, err := githubResolveScript(&project, 0); err == nil {
+		info.ScriptID, info.ScriptName = script.ID, script.Name
+	}
+	return info, nil
 }
 
 var githubServiceUsers = map[string]bool{"www": true, "www-data": true, "nginx": true, "apache": true}

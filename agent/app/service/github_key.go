@@ -183,7 +183,7 @@ func githubDropKey(id uint) {
 // githubProjectKey returns the key a project uses, or an empty key for none.
 func githubProjectKey(project model.GithubProject, setting dto.GithubSetting) (model.GithubKey, error) {
 	switch project.KeyMode {
-	case dto.GithubKeyModeNone:
+	case dto.GithubKeyModeNone, dto.GithubKeyModeToken:
 		return model.GithubKey{}, nil
 	case dto.GithubKeyModeShared:
 		if setting.SharedKeyID == 0 {

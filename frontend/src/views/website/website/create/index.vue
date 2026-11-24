@@ -176,7 +176,13 @@
                     >
                         {{ $t('website.runtimePortWarn') }}
                     </el-text>
-                    <GitConfig v-if="website.runtimeType === 'php'" v-model="website" mode="create" />
+                    <GitSource
+                        v-if="website.runtimeType === 'php'"
+                        ref="gitRef"
+                        :source="gitSource"
+                        with-switch
+                        v-model:enabled="gitEnabled"
+                    />
                 </div>
 
                 <el-divider content-position="left" v-if="website.type !== 'stream'">
@@ -272,10 +278,17 @@
                         </el-form-item>
                     </div>
                 </div>
+                <GitSource
+                    v-if="website.type === 'static'"
+                    ref="gitRef"
+                    :source="gitSource"
+                    with-switch
+                    v-model:enabled="gitEnabled"
+                />
                 <el-form-item
                     :label="$t('template.importButton')"
                     prop="templateOutputID"
-                    v-if="website.type === 'static'"
+                    v-if="website.type === 'static' && !gitEnabled"
                 >
                     <el-select v-model="website.templateOutputID" clearable class="p-w-200">
                         <el-option
@@ -448,7 +461,9 @@ import Check from '../check/index.vue';
 import GroupSelect from '@/views/website/website/components/group/index.vue';
 import WebsiteSSL from '@/views/website/website/components/website-ssl/index.vue';
 import LoadBalanceForm from '@/views/website/website/config/basic/load-balance/form/index.vue';
-import GitConfig from '@/views/website/runtime/components/git/index.vue';
+import GitSource from '@/views/github/components/git-source/index.vue';
+import { Github } from '@/api/interface/github';
+import { buildCloneURL, emptySource } from '@/views/github/composables/use-git-repo';
 
 import { App } from '@/api/interface/app';
 import { searchApp, getAppInstalled } from '@/api/modules/app';
@@ -551,6 +566,9 @@ const initData = () => ({
     gitMode: 'none',
 });
 const website = ref(initData());
+const gitRef = ref();
+const gitEnabled = ref(false);
+const gitSource = reactive<Github.Source>(emptySource());
 const rules = ref<any>({
     alias: [Rules.alias],
     type: [Rules.requiredInput],
@@ -799,6 +817,8 @@ const acceptParams = async (openrestyVersion: string) => {
         versionNotMatch.value = true;
     }
     website.value = initData();
+    gitEnabled.value = false;
+    Object.assign(gitSource, emptySource());
     if (websiteForm.value) {
         websiteForm.value.resetFields();
     }
@@ -1038,6 +1058,10 @@ const submit = async (formEl: FormInstance | undefined) => {
             const isValid = await lbFormRef.value?.validate();
             if (!isValid) return;
         }
+        const gitSite =
+            (website.value.type === 'runtime' && website.value.runtimeType === 'php') ||
+            website.value.type === 'static';
+        if (gitSite && gitEnabled.value && !gitRef.value?.validate()) return;
         loading.value = true;
         try {
             const res = await preCheck({});
@@ -1058,6 +1082,21 @@ const submit = async (formEl: FormInstance | undefined) => {
                 }
                 if (website.value.type !== 'static' || !website.value.templateOutputID) {
                     website.value.templateOutputID = undefined;
+                }
+                if (gitSite && gitEnabled.value) {
+                    Object.assign(website.value, {
+                        gitMode: 'git',
+                        gitCloneURL: buildCloneURL(gitSource),
+                        gitBranch: gitSource.branch,
+                        gitKeyID: gitSource.authMode === 'ssh' ? gitSource.keyID : 0,
+                        gitAuthMode: gitSource.authMode,
+                        gitTokenUser: gitSource.authMode === 'token' ? gitSource.tokenUser : '',
+                        gitToken: gitSource.authMode === 'token' ? gitSource.token : '',
+                        gitUpdateStrategy: 'ff-only',
+                    });
+                    website.value.templateOutputID = undefined;
+                } else {
+                    website.value.gitMode = 'none';
                 }
                 const taskID = uuidv4();
                 website.value.taskID = taskID;

@@ -158,24 +158,87 @@ func (b *BaseApi) CancelGithubDeploy(c *gin.Context) {
 }
 
 // @Tags GitHub
-// @Summary Regenerate webhook secret
+// @Summary Refresh webhook token
 // @Accept json
 // @Param request body dto.OperateByID true "request"
 // @Success 200 {object} dto.GithubProjectSecret
 // @Security ApiKeyAuth
 // @Security Timestamp
-// @Router /github/projects/secret/regenerate [post]
-func (b *BaseApi) RegenerateGithubSecret(c *gin.Context) {
+// @Router /github/projects/webhook/token [post]
+func (b *BaseApi) RefreshGithubWebhookToken(c *gin.Context) {
 	var req dto.OperateByID
 	if err := helper.CheckBindAndValidate(&req, c); err != nil {
 		return
 	}
-	data, err := githubService.RegenerateSecret(req.ID)
+	data, err := githubService.RefreshWebhookToken(req.ID)
 	if err != nil {
 		helper.InternalServer(c, err)
 		return
 	}
 	helper.SuccessWithData(c, data)
+}
+
+// @Tags GitHub
+// @Summary Load the GitHub project of a website or runtime
+// @Accept json
+// @Param request body dto.GithubLinkedSearch true "request"
+// @Success 200 {object} dto.GithubProjectInfo
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/projects/linked [post]
+func (b *BaseApi) LoadLinkedGithubProject(c *gin.Context) {
+	var req dto.GithubLinkedSearch
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	data, err := githubService.LoadLinked(req)
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, data)
+}
+
+// @Tags GitHub
+// @Summary Load deploy summary of a project
+// @Accept json
+// @Param request body dto.OperateByID true "request"
+// @Success 200 {object} dto.GithubProjectSummary
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/projects/summary [post]
+func (b *BaseApi) LoadGithubSummary(c *gin.Context) {
+	var req dto.OperateByID
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	data, err := githubService.LoadSummary(req.ID)
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, data)
+}
+
+// @Tags GitHub
+// @Summary Page commits of a project branch
+// @Accept json
+// @Param request body dto.GithubCommitSearch true "request"
+// @Success 200 {object} dto.PageResult
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/projects/commits [post]
+func (b *BaseApi) SearchGithubCommits(c *gin.Context) {
+	var req dto.GithubCommitSearch
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	total, list, err := githubService.SearchCommits(req)
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, dto.PageResult{Items: list, Total: total})
 }
 
 // @Tags GitHub

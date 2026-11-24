@@ -8,7 +8,8 @@ const (
 	GithubKeyModeProject = "project"
 	GithubKeyModeShared  = "shared"
 	GithubKeyModeCustom  = "custom"
-	GithubKeyModeNone    = "none"
+	GithubKeyModeNone    = "none"  // public repository, no credentials
+	GithubKeyModeToken   = "token" // https with a username and an access token
 
 	GithubKeyTypeProject = "project"
 	GithubKeyTypeShared  = "shared"
@@ -21,8 +22,11 @@ const (
 	GithubStrategyFFOnly = "ff-only"
 	GithubStrategyReset  = "reset"
 
-	GithubTriggerWebhook = "webhook"
-	GithubTriggerManual  = "manual"
+	GithubTriggerWebhook  = "webhook"
+	GithubTriggerManual   = "manual"
+	GithubTriggerRollback = "rollback"
+	GithubTriggerCreate   = "create"
+	GithubTriggerBoot     = "boot" // webhook script re-run after the server restarted
 
 	GithubStatusWaiting  = "waiting"
 	GithubStatusRunning  = "running"
@@ -39,7 +43,14 @@ const (
 
 type GithubProjectSearch struct {
 	PageInfo
-	Info string `json:"info"`
+	Info       string `json:"info"`
+	Standalone bool   `json:"standalone"` // only projects that are not linked to a website or a runtime
+}
+
+// GithubLinkedSearch finds the project of a website or a runtime.
+type GithubLinkedSearch struct {
+	WebsiteID uint `json:"websiteID"`
+	RuntimeID uint `json:"runtimeID"`
 }
 
 type GithubProjectOperate struct {
@@ -52,15 +63,45 @@ type GithubProjectOperate struct {
 	DeployCommand  string `json:"deployCommand" validate:"max=65535"` // legacy: scripts are now created on demand
 	UpdateStrategy string `json:"updateStrategy" validate:"omitempty,oneof=ff-only reset"`
 	Timeout        int    `json:"timeout" validate:"min=0,max=86400"`
-	KeyMode        string `json:"keyMode" validate:"required,oneof=project shared custom none"`
+	KeyMode        string `json:"keyMode" validate:"required,oneof=project shared custom none token"`
 	KeyID          uint   `json:"keyID"`
+	TokenUser      string `json:"tokenUser" validate:"max=128"`
+	Token          string `json:"token" validate:"max=1024"` // empty on update keeps the stored token
+	KeepRecords    int    `json:"keepRecords" validate:"min=0,max=100"`
+	IgnorePaths    string `json:"ignorePaths" validate:"max=4096"`
 	Enabled        bool   `json:"enabled"`
 }
 
 // GithubProjectDeploy runs a project now. ScriptID 0 means the script the webhook is linked to.
 type GithubProjectDeploy struct {
-	ID       uint `json:"id" validate:"required"`
-	ScriptID uint `json:"scriptID"`
+	ID       uint   `json:"id" validate:"required"`
+	ScriptID uint   `json:"scriptID"`
+	Commit   string `json:"commit" validate:"max=64"` // empty: latest of the branch
+	Rollback bool   `json:"rollback"`
+}
+
+type GithubCommitSearch struct {
+	PageInfo
+	ID     uint   `json:"id" validate:"required"`
+	Branch string `json:"branch" validate:"max=200"`
+}
+
+type GithubCommitInfo struct {
+	Commit  string    `json:"commit"`
+	Author  string    `json:"author"`
+	Message string    `json:"message"`
+	Time    time.Time `json:"time"`
+	Active  bool      `json:"active"`
+}
+
+// GithubProjectSummary feeds the Repository tab of the Git Manager.
+type GithubProjectSummary struct {
+	Project       GithubProjectInfo `json:"project"`
+	Commit        string            `json:"commit"`
+	CommitMessage string            `json:"commitMessage"`
+	CommitAuthor  string            `json:"commitAuthor"`
+	DeployedAt    time.Time         `json:"deployedAt"`
+	Duration      int64             `json:"duration"`
 }
 
 // GithubWebhookConfig turns the webhook of a project on or off and links it to one script.
@@ -114,6 +155,12 @@ type GithubProjectInfo struct {
 	PublicKey       string    `json:"publicKey"`
 	WebhookEnabled  bool      `json:"webhookEnabled"`
 	WebhookScriptID uint      `json:"webhookScriptID"`
+	WebsiteID       uint      `json:"websiteID"`
+	RuntimeID       uint      `json:"runtimeID"`
+	TokenUser       string    `json:"tokenUser"`
+	HasToken        bool      `json:"hasToken"`
+	KeepRecords     int       `json:"keepRecords"`
+	IgnorePaths     string    `json:"ignorePaths"`
 	Enabled         bool      `json:"enabled"`
 	LastStatus      string    `json:"lastStatus"`
 	LastRunAt       time.Time `json:"lastRunAt"`
@@ -123,31 +170,33 @@ type GithubProjectInfo struct {
 	WebhookHTTPS    bool      `json:"webhookHTTPS"`
 }
 
-// GithubProjectSecret is the only response that contains a webhook secret.
+// GithubProjectSecret is returned when the webhook is switched on or its token is refreshed.
 type GithubProjectSecret struct {
 	ID         uint   `json:"id"`
-	Secret     string `json:"secret"`
 	WebhookURL string `json:"webhookURL"`
 	PublicKey  string `json:"publicKey"`
 }
 
+// GithubWebhookInfo describes the webhook of a project. The URL is built on the panel address:
+// the bound domain when there is one, otherwise the server IP. The browser may replace the host
+// with the one the panel is opened on (Path is the part that never changes).
 type GithubWebhookInfo struct {
 	Enabled     bool   `json:"enabled"`
 	ScriptID    uint   `json:"scriptID"`
 	ScriptName  string `json:"scriptName"`
 	URL         string `json:"url"`
+	Path        string `json:"path"`
+	BindDomain  bool   `json:"bindDomain"`
 	HTTPS       bool   `json:"https"`
 	ContentType string `json:"contentType"`
 	Events      string `json:"events"`
-	ProxyPass   string `json:"proxyPass"`
-	Listener    string `json:"listener"`
-	Message     string `json:"message"`
 }
 
 type GithubLogSearch struct {
 	PageInfo
 	ProjectID uint   `json:"projectID"`
 	Status    string `json:"status"`
+	Trigger   string `json:"trigger"`
 }
 
 type GithubLogInfo struct {
@@ -165,10 +214,17 @@ type GithubLogInfo struct {
 	Message     string    `json:"message"`
 	StartedAt   time.Time `json:"startedAt"`
 	FinishedAt  time.Time `json:"finishedAt"`
+
+	CommitMessage string `json:"commitMessage"`
+	CommitAuthor  string `json:"commitAuthor"`
+	Duration      int64  `json:"duration"`
+	Active        bool   `json:"active"`       // the version that is deployed now
+	Rollbackable  bool   `json:"rollbackable"` // a kept version that can be rolled back to
 }
 
 type GithubLogClean struct {
-	ProjectID uint `json:"projectID"`
+	ProjectID uint   `json:"projectID"`
+	Trigger   string `json:"trigger"`
 }
 
 type GithubKeySearch struct {
@@ -206,27 +262,26 @@ type GithubKeyOption struct {
 }
 
 type GithubSetting struct {
-	WebhookPort   int    `json:"webhookPort" validate:"required,min=1,max=65535"`
-	WebhookBind   string `json:"webhookBind" validate:"required,max=64"`
-	DefaultShell  string `json:"defaultShell" validate:"required,oneof=bash sh"`
-	LogRetention  int    `json:"logRetention" validate:"min=1,max=10000"`
-	WebhookDomain string `json:"webhookDomain" validate:"max=1024"`
-	SharedKeyID   uint   `json:"sharedKeyID"`
+	DefaultShell string `json:"defaultShell" validate:"required,oneof=bash sh"`
+	LogRetention int    `json:"logRetention" validate:"min=1,max=10000"`
+	SharedKeyID  uint   `json:"sharedKeyID"`
 }
 
 type GithubSettingInfo struct {
 	GithubSetting
-	ListenerRunning bool   `json:"listenerRunning"`
-	ListenerAddr    string `json:"listenerAddr"`
-	ListenerError   string `json:"listenerError"`
-	GitInstalled    bool   `json:"gitInstalled"`
+	WebhookBase  string `json:"webhookBase"` // panel address the webhook URLs start with
+	BindDomain   bool   `json:"bindDomain"`
+	GitInstalled bool   `json:"gitInstalled"`
 }
 
 // GithubRepoCheck asks whether a repository can be reached with the chosen key.
 type GithubRepoCheck struct {
-	CloneURL string `json:"cloneURL" validate:"required,max=512"`
-	KeyMode  string `json:"keyMode" validate:"required,oneof=project shared custom none"`
-	KeyID    uint   `json:"keyID"`
+	CloneURL  string `json:"cloneURL" validate:"required,max=512"`
+	KeyMode   string `json:"keyMode" validate:"required,oneof=project shared custom none token"`
+	KeyID     uint   `json:"keyID"`
+	TokenUser string `json:"tokenUser" validate:"max=128"`
+	Token     string `json:"token" validate:"max=1024"`
+	ProjectID uint   `json:"projectID"` // reuse the stored token of this project when Token is empty
 }
 
 type GithubRepoCheckInfo struct {

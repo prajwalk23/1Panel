@@ -61,6 +61,9 @@
             >
                 <Resource :id="id" v-if="tabIndex == '14'"></Resource>
             </el-tab-pane>
+            <el-tab-pane :label="$t('github.gitManager')" name="17" v-if="website.gitMode === 'git'">
+                <GitTab :id="id" v-if="tabIndex == '17'"></GitTab>
+            </el-tab-pane>
             <el-tab-pane :label="$t('website.other')" name="12">
                 <Other :id="id" v-if="tabIndex == '12'"></Other>
             </el-tab-pane>
@@ -102,6 +105,7 @@ import RealIP from './real-ip/index.vue';
 import Resource from './resource/index.vue';
 import Cors from './cors/index.vue';
 import Stream from './stream/index.vue';
+import GitTab from './git/index.vue';
 defineOptions({ name: 'Basic' });
 
 const props = defineProps({

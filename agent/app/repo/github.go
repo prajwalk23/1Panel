@@ -43,6 +43,10 @@ type IGithubRepo interface {
 	WithByKeyID(id uint) DBOption
 	WithByWebsiteID(id uint) DBOption
 	WithByLogStatus(statuses ...string) DBOption
+	WithByTrigger(triggers ...string) DBOption
+	WithByRuntimeID(id uint) DBOption
+	WithByWebhookTokenHash(hash string) DBOption
+	WithStandalone() DBOption
 	WithByEnabled(enabled bool) DBOption
 }
 
@@ -199,6 +203,31 @@ func (g *GithubRepo) WithByKeyID(id uint) DBOption {
 func (g *GithubRepo) WithByWebsiteID(id uint) DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("website_id = ?", id)
+	}
+}
+
+func (g *GithubRepo) WithByTrigger(triggers ...string) DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("`trigger` in (?)", triggers)
+	}
+}
+
+func (g *GithubRepo) WithByRuntimeID(id uint) DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("runtime_id = ?", id)
+	}
+}
+
+func (g *GithubRepo) WithByWebhookTokenHash(hash string) DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("webhook_token_hash = ?", hash)
+	}
+}
+
+// WithStandalone keeps the projects that are not linked to a website or a runtime.
+func (g *GithubRepo) WithStandalone() DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("website_id = 0 AND runtime_id = 0")
 	}
 }
 
