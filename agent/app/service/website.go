@@ -538,9 +538,16 @@ func (w WebsiteService) CreateWebsite(create request.WebsiteCreate) (err error) 
 		website.SiteDir = create.SiteDir
 	}
 
+	if create.Type == constant.Static { // fork: GitHub source for static sites
+		if err := validateGitSource(create.GitMode, create.GitCloneURL, create.GitBranch); err != nil {
+			return err
+		}
+		applyWebsiteGit(website, create)
+	}
+
 	createdFiles := &websiteCreateFiles{}
 	configNginx := func(t *task.Task) error {
-		if create.Type == constant.Static && create.TemplateOutputID > 0 {
+		if create.Type == constant.Static && create.TemplateOutputID > 0 && !websiteGitEnabled(website) {
 			templateOutput, err := websiteTemplateOutputRepo.GetFirst(repo.WithByID(create.TemplateOutputID))
 			if err != nil {
 				return err
@@ -601,6 +608,7 @@ func (w WebsiteService) CreateWebsite(create request.WebsiteCreate) (err error) 
 		if err := tx.Commit().Error; err != nil {
 			return err
 		}
+		githubLinkWebsite(website) // fork: project of the Git Manager
 		return nil
 	}
 
@@ -843,6 +851,7 @@ func (w WebsiteService) DeleteWebsite(req request.WebsiteDelete) error {
 		return err
 	}
 	tx.Commit()
+	githubDeleteLinked(website.ID, 0) // fork: drop the GitHub project of the website
 
 	uploadDir := path.Join(global.Dir.DataDir, "uploads/website", website.Alias)
 	if _, err := os.Stat(uploadDir); err == nil {

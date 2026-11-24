@@ -72,7 +72,15 @@ type PushEvent struct {
 	} `json:"pusher"`
 	HeadCommit *struct {
 		Message string `json:"message"`
+		Author  struct {
+			Name string `json:"name"`
+		} `json:"author"`
 	} `json:"head_commit"`
+	Commits []struct {
+		Added    []string `json:"added"`
+		Modified []string `json:"modified"`
+		Removed  []string `json:"removed"`
+	} `json:"commits"`
 }
 
 // ParsePush decodes a push payload.

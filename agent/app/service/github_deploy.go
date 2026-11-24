@@ -4,19 +4,12 @@ package service
 
 import (
 	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
-	"io"
-	"net"
-	"net/http"
 	"os"
 	"os/user"
 	"path"
 	"regexp"
-	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/1Panel-dev/1Panel/agent/app/dto"
@@ -27,7 +20,6 @@ import (
 	"github.com/1Panel-dev/1Panel/agent/global"
 	"github.com/1Panel-dev/1Panel/agent/i18n"
 	"github.com/1Panel-dev/1Panel/agent/utils/cmd"
-	"github.com/1Panel-dev/1Panel/agent/utils/encrypt"
 	githubutil "github.com/1Panel-dev/1Panel/agent/utils/github"
 )
 
@@ -40,7 +32,6 @@ const (
 var (
 	githubQueue   = githubutil.NewQueue(runGithubDeploy)
 	githubLimiter = githubutil.NewLimiter(2*time.Second, 20)
-	githubHook    = &githubListener{}
 
 	githubDeliveryPattern = regexp.MustCompile(`^[A-Za-z0-9-]{1,64}$`)
 )
@@ -53,203 +44,9 @@ type githubDeployReq struct {
 	Pusher     string
 	DeliveryID string
 	ScriptID   uint // 0: the script the webhook is linked to
-}
 
-// ---------- listener ----------
-
-type githubListener struct {
-	mu   sync.Mutex
-	srv  *http.Server
-	addr string
-	err  string
-}
-
-// StartGithubWebhookListener is started once from business.Init().
-func StartGithubWebhookListener() {
-	defer func() {
-		if r := recover(); r != nil {
-			global.LOG.Errorf("[github] webhook listener panic: %v", r)
-		}
-	}()
-	if err := githubutil.EnforceKeyPerms(githubKeyRoot()); err != nil {
-		global.LOG.Errorf("[github] enforce key permissions failed: %v", err)
-	}
-	githubFailInterrupted()
-	githubDropOrphanKeys()
-	if err := githubHook.restart(); err != nil {
-		global.LOG.Errorf("[github] start webhook listener failed: %v", err)
-	}
-}
-
-func (l *githubListener) status() (bool, string, string) {
-	l.mu.Lock()
-	defer l.mu.Unlock()
-	return l.srv != nil, l.addr, l.err
-}
-
-func (l *githubListener) restart() error {
-	setting := loadGithubSetting()
-	addr := net.JoinHostPort(setting.WebhookBind, strconv.Itoa(setting.WebhookPort))
-
-	l.mu.Lock()
-	defer l.mu.Unlock()
-	if l.srv != nil {
-		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-		_ = l.srv.Shutdown(ctx)
-		cancel()
-		l.srv = nil
-	}
-	ln, err := net.Listen("tcp", addr)
-	if err != nil {
-		l.addr, l.err = addr, err.Error()
-		return err
-	}
-	mux := http.NewServeMux()
-	mux.HandleFunc(githubHookPath, handleGithubHook)
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		githubWriteJSON(w, http.StatusNotFound, "not found", nil)
-	})
-	srv := &http.Server{
-		Handler:           mux,
-		ReadHeaderTimeout: 10 * time.Second,
-		ReadTimeout:       30 * time.Second,
-		WriteTimeout:      30 * time.Second,
-		MaxHeaderBytes:    64 << 10,
-	}
-	go func() {
-		if err := srv.Serve(ln); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			global.LOG.Errorf("[github] webhook listener stopped: %v", err)
-			l.mu.Lock()
-			if l.srv == srv {
-				l.srv, l.err = nil, err.Error()
-			}
-			l.mu.Unlock()
-		}
-	}()
-	l.srv, l.addr, l.err = srv, addr, ""
-	global.LOG.Infof("[github] webhook listener on %s", addr)
-	return nil
-}
-
-func githubWriteJSON(w http.ResponseWriter, code int, message string, extra map[string]interface{}) {
-	body := map[string]interface{}{"message": message}
-	for k, v := range extra {
-		body[k] = v
-	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	_ = json.NewEncoder(w).Encode(body)
-}
-
-func githubClientIP(r *http.Request) string {
-	if forwarded := r.Header.Get("X-Forwarded-For"); forwarded != "" {
-		return strings.TrimSpace(strings.Split(forwarded, ",")[0])
-	}
-	if real := r.Header.Get("X-Real-IP"); real != "" {
-		return strings.TrimSpace(real)
-	}
-	host, _, err := net.SplitHostPort(r.RemoteAddr)
-	if err != nil {
-		return r.RemoteAddr
-	}
-	return host
-}
-
-func handleGithubHook(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		githubWriteJSON(w, http.StatusMethodNotAllowed, "method not allowed", nil)
-		return
-	}
-	idText := strings.Trim(strings.TrimPrefix(r.URL.Path, githubHookPath), "/")
-	id64, err := strconv.ParseUint(idText, 10, 32)
-	if err != nil || id64 == 0 {
-		githubWriteJSON(w, http.StatusNotFound, "unknown project", nil)
-		return
-	}
-	id := uint(id64)
-	delivery := r.Header.Get("X-GitHub-Delivery")
-	if !githubDeliveryPattern.MatchString(delivery) {
-		delivery = ""
-	}
-	clientIP := githubClientIP(r)
-
-	r.Body = http.MaxBytesReader(w, r.Body, githubMaxBody)
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		githubWriteJSON(w, http.StatusRequestEntityTooLarge, "payload too large", nil)
-		return
-	}
-	if !githubLimiter.Allow(id) {
-		githubWriteJSON(w, http.StatusTooManyRequests, "rate limited", nil)
-		return
-	}
-	project, err := githubRepo.GetProject(repo.WithByID(id))
-	if err != nil {
-		githubWriteJSON(w, http.StatusNotFound, "unknown project", nil)
-		return
-	}
-	secret, err := encrypt.StringDecrypt(project.WebhookSecret)
-	if err != nil || secret == "" {
-		global.LOG.Errorf("[github] project %d has no usable webhook secret", id)
-		githubWriteJSON(w, http.StatusInternalServerError, "secret unavailable", nil)
-		return
-	}
-	if err := githubutil.VerifySignature(secret, body, r.Header.Get("X-Hub-Signature-256")); err != nil {
-		global.LOG.Warnf("[github] rejected delivery %s for project %d from %s: %v", delivery, id, clientIP, err)
-		githubWriteJSON(w, http.StatusUnauthorized, "invalid signature", nil)
-		return
-	}
-	if project.DomainMode == dto.GithubDomainNone {
-		githubWriteJSON(w, http.StatusForbidden, "webhook is turned off for this project", nil)
-		return
-	}
-	if !project.Enabled {
-		githubWriteJSON(w, http.StatusForbidden, "project disabled", nil)
-		return
-	}
-
-	event := r.Header.Get("X-GitHub-Event")
-	if event == githubutil.EventPing {
-		githubWriteJSON(w, http.StatusOK, "pong", nil)
-		return
-	}
-	if event != githubutil.EventPush {
-		githubWriteJSON(w, http.StatusAccepted, "ignored", map[string]interface{}{"reason": "event " + githubTrim(event, 64)})
-		return
-	}
-	push, err := githubutil.ParsePush(body)
-	if err != nil {
-		githubWriteJSON(w, http.StatusBadRequest, "invalid payload", nil)
-		return
-	}
-	switch result := githubutil.Match(project.Repo, project.Branch, event, push); result {
-	case githubutil.MatchDeploy:
-	case githubutil.MatchWrongRepo:
-		githubWriteJSON(w, http.StatusBadRequest, "repository does not match project", nil)
-		return
-	default:
-		githubWriteJSON(w, http.StatusAccepted, "ignored", map[string]interface{}{"reason": result.String()})
-		return
-	}
-
-	commit := ""
-	if githubutil.ValidSHA(push.After) {
-		commit = push.After
-	}
-	req := githubDeployReq{
-		Trigger:    dto.GithubTriggerWebhook,
-		Ref:        githubTrim(push.Ref, 255),
-		Commit:     commit,
-		Pusher:     githubTrim(push.Pusher.Name, 100),
-		DeliveryID: delivery,
-	}
-	state, err := githubSubmit(project, req)
-	if err != nil {
-		githubWriteJSON(w, http.StatusInternalServerError, "queue failed", nil)
-		return
-	}
-	global.LOG.Infof("[github] delivery %s for project %d from %s: %s", delivery, id, clientIP, state)
-	githubWriteJSON(w, http.StatusAccepted, state, nil)
+	TargetCommit string // check this commit out instead of following the branch (deploy a commit, rollback)
+	ScriptOnly   bool   // run the script only, no pull (server restart)
 }
 
 // ---------- queue ----------
@@ -262,7 +59,20 @@ func (g *GithubService) Deploy(req dto.GithubProjectDeploy) error {
 	if _, err := githubResolveScript(&project, req.ScriptID); err != nil {
 		return err
 	}
-	_, err = githubSubmit(project, githubDeployReq{Trigger: dto.GithubTriggerManual, Ref: "refs/heads/" + project.Branch, ScriptID: req.ScriptID})
+	deploy := githubDeployReq{Trigger: dto.GithubTriggerManual, Ref: "refs/heads/" + project.Branch, ScriptID: req.ScriptID}
+	if commit := strings.TrimSpace(req.Commit); commit != "" {
+		if !githubutil.ValidSHA(commit) {
+			return buserr.New("ErrGithubInvalidCommit")
+		}
+		deploy.TargetCommit, deploy.Commit = commit, commit
+	}
+	if req.Rollback {
+		if deploy.TargetCommit == "" {
+			return buserr.New("ErrGithubInvalidCommit")
+		}
+		deploy.Trigger = dto.GithubTriggerRollback
+	}
+	_, err = githubSubmit(project, deploy)
 	return err
 }
 
@@ -367,23 +177,23 @@ func runGithubDeploy(ctx context.Context, projectID uint, req githubDeployReq) {
 	if timeout <= 0 {
 		timeout = githubDefaultTimeout * time.Second
 	}
-	env := []string{"GIT_TERMINAL_PROMPT=0"}
-	key, err := githubProjectKey(project, setting)
+	env, err := githubProjectEnv(project, setting)
 	if err != nil {
 		githubCloseTask(deployTask, err)
 		finish(dto.GithubStatusFailed, err.Error(), "")
 		return
 	}
-	if key.ID != 0 {
-		env = append(env, "GIT_SSH_COMMAND="+githubutil.SSHCommand(key.KeyPath, githubKnownHosts()))
-	}
 
 	headCommit := ""
-	deployTask.AddSubTaskWithAliasAndOps("GithubStepSync", func(t *task.Task) error {
-		commit, err := githubSyncRepo(ctx, t, project, env, timeout)
-		headCommit = commit
-		return err
-	}, nil, 0, timeout+time.Minute)
+	if req.ScriptOnly {
+		headCommit = project.LastCommit
+	} else {
+		deployTask.AddSubTaskWithAliasAndOps("GithubStepSync", func(t *task.Task) error {
+			commit, err := githubSyncRepo(ctx, t, project, env, timeout, req.TargetCommit)
+			headCommit = commit
+			return err
+		}, nil, 0, timeout+time.Minute)
+	}
 	script, scriptErr := githubResolveScript(&project, req.ScriptID)
 	if scriptErr != nil {
 		githubCloseTask(deployTask, scriptErr)
@@ -397,6 +207,16 @@ func runGithubDeploy(ctx context.Context, projectID uint, req githubDeployReq) {
 	}
 
 	runErr := deployTask.Execute()
+	logVars := map[string]interface{}{"duration": time.Since(now).Milliseconds()}
+	if !req.ScriptOnly && headCommit != "" {
+		if info, infoErr := githubGitQuiet(ctx, project.ProjectPath, env, "log", "-1", "--format=%an%x1f%s", headCommit); infoErr == nil {
+			if parts := strings.SplitN(info, "\x1f", 2); len(parts) == 2 {
+				logVars["commit_author"] = githubTrim(parts[0], 100)
+				logVars["commit_message"] = githubTrim(parts[1], 500)
+			}
+		}
+	}
+	_ = githubRepo.UpdateLog(req.LogID, logVars)
 	switch {
 	case ctx.Err() != nil:
 		finish(dto.GithubStatusCanceled, i18n.GetMsgByKey("GithubCanceled"), headCommit)
@@ -404,6 +224,9 @@ func runGithubDeploy(ctx context.Context, projectID uint, req githubDeployReq) {
 		finish(dto.GithubStatusFailed, runErr.Error(), headCommit)
 	default:
 		finish(dto.GithubStatusSuccess, "", headCommit)
+		if !req.ScriptOnly {
+			githubRestartLinkedRuntime(project)
+		}
 	}
 	githubPruneLogs(projectID, setting.LogRetention)
 }
@@ -429,7 +252,8 @@ func githubGitQuiet(ctx context.Context, dir string, env []string, args ...strin
 }
 
 // githubSyncRepo clones or updates the project folder and returns HEAD.
-func githubSyncRepo(ctx context.Context, t *task.Task, project model.GithubProject, env []string, timeout time.Duration) (string, error) {
+// With target set the checkout ends on that commit instead of following the branch.
+func githubSyncRepo(ctx context.Context, t *task.Task, project model.GithubProject, env []string, timeout time.Duration, target string) (string, error) {
 	if !cmd.Which("git") {
 		return "", buserr.New("ErrGithubGitNotFound")
 	}
@@ -467,7 +291,9 @@ func githubSyncRepo(ctx context.Context, t *task.Task, project model.GithubProje
 				return "", err
 			}
 		}
-		if project.UpdateStrategy == dto.GithubStrategyReset {
+		if target != "" {
+			// checked out below
+		} else if project.UpdateStrategy == dto.GithubStrategyReset {
 			t.Logf("git reset --hard %s", remoteRef)
 			if _, err := githubGit(ctx, t, dir, env, timeout, "reset", "--hard", remoteRef); err != nil {
 				return "", err
@@ -477,6 +303,15 @@ func githubSyncRepo(ctx context.Context, t *task.Task, project model.GithubProje
 			if _, err := githubGit(ctx, t, dir, env, timeout, "merge", "--ff-only", remoteRef); err != nil {
 				return "", err
 			}
+		}
+	}
+	if target != "" {
+		if _, err := githubGitQuiet(ctx, dir, env, "cat-file", "-e", target+"^{commit}"); err != nil {
+			return "", buserr.New("ErrGithubCommitNotFound")
+		}
+		t.Logf("git reset --hard %s", target)
+		if _, err := githubGit(ctx, t, dir, env, timeout, "reset", "--hard", target); err != nil {
+			return "", err
 		}
 	}
 	head, err := githubGitQuiet(ctx, dir, env, "rev-parse", "HEAD")
@@ -543,6 +378,9 @@ func (g *GithubService) SearchLogs(req dto.GithubLogSearch) (int64, []dto.Github
 	if req.Status != "" {
 		opts = append(opts, githubRepo.WithByLogStatus(req.Status))
 	}
+	if req.Trigger != "" {
+		opts = append(opts, githubRepo.WithByTrigger(req.Trigger))
+	}
 	total, logs, err := githubRepo.PageLogs(req.Page, req.PageSize, opts...)
 	if err != nil {
 		return 0, nil, err
@@ -552,9 +390,15 @@ func (g *GithubService) SearchLogs(req dto.GithubLogSearch) (int64, []dto.Github
 	for _, project := range projects {
 		names[project.ID] = project.Name
 	}
+	var current model.GithubProject
+	versions := map[string]bool{}
+	if req.ProjectID != 0 {
+		current, _ = githubRepo.GetProject(repo.WithByID(req.ProjectID))
+		versions = githubRollbackVersions(current)
+	}
 	list := make([]dto.GithubLogInfo, 0, len(logs))
 	for _, item := range logs {
-		list = append(list, dto.GithubLogInfo{
+		info := dto.GithubLogInfo{
 			ID:          item.ID,
 			CreatedAt:   item.CreatedAt,
 			ProjectID:   item.ProjectID,
@@ -569,7 +413,16 @@ func (g *GithubService) SearchLogs(req dto.GithubLogSearch) (int64, []dto.Github
 			Message:     item.Message,
 			StartedAt:   item.StartedAt,
 			FinishedAt:  item.FinishedAt,
-		})
+
+			CommitMessage: item.CommitMessage,
+			CommitAuthor:  item.CommitAuthor,
+			Duration:      item.Duration,
+		}
+		if current.ID != 0 && item.Status == dto.GithubStatusSuccess && item.Commit != "" {
+			info.Active = item.Commit == current.LastCommit
+			info.Rollbackable = !info.Active && versions[item.Commit]
+		}
+		list = append(list, info)
 	}
 	return total, list, nil
 }
@@ -578,6 +431,9 @@ func (g *GithubService) CleanLogs(req dto.GithubLogClean) error {
 	opts := []repo.DBOption{githubRepo.WithByLogStatus(dto.GithubStatusSuccess, dto.GithubStatusFailed, dto.GithubStatusCanceled, dto.GithubStatusSkipped)}
 	if req.ProjectID != 0 {
 		opts = append(opts, githubRepo.WithByProjectID(req.ProjectID))
+	}
+	if req.Trigger != "" {
+		opts = append(opts, githubRepo.WithByTrigger(req.Trigger))
 	}
 	logs, err := githubRepo.ListLogs(opts...)
 	if err != nil {

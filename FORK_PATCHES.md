@@ -12,7 +12,7 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 |---|---|---|
 | `agent/router/common.go` | `&GithubRouter{},` appended to `commonGroups()` | keep upstream list, re-append our line |
 | `agent/init/migration/migrate.go` | `migrations.AddGithubTables,` and `migrations.AddGithubScripts,` appended to `agentDBMigrations()` | keep upstream entries, keep ours **last** (order only matters for new installs; IDs are unique) |
-| `agent/init/business/business.go` | `go service.StartGithubWebhookListener()` in `Init()` | re-add the line |
+| `agent/init/business/business.go` | `go service.InitGithub()` in `Init()` | re-add the line |
 | `agent/i18n/i18n.go` | `Init()` also loads `lang/github/*.yaml` via `loadGithubLangFiles()` | re-add the call |
 | `core/router/common.go` | `&GithubRouter{},` appended to `commonGroups()` | re-append our line |
 | `core/init/migration/migrate.go` | `migrations.AddGithubMenu,` appended | keep ours last |
@@ -21,21 +21,19 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `core/app/service/upgrade.go` | fork block at the top of `SearchUpgrade` (answers from the fork releases) and `Upgrade` (hands over to the fork updater) | re-add both blocks |
 | `core/i18n/i18n.go` | `Init()` also loads `lang/github/*.yaml` via `loadGithubLangFiles()` | re-add the call |
 | `frontend/src/lang/index.ts` | messages pass through `withGithubMessages()` | re-wrap both places |
-| `agent/init/migration/migrate.go` | also `migrations.AddRuntimeGithubFields,` appended | keep ours **last** |
+| `agent/init/migration/migrate.go` | also `migrations.AddRuntimeGithubFields,`, `AddWebsiteGithubFields,` and `AddGithubManager,` appended | keep ours **last** |
 | `agent/app/model/runtime.go` | `GitMode`/`GitCloneURL`/`GitBranch`/`GitKeyID`/`GitUpdateStrategy` columns on `Runtime` | re-add the 5 fields |
 | `agent/app/dto/request/runtime.go`, `agent/app/dto/response/runtime.go` | git source fields on `RuntimeCreate`/`RuntimeUpdate`/`RuntimeDTO` | re-add the fields |
-| `agent/app/service/runtime.go` | `validateRuntimeGit`/`applyRuntimeGitFrom*` on create+update, clone in `executeRuntimeCreateTask`, pull before recreate, code-dir existence check relaxed for git | re-add the calls |
-| `agent/app/service/runtime_utils.go` | `runtimeGitPullIfEnabled` before restart | re-add the line |
-| `frontend/src/api/interface/runtime.ts` | git fields on `RuntimeCreate`/`RuntimeUpdate`/`RuntimeDTO` | re-add the fields |
-| `frontend/src/views/website/runtime/{python,node,java,go,dotnet}/operate/index.vue` | `<GitConfig>` component + init/get mapping | re-add the component and 5 mapped fields |
-| `frontend/src/views/website/runtime/{python,node,java,go,dotnet}/index.vue` | `GitHub` tag on rows when `gitMode === 'git'` | re-add the tag |
+| `agent/app/service/runtime.go` | `validateRuntimeGit`/`applyRuntimeGitFromCreate` on create, clone + project link in `executeRuntimeCreateTask`, `githubDeleteLinked` in runtime delete, code-dir existence check relaxed for git | re-add the calls |
+| `frontend/src/views/website/runtime/{python,node,java,go,dotnet}/operate/index.vue` | `<GitSource>` (create mode only) + `gitSource`/`gitEnabled` state, mapped into the create request | re-add the component and the apply block in `submit` |
+| `frontend/src/views/website/runtime/{python,node,java,go,dotnet}/index.vue` | `GitHub` tag + "Git Manager" button on rows with `gitMode === 'git'`, `<GitManagerDrawer>` | re-add the button, tag click and drawer |
 | `frontend/src/lang/modules/en.ts`, `zh.ts` | `runtime.git*` keys | re-add the keys |
-| `agent/app/model/website.go` | git source columns on `Website` | re-add the 5 fields |
-| `agent/app/dto/request/website.go` | git fields on `WebsiteCreate` | re-add the fields |
-| `agent/app/service/website.go` | validate + apply the git source for PHP runtime sites | re-add the calls |
+| `agent/app/model/website.go` | git source columns on `Website`, plus transient `GitAuthMode`/`GitTokenUser`/`GitToken` (`gorm:"-"`) | re-add the fields |
+| `agent/app/dto/request/website.go` | git fields incl. `GitAuthMode`/`GitTokenUser`/`GitToken` on `WebsiteCreate` | re-add the fields |
+| `agent/app/service/website.go` | validate + apply the git source for PHP runtime and static sites, `githubLinkWebsite` after create, `githubDeleteLinked` in delete, template copy skipped for git sites | re-add the calls |
 | `agent/app/service/website_utils.go` | clone the repo instead of the default index file for git PHP sites | re-add the branch |
-| `frontend/src/api/interface/website.ts` | git fields on `WebSiteCreateReq` | re-add the fields |
-| `frontend/src/views/website/website/create/index.vue` | `<GitConfig>` shown for the PHP runtime type | re-add the component |
+| `frontend/src/api/interface/website.ts` | git fields incl. auth on `WebSiteCreateReq`, `gitMode` on `WebsiteDTO` | re-add the fields |
+| `frontend/src/views/website/website/create/index.vue` | `<GitSource>` for PHP runtime and static sites, request mapping in `submit` | re-add the component and mapping |
 | `frontend/src/lang/modules/en.ts` | `enableHTTPS` label "Enable HTTPS" | re-apply the label |
 | `agent/utils/common/sqlite.go`, `core/utils/common/sqlite.go` | PRAGMAs moved into the DSN (`_pragma=`), `cache_size(-1024)`, `SetMaxOpenConns(2)` | keep ours |
 | `agent/cmd/server/main.go`, `core/cmd/server/main.go` | `debug.SetMemoryLimit(512 MiB)` unless `GOMEMLIMIT` is set | re-add the block |
@@ -53,6 +51,11 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `agent/app/api/v2/entry.go`, `agent/app/service/entry.go`, `agent/router/common.go`, `agent/server/server.go`, `agent/utils/xpack/community.go`, `core/utils/xpack/community.go`, `core/init/router/proxy.go` | VM wiring removed (`vmService`, `vmRepo`, `VMRouter`, `kvm.Init`, `VMCountLimit`, `X-1Panel-VM-Limit`) | keep it removed |
 | `Makefile`, `.github/workflows/{fork-ci,release}.yml` | `prepare_vm_helper` / `prepare.sh` removed | keep it removed |
 | `frontend/src/views/app-store/installed/{detail,upgrade}/index.vue`, `views/terminal/terminal/index.vue`, `views/host/file-management/index.vue`, `views/host/monitor/export/index.vue`, `views/home/status/index.vue`, `views/log/operation/index.vue`, `utils/app.ts`, `package.json` | AI/GPU/VM references removed (GPU config, account sync, terminal AI setting, file AI search, GPU export, `GPUHistory` link, `/ai/...` jumps, `vms` log filter, `@novnc/novnc`) | keep them removed |
+| `agent/init/router/router.go` | `registerGithubHook(Router)` | re-add the line |
+| `core/init/router/router.go` | `githubHookSourcePolicy()` passed to `WhiteAllow`, `registerGithubHook(Router)` after `registerMCPTransport` | re-add both |
+| `core/constant/common.go` | `/github*` paths in `WebUrlMap` | re-add the entries |
+| `frontend/src/views/website/website/config/basic/index.vue` | `Git` tab (`name="17"`) when `website.gitMode === 'git'` | re-add the pane and import |
+| `frontend/src/api/interface/runtime.ts` | `gitMode`/`gitCloneURL` on `Runtime`, `gitAuthMode`/`gitTokenUser`/`gitToken` on `RuntimeCreate` | re-add the fields |
 
 ## Removed upstream features
 
@@ -85,9 +88,10 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
   `agent/router/ro_github.go`, `agent/init/migration/migrations/github*.go`, `agent/i18n/lang/github/`,
   `agent/i18n/github.go`, `agent/app/service/runtime_github.go`,
   `agent/init/migration/migrations/runtime_github.go`,
-  `agent/init/migration/migrations/website_github.go`
-- Frontend: `frontend/src/views/website/runtime/components/git/index.vue`
-- Core: `core/global/fork.go`, `core/utils/github/`, `core/app/service/github_update.go`,
+  `agent/init/migration/migrations/website_github.go`, `agent/init/migration/migrations/github_aapanel.go`,
+  `agent/app/service/github_{address,hook,history,link}.go`, `agent/init/router/github_hook.go`, `agent/utils/github/hook.go`
+- Frontend: `frontend/src/views/github/components/` (`git-source` create form, `source-fields`, `git-manager`), `frontend/src/views/github/composables/`, `frontend/src/views/website/website/config/basic/git/`
+- Core: `core/init/router/github_hook.go` (public `/hook` webhook), `core/global/fork.go`, `core/utils/github/`, `core/app/service/github_update.go`,
   `core/app/dto/github.go`, `core/app/api/v2/github_update.go`, `core/router/ro_github.go`,
   `core/init/migration/migrations/github_menu.go`, `core/init/migration/helper/github_menu.go`,
   `core/i18n/lang/github/`, `core/i18n/github.go`

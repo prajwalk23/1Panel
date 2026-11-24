@@ -124,6 +124,7 @@ func agentDBMigrations() []*gormigrate.Migration {
 		migrations.AddGithubScripts,       // fork: keep last
 		migrations.AddRuntimeGithubFields, // fork: keep last
 		migrations.AddWebsiteGithubFields, // fork: keep last
+		migrations.AddGithubManager,       // fork: keep last
 		migrations.DisableGPUMonitor,      // fork: keep last
 		migrations.AddForkCleanCronjobs,   // fork: keep last
 	}

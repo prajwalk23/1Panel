@@ -59,3 +59,35 @@ export const formatDuration = (start: string, end: string): string => {
     const minutes = Math.floor(seconds / 60);
     return `${minutes}m ${seconds % 60}s`;
 };
+
+export const formatMillis = (ms: number): string => {
+    if (!ms || ms < 0) {
+        return '-';
+    }
+    const seconds = ms / 1000;
+    if (seconds < 60) {
+        return `${seconds.toFixed(seconds < 10 ? 2 : 0)}s`;
+    }
+    const minutes = Math.floor(seconds / 60);
+    return `${minutes}m ${Math.round(seconds % 60)}s`;
+};
+
+export const triggerLabel = (trigger: string): string => {
+    const map: Record<string, string> = {
+        webhook: 'github.triggerWebhook',
+        manual: 'github.triggerManual',
+        rollback: 'github.triggerRollback',
+        create: 'github.triggerCreate',
+        boot: 'github.triggerBoot',
+    };
+    return map[trigger] ? i18n.global.t(map[trigger]) : trigger;
+};
+
+// The webhook URL as the admin should paste it: the bound domain when one is set, otherwise the
+// address the panel is opened with (the server cannot always know the address the admin uses).
+export const webhookDisplayURL = (info?: { url: string; path: string; bindDomain: boolean }): string => {
+    if (!info || !info.path) {
+        return '';
+    }
+    return info.bindDomain ? info.url : window.location.origin + info.path;
+};

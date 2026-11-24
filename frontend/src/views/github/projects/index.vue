@@ -5,15 +5,9 @@
                 <el-alert v-if="setting && !setting.gitInstalled" type="warning" :closable="false">
                     <template #title>{{ $t('github.gitMissing') }}</template>
                 </el-alert>
-                <el-alert v-else-if="setting && !setting.listenerRunning" type="warning" :closable="false">
-                    <template #title>
-                        {{ $t('github.listenerDown') }}
-                        <span v-if="setting.listenerError">({{ setting.listenerError }})</span>
-                    </template>
-                </el-alert>
             </template>
             <template #leftToolBar>
-                <el-button v-permission v-node-admin type="primary" @click="onOpenDrawer()">
+                <el-button v-permission v-node-admin type="primary" @click="onCreate()">
                     {{ $t('commons.button.create') }}
                 </el-button>
             </template>
@@ -102,7 +96,8 @@
         </LayoutContent>
 
         <OpDialog ref="opRef" @search="search" @submit="onSubmitDelete()" />
-        <OperateDrawer ref="drawerRef" @search="search" />
+        <CreateDialog ref="createRef" @search="search" />
+        <EditDrawer ref="editRef" @search="search" />
         <WebhookDialog ref="webhookRef" @search="search" />
         <DeployDialog ref="deployRef" @search="search" />
     </div>
@@ -123,7 +118,8 @@ import {
     searchGithubProjects,
     updateGithubProjectStatus,
 } from '@/api/modules/github';
-import OperateDrawer from '@/views/github/projects/operate.vue';
+import CreateDialog from '@/views/github/projects/create.vue';
+import EditDrawer from '@/views/github/projects/edit.vue';
 import WebhookDialog from '@/views/github/projects/webhook.vue';
 import DeployDialog from '@/views/github/projects/deploy.vue';
 import { formatTime, shortCommit, statusLabel, statusType } from '@/views/github/helper';
@@ -140,7 +136,8 @@ const paginationConfig = reactive({
     total: 0,
 });
 const opRef = ref();
-const drawerRef = ref();
+const createRef = ref();
+const editRef = ref();
 const webhookRef = ref();
 const deployRef = ref();
 const deleteID = ref(0);
@@ -151,6 +148,7 @@ const search = async () => {
     try {
         const res = await searchGithubProjects({
             info: searchName.value,
+            standalone: true,
             page: paginationConfig.currentPage,
             pageSize: paginationConfig.pageSize,
         });
@@ -172,14 +170,18 @@ const refreshQuietly = async () => {
     }
     const res = await searchGithubProjects({
         info: searchName.value,
+        standalone: true,
         page: paginationConfig.currentPage,
         pageSize: paginationConfig.pageSize,
     });
     data.value = res.data.items || [];
 };
 
-const onOpenDrawer = (row?: Github.ProjectInfo) => {
-    drawerRef.value.acceptParams(row);
+const onCreate = () => {
+    createRef.value.acceptParams();
+};
+const onEdit = (row: Github.ProjectInfo) => {
+    editRef.value.acceptParams(row);
 };
 
 const onChangeStatus = async (row: Github.ProjectInfo) => {
@@ -257,7 +259,7 @@ const buttons = [
         label: i18n.global.t('commons.button.edit'),
         permission: true,
         nodeAdmin: true,
-        click: onOpenDrawer,
+        click: onEdit,
     },
     {
         label: i18n.global.t('commons.button.delete'),

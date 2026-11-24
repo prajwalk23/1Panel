@@ -41,6 +41,7 @@ export namespace Website {
         openBaseDir: boolean;
         algorithm: string;
         servers: NginxUpstreamServer[];
+        gitMode?: string;
     }
 
     export interface WebsiteStreamUpdate {
@@ -116,6 +117,9 @@ export namespace Website {
         gitBranch?: string;
         gitKeyID?: number;
         gitUpdateStrategy?: string;
+        gitAuthMode?: string;
+        gitTokenUser?: string;
+        gitToken?: string;
     }
 
     export interface WebSiteUpdateReq {

@@ -48,6 +48,9 @@ type WebsiteCreate struct {
 	GitBranch         string `json:"gitBranch"`
 	GitKeyID          uint   `json:"gitKeyID"`
 	GitUpdateStrategy string `json:"gitUpdateStrategy"`
+	GitAuthMode       string `json:"gitAuthMode"` // public | token | ssh
+	GitTokenUser      string `json:"gitTokenUser"`
+	GitToken          string `json:"gitToken"`
 }
 
 type StreamConfig struct {

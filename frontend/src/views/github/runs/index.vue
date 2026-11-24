@@ -27,7 +27,7 @@
                     <el-table-column :label="$t('github.project')" prop="projectName" min-width="120" />
                     <el-table-column :label="$t('github.trigger')" min-width="90">
                         <template #default="{ row }">
-                            {{ row.trigger === 'webhook' ? $t('github.triggerWebhook') : $t('github.triggerManual') }}
+                            {{ triggerLabel(row.trigger) }}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('github.commit')" min-width="100">
@@ -77,7 +77,7 @@ import { MsgSuccess } from '@/utils/message';
 import LogFile from '@/components/log/file/index.vue';
 import { Github } from '@/api/interface/github';
 import { cleanGithubLogs, searchGithubLogs, searchGithubProjects } from '@/api/modules/github';
-import { formatDuration, formatTime, shortCommit, statusLabel, statusType } from '@/views/github/helper';
+import { formatDuration, formatTime, shortCommit, statusLabel, statusType, triggerLabel } from '@/views/github/helper';
 
 const route = useRoute();
 const loading = ref(false);

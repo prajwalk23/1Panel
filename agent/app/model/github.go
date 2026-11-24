@@ -31,6 +31,15 @@ type GithubProject struct {
 	LastStatus string    `json:"lastStatus"`
 	LastRunAt  time.Time `json:"lastRunAt"`
 	LastCommit string    `json:"lastCommit"`
+
+	// Git Manager (aaPanel style). A project is standalone, or linked to a website or a runtime.
+	RuntimeID        uint   `gorm:"index" json:"runtimeID"`
+	TokenUser        string `json:"tokenUser"`
+	Token            string `gorm:"type:text" json:"-"`                    // https access token, encrypted
+	WebhookToken     string `gorm:"type:text" json:"-"`                    // access_key of the webhook URL, encrypted
+	WebhookTokenHash string `gorm:"index" json:"-"`                        // sha256 of the access_key, used for lookup
+	KeepRecords      int    `gorm:"not null;default:5" json:"keepRecords"` // versions kept for rollback
+	IgnorePaths      string `gorm:"type:text" json:"ignorePaths"`          // one path per line
 }
 
 // GithubScript is a named deploy script of a project. A project has several; one is the
@@ -66,4 +75,8 @@ type GithubDeployLog struct {
 	Message    string    `gorm:"type:text" json:"message"`
 	StartedAt  time.Time `json:"startedAt"`
 	FinishedAt time.Time `json:"finishedAt"`
+
+	CommitMessage string `gorm:"type:text" json:"commitMessage"`
+	CommitAuthor  string `json:"commitAuthor"`
+	Duration      int64  `json:"duration"` // milliseconds
 }

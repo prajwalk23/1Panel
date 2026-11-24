@@ -17,7 +17,7 @@ func Init() {
 	go syncTask()
 	go initAcmeAccount()
 	go checkDockerCompose()
-	go service.StartGithubWebhookListener() // fork
+	go service.InitGithub() // fork
 }
 
 func syncApp() {

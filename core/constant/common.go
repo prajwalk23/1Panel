@@ -171,6 +171,13 @@ var WebUrlMap = map[string]struct{}{
 	"/websites/runtimes/python":  {},
 	"/websites/runtimes/dotnet":  {},
 
+	// fork: GitHub section
+	"/github":          {},
+	"/github/projects": {},
+	"/github/logs":     {},
+	"/github/keys":     {},
+	"/github/settings": {},
+
 	"/login": {},
 
 	"/xpack":                {},
