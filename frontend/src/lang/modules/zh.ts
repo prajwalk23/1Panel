@@ -7255,6 +7255,13 @@ const message = {
             timeRule: '剩余时间小于 {0} 天 (如未处理，次日会重新发送)',
             panelUpdateRule: '检测到面板有新版本时发送一次 (如未处理，次日会重新发送)',
             avgRule: '{0} 分钟内平均{1}占用超过 {2}% 触发，每天发送 {3} 次',
+            memorySustained: '服务器内存持续高占用告警',
+            memorySustainedTitle: '内存持续高占用告警',
+            memorySustainedUseExceed: '内存使用率阈值',
+            memorySustainedUseExceedHelper: '内存使用率持续不低于该值并达到设定时长时告警，期间一旦低于该值则重新计时',
+            memorySustainedName: '内存',
+            sustainedDuration: '持续时长',
+            sustainedRule: '内存使用率持续不低于 {1}% 达 {0} 分钟时触发告警，每天发送 {2} 次',
             diskRule: '挂载目录「 {0} 」的磁盘占用超过 {1}{2} 触发，每天发送 {3} 次',
             allDiskRule: '磁盘占用超过 {0}{1} 触发，每天发送 {2} 次',
 

@@ -651,6 +651,7 @@ WebSiteAlert: "پنل {{ .node }}{{ .ip }}: {{ .num }} وب‌سایت در {{ .
 SSLAlert: "پنل {{ .node }}{{ .ip }}: {{ .num }} گواهی SSL در {{ .day }} روز منقضی می‌شوند. برای مشاهده جزئیات وارد شوید."
 DiskUsedAlert: "پنل {{ .node }}{{ .ip }}: استفاده از دیسک {{ .name }} به {{ .used }} رسید. برای مشاهده جزئیات وارد شوید."
 ResourceAlert: "پنل {{ .node }}{{ .ip }}: میانگین استفاده {{ .name }} در {{ .time }} دقیقه برابر با {{ .used }} است. برای مشاهده جزئیات وارد شوید."
+MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
 PanelVersionAlert: "پنل {{ .node }}{{ .ip }}: نسخه جدید پنل موجود است. برای مشاهده جزئیات وارد شوید."
 PanelPwdExpirationAlert: "پنل {{ .node }}{{ .ip }}: رمز عبور پنل در {{ .day }} روز منقضی می‌شود. برای مشاهده جزئیات وارد شوید."
 CommonAlert: "پنل {{ .node }}{{ .ip }}: {{ .msg }}. برای مشاهده جزئیات وارد شوید."

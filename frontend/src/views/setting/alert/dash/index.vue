@@ -41,6 +41,7 @@
                         <el-option value="siteEndTime" :label="$t('xpack.alert.siteEndTime')" />
                         <el-option value="cpu" :label="$t('xpack.alert.cpu')" />
                         <el-option value="memory" :label="$t('xpack.alert.memory')" />
+                        <el-option value="memorySustained" :label="$t('xpack.alert.memorySustained')" />
                         <el-option value="disk" :label="$t('xpack.alert.disk')" />
                         <el-option value="load" :label="$t('xpack.alert.load')" />
                         <el-option value="clams" :label="$t('xpack.alert.clams')" />
@@ -277,6 +278,7 @@ const formatRule = (row: Alert.AlertInfo) => {
         panelUpdate: () => t('xpack.alert.panelUpdateRule', [row.cycle, row.sendCount]),
         cpu: () => t('xpack.alert.avgRule', [row.cycle, t(`xpack.alert.${row.type}Name`), row.count, row.sendCount]),
         memory: () => t('xpack.alert.avgRule', [row.cycle, t(`xpack.alert.${row.type}Name`), row.count, row.sendCount]),
+        memorySustained: () => t('xpack.alert.sustainedRule', [row.cycle, row.count, row.sendCount]), // fork
         load: () => t('xpack.alert.avgRule', [row.cycle, t(`xpack.alert.${row.type}Name`), row.count, row.sendCount]),
         disk: () => {
             return row.project === 'all'

@@ -96,15 +96,7 @@ func LoadMenus() string {
 	item := []dto.ShowMenu{
 		{ID: "1", Disabled: true, Title: "menu.home", IsShow: true, Label: "Home-Menu", Path: "/", Sort: 100},
 		{ID: "2", Disabled: true, Title: "menu.apps", IsShow: true, Label: "App-Menu", Path: "/apps/all", Sort: 200},
-		{ID: "3", Disabled: false, Title: "menu.aiTools", IsShow: true, Label: "AI-Menu", Path: "/ai/vllm/models", Sort: 300,
-			Children: []dto.ShowMenu{
-				{ID: "43", Disabled: false, Title: "aiTools.gpu.gpu", IsShow: true, Label: "GPU", Path: "/ai/gpu", Sort: 10},
-				{ID: "48", Disabled: false, Title: "aiTools.model.ollamaManagement", IsShow: true, Label: "OllamaModels", Path: "/ai/ollama", Sort: 25},
-				{ID: "41", Disabled: false, Title: "aiTools.model.vllmManagement", IsShow: true, Label: "AIModel", Path: "/ai/vllm/models", Sort: 50},
-				{ID: "49", Disabled: false, Title: "aiTools.model.services", IsShow: true, Label: "ModelServices", Path: "/ai/model-services", Sort: 75},
-				{ID: "44", Disabled: false, Title: "aiTools.agents.agent", IsShow: true, Label: "Agents", Path: "/ai/agents/agent", Sort: 150},
-				{ID: "42", Disabled: false, Title: "menu.mcp", IsShow: true, Label: "MCPServer", Path: "/ai/mcp", Sort: 200},
-			}},
+		// fork: AI-Menu and VirtualMachine entries removed (features deleted)
 		{ID: "4", Disabled: false, Title: "menu.website", IsShow: true, Label: "Website-Menu", Path: "/websites", Sort: 400,
 			Children: []dto.ShowMenu{
 				{ID: "31", Disabled: false, Title: "menu.website", IsShow: true, Label: "Website", Path: "/websites", Sort: 100},
@@ -114,7 +106,6 @@ func LoadMenus() string {
 			}},
 		{ID: "5", Disabled: false, Title: "menu.database", IsShow: true, Label: "Database-Menu", Path: "/databases", Sort: 500},
 		{ID: "6", Disabled: false, Title: "menu.container", IsShow: true, Label: "Container-Menu", Path: "/containers", Sort: 600},
-		{ID: "123", Disabled: false, Title: "xpack.vm.vm", IsShow: true, Label: "VirtualMachine", Path: "/vm", Sort: 650},
 		{ID: "7", Disabled: false, Title: "menu.system", IsShow: true, Label: "System-Menu", Path: "/hosts/files", Sort: 700,
 			Children: []dto.ShowMenu{
 				{ID: "71", Disabled: false, Title: "menu.files", IsShow: true, Label: "File", Path: "/hosts/files", Sort: 100},
@@ -216,7 +207,6 @@ func MenuSort() []dto.MenuLabelSort {
 		{Label: "PHP", Sort: 300},
 		{Label: "Database-Menu", Sort: 500},
 		{Label: "Container-Menu", Sort: 600},
-		{Label: "VirtualMachine", Sort: 650},
 		{Label: "System-Menu", Sort: 700},
 		{Label: "File", Sort: 100},
 		{Label: "Monitorx", Sort: 200},

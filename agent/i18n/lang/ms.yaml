@@ -651,6 +651,7 @@ WebSiteAlert: 'Panel {{ .node }}{{ .ip }} Anda, {{ .num }} laman web akan tamat 
 SSLAlert: 'Panel {{ .node }}{{ .ip }} Anda, {{ .num }} sijil SSL akan tamat tempoh dalam {{ .day }} hari. Sila log masuk ke panel untuk butiran lanjut.'
 DiskUsedAlert: 'Panel {{ .node }}{{ .ip }} Anda, penggunaan cakera {{ .name }} telah mencapai {{ .used }}. Sila log masuk ke panel untuk butiran lanjut.'
 ResourceAlert: 'Panel {{ .node }}{{ .ip }} Anda, kadar penggunaan purata {{ .name }} dalam tempoh {{ .time }} minit ialah {{ .used }}. Sila log masuk ke panel untuk butiran lanjut.'
+MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
 PanelVersionAlert: 'Panel {{ .node }}{{ .ip }} Anda, versi panel terkini tersedia untuk dinaik taraf. Sila log masuk ke panel untuk butiran lanjut.'
 PanelPwdExpirationAlert: 'Panel {{ .node }}{{ .ip }} Anda, kata laluan panel akan tamat tempoh dalam {{ .day }} hari. Sila log masuk ke panel untuk butiran lanjut.'
 CommonAlert: 'Panel {{ .node }}{{ .ip }} Anda, {{ .msg }}. Sila log masuk ke panel untuk butiran lanjut.'

@@ -1193,24 +1193,6 @@ var AddOpsReportMenu = &gormigrate.Migration{
 	},
 }
 
-var AddVirtualMachineMenu = &gormigrate.Migration{
-	ID: "20260623-add-virtual-machine-menu",
-	Migrate: func(tx *gorm.DB) error {
-		if !global.CONF.Base.IsEnterprise {
-			return nil
-		}
-		return helper.UpsertChildMenuByLabel(tx, "Xpack-Menu", dto.ShowMenu{
-			ID:       "123",
-			Disabled: false,
-			Title:    "xpack.vm.title",
-			IsShow:   true,
-			Label:    "VirtualMachine",
-			Path:     "/enterprise/vm",
-			Sort:     900,
-		}, "Upage")
-	},
-}
-
 var UpdateXpackMenuSort = &gormigrate.Migration{
 	ID: "20260706-update-xpack-menu-sort",
 	Migrate: func(tx *gorm.DB) error {

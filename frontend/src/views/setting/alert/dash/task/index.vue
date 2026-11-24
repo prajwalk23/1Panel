@@ -268,6 +268,28 @@
                         </span>
                     </el-form-item>
 
+                    <!-- fork: memorySustained = usage stays at or above the threshold for N minutes -->
+                    <el-form-item
+                        v-if="sustainedTypes.includes(dialogData.rowData!.type)"
+                        :label="$t('xpack.alert.sustainedDuration')"
+                        prop="cycle"
+                    >
+                        <el-input v-model.number="dialogData.rowData!.cycle">
+                            <template #append>{{ $t('commons.units.minute') }}</template>
+                        </el-input>
+                    </el-form-item>
+
+                    <el-form-item
+                        v-if="sustainedTypes.includes(dialogData.rowData!.type)"
+                        :label="$t('xpack.alert.memorySustainedUseExceed')"
+                        prop="count"
+                    >
+                        <el-input v-model.number="dialogData.rowData!.count">
+                            <template #append>%</template>
+                        </el-input>
+                        <span class="input-help">{{ $t('xpack.alert.memorySustainedUseExceedHelper') }}</span>
+                    </el-form-item>
+
                     <el-form-item
                         :label="$t('xpack.alert.triggerCondition')"
                         v-if="ipTypes.includes(dialogData.rowData!.type)"
@@ -538,9 +560,20 @@ type FormInstance = InstanceType<typeof ElForm>;
 const formRef = ref<FormInstance>();
 const timeTypes = ['ssl', 'siteEndTime', 'panelPwdEndTime'];
 const avgTypes = ['cpu', 'memory', 'load'];
+const sustainedTypes = ['memorySustained']; // fork
 const ipTypes = ['sshLogin', 'panelLogin'];
 const noParamTypes = ['panelUpdate'];
-const intervalTypes = ['cpu', 'memory', 'load', 'disk', 'sshLogin', 'panelLogin', 'nodeException', 'licenseException'];
+const intervalTypes = [
+    'cpu',
+    'memory',
+    'memorySustained',
+    'load',
+    'disk',
+    'sshLogin',
+    'panelLogin',
+    'nodeException',
+    'licenseException',
+];
 
 const diskTypes = ['disk'];
 const cronjobTypes = cronjobAlertTypes;
@@ -597,6 +630,7 @@ const allTaskOptions = [
     },
     { value: 'cpu', label: 'xpack.alert.cpu', show: true },
     { value: 'memory', label: 'xpack.alert.memory', show: true },
+    { value: 'memorySustained', label: 'xpack.alert.memorySustained', show: true },
     { value: 'disk', label: 'xpack.alert.disk', show: true },
     { value: 'load', label: 'xpack.alert.load', show: true },
     { value: 'cronJob', label: 'xpack.alert.cronjob', show: true },
@@ -622,6 +656,8 @@ function checkCycle(rule: any, value: any, callback: any) {
 
     if (type === 'ssl') {
         return checkRange(value, 1, 60, callback);
+    } else if (sustainedTypes.includes(type)) {
+        return checkRange(value, 5, 1440, callback);
     } else if (ipTypes.includes(type)) {
         return checkRange(value, 1, 200, callback);
     } else {
@@ -635,7 +671,7 @@ function checkCount(rule: any, value: any, callback: any) {
     const type = dialogData.value.rowData.type;
     const cycle = dialogData.value.rowData.cycle;
 
-    if (avgTypes.includes(type) || ipTypes.includes(type)) {
+    if (avgTypes.includes(type) || sustainedTypes.includes(type) || ipTypes.includes(type)) {
         return checkRange(value, 1, 100, callback);
     }
     if (type === 'disk' && cycle === 2) {
@@ -650,7 +686,7 @@ function checkSendCount(rule: any, value: any, callback: any) {
     const type = dialogData.value.rowData.type;
     const cycle = dialogData.value.rowData.cycle;
 
-    if (type === 'disk' || avgTypes.includes(type) || ipTypes.includes(type)) {
+    if (type === 'disk' || avgTypes.includes(type) || sustainedTypes.includes(type) || ipTypes.includes(type)) {
         return checkRange(value, 1, 50, callback);
     } else if (noParamTypes.includes(type)) {
         return checkRange(value, 1, 30, callback);
@@ -722,6 +758,7 @@ const changeType = () => {
         cpu: 5,
         load: 5,
         memory: 5,
+        memorySustained: 60,
         clams: 0,
         app: 0,
         website: 0,
@@ -749,6 +786,7 @@ const changeType = () => {
         cpu: 80,
         load: 80,
         memory: 80,
+        memorySustained: 80,
         clams: 0,
         app: 0,
         website: 0,
@@ -775,6 +813,7 @@ const changeType = () => {
         cpu: 'all',
         load: 'all',
         memory: 'all',
+        memorySustained: 'all',
         clams: '',
         app: '',
         website: '',
@@ -876,6 +915,7 @@ const formatTitle = (row: Alert.AlertInfo) => {
         panelUpdate: () => t('xpack.alert.panelUpdateTitle'),
         cpu: () => t('xpack.alert.cpuTitle'),
         memory: () => t('xpack.alert.memoryTitle'),
+        memorySustained: () => t('xpack.alert.memorySustainedTitle'),
         load: () => t('xpack.alert.loadTitle'),
         disk: () => {
             return row.project === 'all' ? t('xpack.alert.allDiskTitle') : t('xpack.alert.diskTitle', [row.project]);

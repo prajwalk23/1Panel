@@ -651,6 +651,7 @@ WebSiteAlert: 'Su Panel {{ .node }}{{ .ip }}, {{ .num }} sitios web expirarán e
 SSLAlert: 'Su Panel {{ .node }}{{ .ip }}, {{ .num }} certificados SSL expirarán en {{ .day }} días. Inicie sesión en el panel para ver los detalles.'
 DiskUsedAlert: 'Su Panel {{ .node }}{{ .ip }}, el uso del disco {{ .name }} ha alcanzado {{ .used }}. Inicie sesión en el panel para ver los detalles.'
 ResourceAlert: 'Su Panel {{ .node }}{{ .ip }}, la tasa de uso promedio de {{ .name }} en {{ .time }} minutos es {{ .used }}. Inicie sesión en el panel para ver los detalles.'
+MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
 PanelVersionAlert: 'Su Panel {{ .node }}{{ .ip }}, está disponible la última versión del panel para actualizar. Inicie sesión en el panel para ver los detalles.'
 PanelPwdExpirationAlert: 'Su Panel {{ .node }}{{ .ip }}, la contraseña del panel expirará en {{ .day }} días. Inicie sesión en el panel para ver los detalles.'
 CommonAlert: 'Su Panel {{ .node }}{{ .ip }}, {{ .msg }}. Inicie sesión en el panel para ver los detalles.'

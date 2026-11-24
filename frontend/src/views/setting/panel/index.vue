@@ -117,6 +117,18 @@
                                 </span>
                             </el-form-item>
 
+                            <!-- fork: panel memory limit with current usage -->
+                            <el-form-item :label="$t('memoryLimit.title')">
+                                <el-input disabled :model-value="memoryLimitText">
+                                    <template #append>
+                                        <el-button @click="onChangeMemoryLimit" icon="Setting">
+                                            {{ $t('commons.button.set') }}
+                                        </el-button>
+                                    </template>
+                                </el-input>
+                                <span class="input-help">{{ $t('memoryLimit.usage') }}: {{ memoryUsageText }}</span>
+                            </el-form-item>
+
                             <el-form-item :label="$t('setting.systemIP')" prop="systemIP">
                                 <el-input disabled v-if="form.systemIP" v-model="form.systemIP">
                                     <template #append>
@@ -191,6 +203,7 @@
         <SystemIP ref="systemIPRef" @search="search()" />
         <Proxy ref="proxyRef" @search="search()" />
         <Timeout ref="timeoutRef" @search="search()" />
+        <MemoryLimitDialog ref="memoryLimitRef" @search="search()" />
         <HideMenu ref="hideMenuRef" @search="search()" />
         <CacheSettings ref="cacheRef" />
         <ThemeColor ref="themeColorRef" />
@@ -201,7 +214,7 @@
 
 <script lang="ts" setup>
 import { applyPanelCacheSettings } from '@/utils/panel-cache';
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { ElForm, ElMessageBox } from 'element-plus';
 import { getSettingInfo, updateSetting, getSystemAvailable, getAgentSettingInfo } from '@/api/modules/setting';
 import { useGlobalStore } from '@/composables/useGlobalStore';
@@ -211,6 +224,8 @@ import ThemeColor from '@/views/setting/panel/theme-color/index.vue';
 import Watermark from '@/views/setting/panel/watermark/index.vue';
 import Edition from '@/views/setting/panel/edition/index.vue';
 import Timeout from '@/views/setting/panel/timeout/index.vue';
+import MemoryLimitDialog from '@/views/setting/panel/memory-limit/index.vue'; // fork
+import { getPanelMemoryLimit, formatGB, MemoryLimit } from '@/api/modules/memory-limit'; // fork
 import PanelName from '@/views/setting/panel/name/index.vue';
 import SystemIP from '@/views/setting/panel/systemip/index.vue';
 import Proxy from '@/views/setting/panel/proxy/index.vue';
@@ -282,6 +297,16 @@ const panelNameRef = ref();
 const systemIPRef = ref();
 const proxyRef = ref();
 const timeoutRef = ref();
+const memoryLimitRef = ref(); // fork
+const memoryLimit = ref<MemoryLimit.Info | null>(null); // fork
+const memoryLimitText = computed(() => (memoryLimit.value ? formatGB(memoryLimit.value.limitMiB) : '-')); // fork
+const memoryUsageText = computed(() => {
+    // fork
+    const data = memoryLimit.value;
+    if (!data) return '-';
+    const fmt = (item: MemoryLimit.ProcessMemory) => (item.running ? formatGB(item.rssMiB) : '-');
+    return `${i18n.global.t('memoryLimit.core')} ${fmt(data.core)} · ${i18n.global.t('memoryLimit.agent')} ${fmt(data.agent)} / ${formatGB(data.limitMiB)}`;
+});
 const hideMenuRef = ref();
 const cacheRef = ref();
 const watermarkRef = ref();
@@ -308,7 +333,14 @@ if (isIntl.value) {
     languageOptions.value.unshift({ value: 'en', label: 'English' });
 }
 
+const onChangeMemoryLimit = () => {
+    memoryLimitRef.value.acceptParams(); // fork
+};
+
 const search = async () => {
+    getPanelMemoryLimit() // fork: usage readout, never blocks the page
+        .then((limitRes) => (memoryLimit.value = limitRes.data))
+        .catch(() => {});
     const agentRes = await getAgentSettingInfo();
     form.systemIP = agentRes.data.systemIP;
 

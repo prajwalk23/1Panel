@@ -651,6 +651,7 @@ WebSiteAlert: '您的 {{ .node }}{{ .ip }} 面板，{{ .num }} 個網站將於 {
 SSLAlert: '您的 {{ .node }}{{ .ip }} 面板，{{ .num }} 張SSL憑證將於 {{ .day }} 天後到期，詳情請登入面板檢視。'
 DiskUsedAlert: '您的 {{ .node }}{{ .ip }} 面板，磁碟 {{ .name }} 使用率已達 {{ .used }}，詳情請登入面板檢視。'
 ResourceAlert: '您的 {{ .node }}{{ .ip }} 面板，過去 {{ .time }} 分鐘內 {{ .name }} 平均使用率為 {{ .used }}，詳情請登入面板檢視。'
+MemorySustainedAlert: '您的 {{ .node }}{{ .ip }} 面板，{{ .name }}使用率已連續 {{ .time }} 分鐘高於閾值（目前 {{ .used }}），詳情請登入面板檢視。'
 PanelVersionAlert: '您的 {{ .node }}{{ .ip }} 面板，已有最新版本可供升級，詳情請登入面板檢視。'
 PanelPwdExpirationAlert: '您的 {{ .node }}{{ .ip }} 面板，面板密碼將於 {{ .day }} 天後到期，詳情請登入面板檢視。'
 CommonAlert: '您的 {{ .node }}{{ .ip }} 面板，{{ .msg }}，詳情請登入面板檢視。'

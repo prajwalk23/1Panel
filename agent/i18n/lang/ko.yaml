@@ -651,6 +651,7 @@ WebSiteAlert: '귀하의 {{ .node }}{{ .ip }} 패널, {{ .num }}개의 웹사이
 SSLAlert: '귀하의 {{ .node }}{{ .ip }} 패널, {{ .num }}개의 SSL 인증서가 {{ .day }}일 후에 만료됩니다. 자세한 내용은 패널에 로그인하십시오.'
 DiskUsedAlert: '귀하의 {{ .node }}{{ .ip }} 패널, 디스크 {{ .name }} 사용률이 {{ .used }}에 도달했습니다. 자세한 내용은 패널에 로그인하십시오.'
 ResourceAlert: '귀하의 {{ .node }}{{ .ip }} 패널, 최근 {{ .time }}분간 {{ .name }} 평균 사용률은 {{ .used }}입니다. 자세한 내용은 패널에 로그인하십시오.'
+MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
 PanelVersionAlert: '귀하의 {{ .node }}{{ .ip }} 패널, 최신 버전으로 업그레이드할 수 있습니다. 자세한 내용은 패널에 로그인하십시오.'
 PanelPwdExpirationAlert: '귀하의 {{ .node }}{{ .ip }} 패널, 패널 비밀번호가 {{ .day }}일 후에 만료됩니다. 자세한 내용은 패널에 로그인하십시오.'
 CommonAlert: '귀하의 {{ .node }}{{ .ip }} 패널, {{ .msg }}。자세한 내용은 패널에 로그인하십시오.'

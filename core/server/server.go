@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/1Panel-dev/1Panel/core/app/repo"
 	"github.com/1Panel-dev/1Panel/core/app/service"
 	"github.com/1Panel-dev/1Panel/core/init/auth"
 	"github.com/1Panel-dev/1Panel/core/init/db"
@@ -85,15 +86,20 @@ func Start() {
 	if err != nil {
 		panic(err)
 	}
+	// fork: the MCP socket bridge and Docker runtime preparation only start when MCP is
+	// enabled (no mcp_settings row on a fresh install means disabled).
+	mcpEnabled, _ := (repo.MCPRepo{DB: global.DB}).Enabled()
 	if err := service.NewMCPService().RecoverInterruptedInvocations(processStartedAt); err != nil {
 		global.LOG.Errorf("MCP invocation audit recovery failed; runtime bridge is unavailable: %v", err)
-	} else if err := router.StartMCPBridge(); err != nil {
-		global.LOG.Errorf("MCP runtime bridge is unavailable: %v", err)
+	} else if mcpEnabled {
+		if err := router.StartMCPBridge(); err != nil {
+			global.LOG.Errorf("MCP runtime bridge is unavailable: %v", err)
+		}
 	}
 	if err := service.NewMCPRuntimeService().RecoverInstallationTasks(processStartedAt); err != nil {
 		global.LOG.Errorf("MCP installation task recovery failed: %v", err)
 	}
-	if runtime.GOOS == "linux" {
+	if mcpEnabled && runtime.GOOS == "linux" {
 		go func() {
 			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 			defer cancel()

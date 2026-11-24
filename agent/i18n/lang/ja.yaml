@@ -651,6 +651,7 @@ WebSiteAlert: 'あなたの {{ .node }}{{ .ip }} パネル、{{ .num }} 個の�
 SSLAlert: 'あなたの {{ .node }}{{ .ip }} パネル、{{ .num }} 枚のSSL証明書が {{ .day }} 日後に期限切れになります。詳細はパネルにログインして'
 DiskUsedAlert: 'あなたの {{ .node }}{{ .ip }} パネル、ディスク {{ .name }} の使用率が {{ .used }} に達しました。詳細はパネルにログインして'
 ResourceAlert: 'あなたの {{ .node }}{{ .ip }} パネル、過去 {{ .time }} 分間の {{ .name }} 平均使用率は {{ .used }} です。詳細はパネルにログインして'
+MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
 PanelVersionAlert: 'あなたの {{ .node }}{{ .ip }} パネル、最新バージョンがアップグレード可能です。詳細はパネルにログインして'
 PanelPwdExpirationAlert: 'あなたの {{ .node }}{{ .ip }} パネル、パネルパスワードは {{ .day }} 日後に期限切れになります。詳細はパネルにログインして'
 CommonAlert: 'あなたの {{ .node }}{{ .ip }} パネル、{{ .msg }}。詳細はパネルにログインして'

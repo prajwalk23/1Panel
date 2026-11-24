@@ -641,6 +641,7 @@ WebSiteAlert: "ແຜງຄວບຄຸມ {{ .node }}{{ .ip }}: ເວັບໄ
 SSLAlert: "ແຜງຄວບຄຸມ {{ .node }}{{ .ip }}: ໃບຮັບຮອງ SSL {{ .num }} ໃບຈະໝົດອາຍຸໃນ {{ .day }} ວັນ. ເຂົ້າສູ່ລະບົບເພື່ອເບິ່ງລາຍລະອຽດ."
 DiskUsedAlert: "ແຜງຄວບຄຸມ {{ .node }}{{ .ip }}: ການໃຊ້ງານດິສກ໌ {{ .name }} ຮອດ {{ .used }}. ເຂົ້າສູ່ລະບົບເພື່ອເບິ່ງລາຍລະອຽດ."
 ResourceAlert: "ແຜງຄວບຄຸມ {{ .node }}{{ .ip }}: ການໃຊ້ງານ {{ .name }} ສະເລ່ຍໃນ {{ .time }} ນາທີແມ່ນ {{ .used }}. ເຂົ້າສູ່ລະບົບເພື່ອເບິ່ງລາຍລະອຽດ."
+MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
 PanelVersionAlert: "ແຜງຄວບຄຸມ {{ .node }}{{ .ip }}: ມີເວີຊັນໃໝ່ພ້ອມໃຫ້ອັບເດດ. ເຂົ້າສູ່ລະບົບເພື່ອເບິ່ງລາຍລະອຽດ."
 PanelPwdExpirationAlert: "ແຜງຄວບຄຸມ {{ .node }}{{ .ip }}: ລະຫັດຜ່ານແຜງຄວບຄຸມຈະໝົດອາຍຸໃນ {{ .day }} ວັນ. ເຂົ້າສູ່ລະບົບເພື່ອເບິ່ງລາຍລະອຽດ."
 CommonAlert: "ແຜງຄວບຄຸມ {{ .node }}{{ .ip }}: {{ .msg }}. ເຂົ້າສູ່ລະບົບເພື່ອເບິ່ງລາຍລະອຽດ."

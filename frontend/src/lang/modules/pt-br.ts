@@ -7971,6 +7971,14 @@ const message = {
             panelUpdateRule:
                 'Envia um alerta quando uma nova versão do painel é detectada (se não tratado, será reenviado no próximo dia)',
             avgRule: 'Uso médio de {1} excede {2}% em {0} minutos, dispara alerta, envia {3} vezes por dia',
+            memorySustained: 'Server Memory Sustained Alert',
+            memorySustainedTitle: 'Sustained High Memory Usage Alert',
+            memorySustainedUseExceed: 'Memory usage threshold',
+            memorySustainedUseExceedHelper:
+                'Alert when memory usage stays at or above this value for the whole duration. Any dip below it restarts the timer.',
+            memorySustainedName: 'Memory',
+            sustainedDuration: 'Sustained for',
+            sustainedRule: 'Usage stays at or above {1}% for {0} minutes, triggers alert, sends {2} times per day',
             diskRule:
                 'Uso de disco para o diretório de montagem {0} excede {1}{2}, dispara alerta, envia {3} vezes por dia',
             allDiskRule: 'Uso de disco excede {0}{1}, dispara alerta, envia {2} vezes por dia',

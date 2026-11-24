@@ -131,6 +131,7 @@ const defaultResourceValue = [
     'cronJob',
     'cpu',
     'memory',
+    'memorySustained',
     'load',
     'disk',
     'nodeException',
@@ -157,6 +158,7 @@ const generateData = (): Option[] => {
     data.push({ key: 'siteEndTime', label: i18n.global.t('xpack.alert.siteEndTime'), disabled: false });
     data.push({ key: 'cpu', label: i18n.global.t('xpack.alert.cpu'), disabled: false });
     data.push({ key: 'memory', label: i18n.global.t('xpack.alert.memory'), disabled: false });
+    data.push({ key: 'memorySustained', label: i18n.global.t('xpack.alert.memorySustained'), disabled: false });
     data.push({ key: 'disk', label: i18n.global.t('xpack.alert.disk'), disabled: false });
     data.push({ key: 'load', label: i18n.global.t('xpack.alert.load'), disabled: false });
     data.push({ key: 'clams', label: i18n.global.t('xpack.alert.clams'), disabled: false });

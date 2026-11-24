@@ -30,8 +30,8 @@ jobs:
 
       - name: Unit tests (fork packages)
         run: |
-          bash agent/utils/vm/helper/prepare.sh
-          (cd agent && go test ./utils/github/...)
+          (cd agent && go test ./utils/github/... && go test ./app/service/ -run "MemSustained|ForkClean|SameVersion")
+          (cd core && go test ./init/migration/migrations/ -run TestStripVMAndAIMenus)
           (cd core && go test ./utils/github/... && go test ./init/migration/migrations/ -run TestAddGithubMenu)
 
       - name: Stub embedded frontend files

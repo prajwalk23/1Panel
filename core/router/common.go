@@ -11,6 +11,7 @@ func commonGroups() []CommonRouter {
 		&ScriptRouter{},
 		&RuntimeDiagnosticsRouter{},
 		&PanelMCPRouter{},
-		&GithubRouter{}, // fork
+		&GithubRouter{},      // fork
+		&MemoryLimitRouter{}, // fork
 	}
 }

@@ -54,7 +54,7 @@ var memoryLoad1, memoryLoad5, memoryLoad15 []float64
 var alertTaskMu sync.Mutex
 
 var baseTypes = map[string]bool{"ssl": true, "siteEndTime": true, "panelPwdEndTime": true, "panelUpdate": true}
-var resourceTypes = map[string]bool{"cpu": true, "memory": true, "disk": true, "load": true, "panelLogin": true, "sshLogin": true, "nodeException": true, "licenseException": true}
+var resourceTypes = map[string]bool{"cpu": true, "memory": true, "memorySustained": true, "disk": true, "load": true, "panelLogin": true, "sshLogin": true, "nodeException": true, "licenseException": true} // fork: memorySustained
 
 func NewIAlertTaskHelper() IAlertTaskHelper {
 	return &AlertTaskHelper{
@@ -118,6 +118,8 @@ func resetAlertState(alertType string) {
 		memoryLoad1 = []float64{}
 		memoryLoad5 = []float64{}
 		memoryLoad15 = []float64{}
+	case "memorySustained": // fork
+		resetMemSustainedState()
 	}
 }
 
@@ -226,6 +228,8 @@ func resourceTask(resourceAlert []dto.AlertDTO) {
 			loadCPUUsage(alert)
 		case "memory":
 			loadMemUsage(alert)
+		case "memorySustained": // fork
+			loadMemSustainedUsage(alert)
 		case "load":
 			loadLoadInfo(alert)
 		case "disk":
@@ -970,7 +974,7 @@ func getModuleName(alertType string) string {
 	switch alertType {
 	case "cpu":
 		module = " CPU "
-	case "memory":
+	case "memory", "memorySustained": // fork: memorySustained
 		module = "内存"
 	case "load":
 		module = "负载"

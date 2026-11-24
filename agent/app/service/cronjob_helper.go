@@ -420,6 +420,12 @@ func backupLogFile(dstFilePath, websiteLogDir string, fileOp files.FileOp) error
 
 func (u *CronjobService) handleSystemClean(cronjob model.Cronjob, taskItem *task.Task) {
 	cleanTask := doSystemClean(taskItem)
+	switch forkCleanMode(cronjob.Config) { // fork: reduced housekeeping jobs
+	case forkCleanAuto:
+		cleanTask = doAutoClean(taskItem)
+	case forkCleanUpgradeRollback:
+		cleanTask = doUpgradeRollbackClean(taskItem)
+	}
 	taskItem.AddSubTaskWithOps(i18n.GetMsgByKey("HandleSystemClean"), cleanTask, nil, int(cronjob.RetryTimes), time.Duration(cronjob.Timeout)*time.Second)
 }
 
