@@ -6,12 +6,11 @@ package service
 // snippet that each site's server block includes.
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"os"
 	"path"
 	"strings"
+	"unicode"
 
 	"github.com/1Panel-dev/1Panel/agent/app/dto"
 	"github.com/1Panel-dev/1Panel/agent/app/dto/request"
@@ -49,19 +48,10 @@ var errorPageDefs = map[string]errorPageDef{
 	"504": {"504", "Gateway Timeout", "The upstream service took too long to respond."},
 }
 
-// SHA-256 (line endings normalized, trimmed) of the stock pages the openresty app package
-// shipped before they were translated. Only a page that still matches exactly is replaced
-// automatically, so an edited page is never overwritten.
-const (
-	stockStopHash  = "cc6da8e72560354e3654362a687045bb47b998b7703459acb52396963e11a096"
-	stockIndexHash = "ce617fade9a0489ef5a9a4a1df4e45318db362ec91b929936e84a2eb8494f77d"
-	stockPHPHash   = "e937dd5f7e40bd46347260a4fc4c13eca728ee65bc540d9f04827a9df76fe72a"
-)
-
 type defaultHtmlSpec struct {
 	path      string // file on the host
 	content   string // built-in default
-	staleHash string // hash of an untouched stock copy that should be replaced, "" for none
+	healHan   bool   // replace the host page with the default when it contains Chinese text
 }
 
 func renderErrorPageHTML(def errorPageDef) string {
@@ -81,15 +71,15 @@ func defaultHtmlSpecFor(rootPath, resourceType string) (defaultHtmlSpec, bool) {
 	defaultPath := path.Join(rootPath, "default")
 	switch resourceType {
 	case "404":
-		return defaultHtmlSpec{path: path.Join(defaultPath, "404.html"), content: string(nginx_conf.NotFoundHTML)}, true
+		return defaultHtmlSpec{path: path.Join(defaultPath, "404.html"), content: string(nginx_conf.NotFoundHTML), healHan: true}, true
 	case "php":
-		return defaultHtmlSpec{path: path.Join(defaultPath, "index.php"), content: string(nginx_conf.IndexPHP), staleHash: stockPHPHash}, true
+		return defaultHtmlSpec{path: path.Join(defaultPath, "index.php"), content: string(nginx_conf.IndexPHP), healHan: true}, true
 	case "index":
-		return defaultHtmlSpec{path: path.Join(defaultPath, "index.html"), content: string(nginx_conf.Index), staleHash: stockIndexHash}, true
+		return defaultHtmlSpec{path: path.Join(defaultPath, "index.html"), content: string(nginx_conf.Index), healHan: true}, true
 	case "domain404":
-		return defaultHtmlSpec{path: path.Join(rootPath, "404.html"), content: string(nginx_conf.DomainNotFoundHTML)}, true
+		return defaultHtmlSpec{path: path.Join(rootPath, "404.html"), content: string(nginx_conf.DomainNotFoundHTML), healHan: true}, true
 	case "stop":
-		return defaultHtmlSpec{path: path.Join(rootPath, "stop", "index.html"), content: string(nginx_conf.StopHTML), staleHash: stockStopHash}, true
+		return defaultHtmlSpec{path: path.Join(rootPath, "stop", "index.html"), content: string(nginx_conf.StopHTML), healHan: true}, true
 	}
 	if def, ok := errorPageDefs[resourceType]; ok {
 		return defaultHtmlSpec{path: path.Join(rootPath, errorPagesDir, def.Code+".html"), content: renderErrorPageHTML(def)}, true
@@ -101,19 +91,23 @@ func normalizeHTML(content string) string {
 	return strings.TrimSpace(strings.ReplaceAll(content, "\r\n", "\n"))
 }
 
-func isStaleStockPage(content, staleHash string) bool {
-	if staleHash == "" {
-		return false
+// hasChineseText reports whether the page contains Chinese characters. The pages the
+// openresty app package ships on the host are Chinese and differ between package
+// versions, so matching them by content is not reliable.
+func hasChineseText(content string) bool {
+	for _, r := range content {
+		if unicode.Is(unicode.Han, r) {
+			return true
+		}
 	}
-	sum := sha256.Sum256([]byte(normalizeHTML(content)))
-	return hex.EncodeToString(sum[:]) == staleHash
+	return false
 }
 
 // readDefaultHtml returns the page on the host, or the built-in default when the file is
-// missing, empty or an untouched stock copy (which is replaced on disk).
+// missing, empty or still in Chinese (which is replaced on disk).
 func readDefaultHtml(fileOp files.FileOp, spec defaultHtmlSpec) *response.WebsiteHtmlRes {
 	content, _ := getResourceContent(fileOp, spec.path)
-	if content == "" || isStaleStockPage(content, spec.staleHash) {
+	if content == "" || (spec.healHan && hasChineseText(content)) {
 		if content != "" {
 			_ = fileOp.SaveFile(spec.path, spec.content, constant.DirPerm)
 		}
@@ -151,7 +145,7 @@ func (w WebsiteService) ResetDefaultHtml(req request.WebsiteHtmlReset) error {
 	return nil
 }
 
-// HealDefaultPages replaces untouched stock pages that are still in their old language.
+// HealDefaultPages replaces default pages that are still in Chinese with the English ones.
 // Files only, no nginx change; safe to run at every start.
 func (w WebsiteService) HealDefaultPages() {
 	rootPath, err := getNginxRootPath()
@@ -159,7 +153,7 @@ func (w WebsiteService) HealDefaultPages() {
 		return
 	}
 	fileOp := files.NewFileOp()
-	for _, resourceType := range []string{"stop", "index", "php"} {
+	for _, resourceType := range []string{"stop", "index", "php", "404", "domain404"} {
 		if spec, ok := defaultHtmlSpecFor(rootPath, resourceType); ok && fileOp.Stat(spec.path) {
 			readDefaultHtml(fileOp, spec)
 		}

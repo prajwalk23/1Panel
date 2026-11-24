@@ -1,8 +1,6 @@
 package service
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"strings"
 	"testing"
 	"unicode"
@@ -85,18 +83,29 @@ func TestForkErrorPagesSnippet(t *testing.T) {
 	}
 }
 
-func TestForkStaleStockPage(t *testing.T) {
-	page := "<html>\r\n<body>stock</body>\r\n</html>\r\n"
-	sum := sha256.Sum256([]byte("<html>\n<body>stock</body>\n</html>"))
-	hash := hex.EncodeToString(sum[:])
-	if !isStaleStockPage(page, hash) {
-		t.Error("a page equal to the stock copy should match, whatever its line endings")
+func TestForkHasChineseText(t *testing.T) {
+	if !hasChineseText("<h1>\u62b1\u6b49\uff01</h1>") {
+		t.Error("a page with Chinese text should be detected")
 	}
-	if isStaleStockPage(page+"<!-- edited -->", hash) {
-		t.Error("an edited page must not match")
+	if hasChineseText("<h1>Sorry, this site is suspended</h1>") {
+		t.Error("an English page must not be detected")
 	}
-	if isStaleStockPage(page, "") {
-		t.Error("an empty hash must never match")
+	if hasChineseText("") {
+		t.Error("an empty page must not be detected")
+	}
+}
+
+func TestForkHealOnlyChinesePages(t *testing.T) {
+	for _, resourceType := range []string{"stop", "index", "php", "404", "domain404"} {
+		spec, ok := defaultHtmlSpecFor("/root", resourceType)
+		if !ok || !spec.healHan {
+			t.Errorf("%s should be healed when it is in Chinese", resourceType)
+		}
+	}
+	for _, code := range errorPageCodes {
+		if spec, _ := defaultHtmlSpecFor("/root", code); spec.healHan {
+			t.Errorf("error page %s is not shipped by the package and must not be healed", code)
+		}
 	}
 }
 
