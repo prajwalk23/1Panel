@@ -127,6 +127,7 @@ func agentDBMigrations() []*gormigrate.Migration {
 		migrations.AddGithubManager,       // fork: keep last
 		migrations.DisableGPUMonitor,      // fork: keep last
 		migrations.AddForkCleanCronjobs,   // fork: keep last
+		migrations.AddWebsiteErrorPagesOff, // fork: keep last
 	}
 }
 

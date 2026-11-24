@@ -901,6 +901,27 @@ func (b *BaseApi) SwitchErrorPages(c *gin.Context) { // fork
 }
 
 // @Tags Website
+// @Summary Set website error pages
+// @Accept json
+// @Param request body request.WebsiteSiteErrorPages true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /websites/error-pages/site [post]
+// @x-panel-log {"bodyKeys":["useGlobal"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Use global error pages for a website [useGlobal]"}
+func (b *BaseApi) SetSiteErrorPages(c *gin.Context) { // fork
+	var req request.WebsiteSiteErrorPages
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	if err := websiteService.SetSiteErrorPages(req); err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.Success(c)
+}
+
+// @Tags Website
 // @Summary Get website upstreams
 // @Accept json
 // @Param id path integer true "id"

@@ -30067,6 +30067,49 @@ const docTemplate = `{
 				]
 			}
 		},
+		"/websites/error-pages/site": {
+			"post": {
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"description": "request",
+						"in": "body",
+						"name": "request",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/request.WebsiteSiteErrorPages"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				},
+				"security": [
+					{
+						"ApiKeyAuth": []
+					},
+					{
+						"Timestamp": []
+					}
+				],
+				"summary": "Set website error pages",
+				"tags": [
+					"Website"
+				],
+				"x-panel-log": {
+					"BeforeFunctions": [],
+					"bodyKeys": [
+						"useGlobal"
+					],
+					"formatEN": "Use global error pages for a website [useGlobal]",
+					"paramKeys": []
+				}
+			}
+		},
 		"/websites/default/html/error-pages": {
 			"post": {
 				"consumes": [
@@ -52134,6 +52177,20 @@ const docTemplate = `{
 			},
 			"required": [
 				"websiteId"
+			],
+			"type": "object"
+		},
+		"request.WebsiteSiteErrorPages": {
+			"properties": {
+				"useGlobal": {
+					"type": "boolean"
+				},
+				"websiteID": {
+					"type": "integer"
+				}
+			},
+			"required": [
+				"websiteID"
 			],
 			"type": "object"
 		},

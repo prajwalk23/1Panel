@@ -337,6 +337,11 @@ export const switchErrorPages = (req: Website.WebsiteErrorPagesSwitch) => {
     return http.post(`/websites/default/html/error-pages`, req);
 };
 
+// fork: one website follows the global custom error pages or uses nginx's built-in ones
+export const setSiteErrorPages = (req: Website.WebsiteSiteErrorPages) => {
+    return http.post(`/websites/error-pages/site`, req);
+};
+
 export const downloadCAFile = (params: Website.SSLDownload) => {
     return http.download<BlobPart>(`/websites/ca/download`, params, {
         responseType: 'blob',

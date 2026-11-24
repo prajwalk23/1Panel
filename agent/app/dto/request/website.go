@@ -345,6 +345,11 @@ type WebsiteErrorPagesSwitch struct { // fork
 	Enable bool `json:"enable"`
 }
 
+type WebsiteSiteErrorPages struct { // fork
+	WebsiteID uint `json:"websiteID" validate:"required"`
+	UseGlobal bool `json:"useGlobal"`
+}
+
 type WebsiteHtmlUpdate struct {
 	Type    string `json:"type" validate:"required"`
 	Content string `json:"content" validate:"required"`

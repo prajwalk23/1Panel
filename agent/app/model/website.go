@@ -49,6 +49,10 @@ type Website struct {
 	GitTokenUser      string `gorm:"-" json:"-"`
 	GitToken          string `gorm:"-" json:"-"`
 
+	// fork: the site opts out of the shared custom error pages and uses the nginx built-in ones.
+	// false (default) means the site follows the global setting.
+	ErrorPagesOff bool `gorm:"default:false" json:"errorPagesOff"`
+
 	Domains    []WebsiteDomain `json:"domains" gorm:"-:migration"`
 	WebsiteSSL WebsiteSSL      `json:"webSiteSSL" gorm:"-:migration"`
 }

@@ -55,11 +55,7 @@
                             <el-text type="info" size="small">{{ $t('github.useCustomErrorPagesHelper') }}</el-text>
                         </div>
                     </div>
-                    <div class="mt-1.5 flex items-center justify-between">
-                        <el-checkbox v-if="req.type == '404'" v-model="req.sync">
-                            {{ $t('website.syncHtmlHelper') }}
-                        </el-checkbox>
-                        <span v-else></span>
+                    <div class="mt-1.5 flex items-center justify-end">
                         <el-button link type="primary" :disabled="loading || isDefault" @click="resetHtml">
                             {{ $t('github.resetDefaultHtml') }}
                         </el-button>
@@ -112,7 +108,6 @@ const errorPagesEnabled = ref(true); // fork: custom error pages are on for all 
 const errorCodes = ['400', '401', '403', '500', '502', '503', '504']; // fork
 const req = reactive({
     type: '404',
-    sync: false,
 });
 
 const acceptParams = () => {
@@ -212,7 +207,7 @@ const submitHtml = async () => {
     loading.value = true;
     try {
         const content = view.value.state.doc.toString();
-        await updateDefaultHtml({ type: req.type, content: content, sync: req.sync });
+        await updateDefaultHtml({ type: req.type, content: content, sync: false });
         MsgSuccess(i18n.global.t('commons.msg.updateSuccess'));
         await getHtml(); // fork: refresh the reset button state
     } finally {

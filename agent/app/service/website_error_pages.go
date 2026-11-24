@@ -6,6 +6,7 @@ package service
 // snippet that each site's server block includes.
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path"
@@ -15,6 +16,7 @@ import (
 	"github.com/1Panel-dev/1Panel/agent/app/dto"
 	"github.com/1Panel-dev/1Panel/agent/app/dto/request"
 	"github.com/1Panel-dev/1Panel/agent/app/dto/response"
+	"github.com/1Panel-dev/1Panel/agent/app/repo"
 	"github.com/1Panel-dev/1Panel/agent/cmd/server/nginx_conf"
 	"github.com/1Panel-dev/1Panel/agent/constant"
 	"github.com/1Panel-dev/1Panel/agent/global"
@@ -233,6 +235,43 @@ func (w WebsiteService) SwitchErrorPages(req request.WebsiteErrorPagesSwitch) er
 	return nginxCheckAndReload(oldSnippet, snippetPath, nginxInstall.ContainerName)
 }
 
+// SetSiteErrorPages makes one site follow the global custom error pages (UseGlobal) or use the
+// nginx built-in ones. The site config is checked and reloaded, and restored when nginx
+// rejects it, so a failed change leaves the site and its stored flag as they were.
+func (w WebsiteService) SetSiteErrorPages(req request.WebsiteSiteErrorPages) error {
+	website, err := websiteRepo.GetFirst(repo.WithByID(req.WebsiteID))
+	if err != nil {
+		return err
+	}
+	if website.Type == constant.Stream {
+		return nil
+	}
+	include := errorPagesInclude()
+	if req.UseGlobal {
+		rootPath, err := getNginxRootPath()
+		if err != nil {
+			return err
+		}
+		if err := ensureErrorPageFiles(files.NewFileOp(), rootPath); err != nil {
+			return err
+		}
+		content, _ := os.ReadFile(GetSitePath(website, SiteConf))
+		if !strings.Contains(string(content), include) {
+			params := []dto.NginxParam{{Name: "include", Params: []string{include}}}
+			if err := updateNginxConfig(constant.NginxScopeServer, params, &website); err != nil {
+				return err
+			}
+		}
+	} else {
+		params := []dto.NginxParam{{Name: "include", Params: []string{include}}}
+		if err := deleteNginxConfig(constant.NginxScopeServer, params, &website); err != nil {
+			return err
+		}
+	}
+	website.ErrorPagesOff = !req.UseGlobal
+	return websiteRepo.Save(context.Background(), &website)
+}
+
 // EnableErrorPages makes sure the pages and the shared snippet exist and that every site
 // includes the snippet. A site that already includes it is not touched, so nginx is only
 // reloaded for sites that need the change.
@@ -250,7 +289,7 @@ func (w WebsiteService) EnableErrorPages() error {
 	}
 	include := errorPagesInclude()
 	for _, website := range websites {
-		if website.Type == constant.Stream {
+		if website.Type == constant.Stream || website.ErrorPagesOff {
 			continue
 		}
 		content, err := os.ReadFile(GetSitePath(website, SiteConf))

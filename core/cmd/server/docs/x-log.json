@@ -3985,6 +3985,14 @@
 		],
 		"formatEN": "Nginx conf update [domain]"
 	},
+	"/websites/error-pages/site": {
+		"bodyKeys": [
+			"useGlobal"
+		],
+		"paramKeys": [],
+		"beforeFunctions": [],
+		"formatEN": "Use global error pages for a website [useGlobal]"
+	},
 	"/websites/default/html/error-pages": {
 		"bodyKeys": [
 			"enable"

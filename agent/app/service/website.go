@@ -117,6 +117,7 @@ type IWebsiteService interface {
 	ResetDefaultHtml(req request.WebsiteHtmlReset) error // fork
 	EnableErrorPages() error                              // fork
 	SwitchErrorPages(req request.WebsiteErrorPagesSwitch) error // fork
+	SetSiteErrorPages(req request.WebsiteSiteErrorPages) error   // fork
 	HealDefaultPages()                                    // fork
 
 	SetRealIPConfig(req request.WebsiteRealIP) error

@@ -29,6 +29,7 @@ export namespace Website {
         favorite: boolean;
         streamPorts: string;
         udp: boolean;
+        errorPagesOff?: boolean; // fork: the website uses nginx's built-in error pages
     }
 
     export interface WebsiteDTO extends Website {
@@ -712,6 +713,10 @@ export namespace Website {
     }
     export interface WebsiteErrorPagesSwitch {
         enable: boolean;
+    }
+    export interface WebsiteSiteErrorPages {
+        websiteID: number;
+        useGlobal: boolean;
     }
     export interface WebsiteHtmlUpdate {
         type: string;

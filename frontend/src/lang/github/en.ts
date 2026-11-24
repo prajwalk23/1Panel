@@ -300,6 +300,10 @@ export default {
     errorPage503: 'Error 503 Service Unavailable',
     errorPage504: 'Error 504 Gateway Timeout',
     errorPageHelper: 'Shown by every website for this error. Saving applies the page to all websites.',
+    siteErrorPages: 'Error pages',
+    siteUseGlobalErrorPages: 'Use the global error pages',
+    siteUseGlobalErrorPagesHelper:
+        'On: this website shows the custom error pages from Set default page. Off: this website uses the nginx built-in error pages.',
     useCustomErrorPages: 'Use custom error pages',
     useCustomErrorPagesHelper:
         'On: websites show the pages below. Off: nginx uses its own built-in error pages. Applies to all websites.',
