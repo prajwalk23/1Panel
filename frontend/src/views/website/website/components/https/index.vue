@@ -31,10 +31,26 @@
 
         <el-form-item :label="$t('website.sslConfig')" prop="type">
             <el-select v-model="formData.type" @change="handleTypeChange" class="p-w-400">
+                <el-option v-if="allowCreate" :label="$t('website.newSSL')" value="create"></el-option>
                 <el-option :label="$t('website.oldSSL')" value="existed"></el-option>
                 <el-option :label="$t('website.manualSSL')" value="manual"></el-option>
             </el-select>
         </el-form-item>
+
+        <div v-if="formData.type === 'create'">
+            <el-form-item :label="$t('website.acmeAccountManage')" prop="acmeAccountID">
+                <el-select v-model="formData.acmeAccountID" :placeholder="$t('website.selectAcme')" class="p-w-400">
+                    <el-option v-for="acme in acmeAccounts" :key="acme.id" :label="acme.email" :value="acme.id">
+                        <span>
+                            {{ acme.email }}
+                            <el-tag class="ml-5">{{ getAccountName(acme.type) }}</el-tag>
+                        </span>
+                    </el-option>
+                </el-select>
+                <span class="input-help" v-if="acmeAccounts.length === 0">{{ $t('website.newSSLNoAcme') }}</span>
+                <span class="input-help" v-else>{{ $t('website.newSSLHelper') }}</span>
+            </el-form-item>
+        </div>
 
         <div v-if="formData.type === 'existed'">
             <el-form-item :label="$t('website.acmeAccountManage')" prop="acmeAccountID">
@@ -115,7 +131,7 @@
             </div>
         </div>
 
-        <el-form-item :label="' '" v-if="websiteSSL && websiteSSL.id > 0">
+        <el-form-item :label="' '" v-if="formData.type !== 'create' && websiteSSL && websiteSSL.id > 0">
             <slot name="ssl-info" :websiteSSL="websiteSSL">
                 <WebsiteSSL :websiteSSL="websiteSSL" />
             </slot>
@@ -181,6 +197,7 @@ interface Props {
     };
     websiteSSL?: Website.SSL;
     autoLoad?: boolean;
+    allowCreate?: boolean;
 }
 
 interface Emits {
@@ -193,6 +210,7 @@ interface Emits {
 
 const props = withDefaults(defineProps<Props>(), {
     autoLoad: true,
+    allowCreate: false,
 });
 
 const emit = defineEmits<Emits>();
@@ -211,6 +229,9 @@ const listAcmeAccount = async () => {
     try {
         const res = await searchAcmeAccount({ page: 1, pageSize: 100 });
         acmeAccounts.value = res.data.items || [];
+        if (formData.value.type === 'create') {
+            selectDefaultAcme();
+        }
     } catch (error) {
         console.error('Failed to load ACME accounts:', error);
     }
@@ -251,9 +272,19 @@ const listSSLs = async () => {
     }
 };
 
+const selectDefaultAcme = () => {
+    const current = acmeAccounts.value.find((acme) => acme.id === formData.value.acmeAccountID);
+    if (!current && acmeAccounts.value.length > 0) {
+        formData.value.acmeAccountID = acmeAccounts.value[0].id;
+    }
+};
+
 const handleTypeChange = (type: string) => {
     if (type !== 'existed') {
         formData.value.websiteSSLId = undefined;
+    }
+    if (type === 'create') {
+        selectDefaultAcme();
     }
     emit('type-change', type);
 };
