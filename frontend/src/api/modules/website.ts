@@ -307,6 +307,16 @@ export const updateDefaultHtml = (req: Website.WebsiteHtmlUpdate) => {
     return http.post(`/websites/default/html/update`, req);
 };
 
+// fork: reset a default page or error page to the built-in default
+export const resetDefaultHtml = (req: Website.WebsiteHtmlReset) => {
+    return http.post(`/websites/default/html/reset`, req);
+};
+
+// fork: use the custom error pages for every website, or nginx's built-in ones
+export const switchErrorPages = (req: Website.WebsiteErrorPagesSwitch) => {
+    return http.post(`/websites/default/html/error-pages`, req);
+};
+
 export const downloadCAFile = (params: Website.SSLDownload) => {
     return http.download<BlobPart>(`/websites/ca/download`, params, {
         responseType: 'blob',

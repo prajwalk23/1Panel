@@ -103,7 +103,9 @@ type WebsiteDirConfig struct {
 }
 
 type WebsiteHtmlRes struct {
-	Content string `json:"content"`
+	Content   string `json:"content"`
+	IsDefault bool   `json:"isDefault"` // fork: content equals the built-in default
+	ErrorPagesEnabled bool `json:"errorPagesEnabled"` // fork: custom error pages are on for all sites
 }
 
 type WebsiteRealIP struct {

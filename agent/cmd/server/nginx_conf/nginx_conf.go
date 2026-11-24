@@ -35,6 +35,9 @@ var DomainNotFoundHTML []byte
 //go:embed stop.html
 var StopHTML []byte
 
+//go:embed error.html
+var ErrorHTML []byte // fork: template of the 4xx/5xx error pages
+
 //go:embed path_auth.conf
 var PathAuth []byte
 

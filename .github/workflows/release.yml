@@ -124,7 +124,7 @@ jobs:
       - name: Unit tests and vet (fork packages)
         run: |
           set -euo pipefail
-          (cd agent && go test ./utils/github/... && go test ./app/service/ -run "MemSustained|ForkClean|SameVersion")
+          (cd agent && go test ./utils/github/... && go test ./app/service/ -run "MemSustained|ForkClean|SameVersion|ForkErrorPage|ForkDefaultHtml|ForkStaleStock")
           (cd core && go test ./init/migration/migrations/ -run TestStripVMAndAIMenus)
           (cd core && go test ./utils/github/... && go test ./init/migration/migrations/ -run TestAddGithubMenu)
           (cd agent && go vet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...)

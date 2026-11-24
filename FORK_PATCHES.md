@@ -32,6 +32,13 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `agent/app/dto/request/website.go` | git fields incl. `GitAuthMode`/`GitTokenUser`/`GitToken` on `WebsiteCreate` | re-add the fields |
 | `agent/app/service/website.go` | validate + apply the git source for PHP runtime and static sites, `githubLinkWebsite` after create, `githubDeleteLinked` in delete, template copy skipped for git sites | re-add the calls |
 | `agent/app/service/website_utils.go` | clone the repo instead of the default index file for git PHP sites | re-add the branch |
+| `agent/app/service/website.go` (default html) | `GetDefaultHtml`/`UpdateDefaultHtml` use `defaultHtmlSpecFor`/`readDefaultHtml` from `website_error_pages.go`; error pages call `EnableErrorPages`; interface gets `ResetDefaultHtml`/`EnableErrorPages`/`HealDefaultPages` | re-apply, the logic lives in `website_error_pages.go` |
+| `agent/app/service/website_utils.go` (error pages) | `ensureErrorPageFiles` + `include` of the shared error snippet in the new site conf; `GetDefaultHtml("stop")` before stopping a site | re-add both |
+| `agent/app/dto/request/website.go`, `agent/app/dto/response/website.go` | `WebsiteHtmlReset`, `IsDefault` on `WebsiteHtmlRes` | re-add the fields |
+| `agent/router/ro_website.go`, `agent/app/api/v2/website.go` | `POST /websites/default/html/reset` and `/websites/default/html/error-pages` + handlers, and the entries in `core/cmd/server/docs/{docs.go,swagger.json,x-log.json}`, `agent/cmd/server/docs/x-log.json` | re-add the route, handler and doc entries |
+| `agent/cmd/server/nginx_conf/nginx_conf.go`, `error.html` | `ErrorHTML` embed, the template of the 4xx/5xx error pages | re-add the embed |
+| `agent/init/hook/hook.go` | `go ...HealDefaultPages()` at start | re-add the call |
+| `frontend/src/views/website/website/default/index.vue`, `api/modules/website.ts`, `api/interface/website.ts`, `lang/github/en.ts` | error page options, reset-to-default button, `resetDefaultHtml`, `github.errorPage*` keys | re-add the options and the button |
 | `frontend/src/api/interface/website.ts` | git fields incl. auth on `WebSiteCreateReq`, `gitMode` on `WebsiteDTO` | re-add the fields |
 | `frontend/src/views/website/website/create/index.vue` | `<GitSource>` for PHP runtime and static sites, request mapping in `submit` | re-add the component and mapping |
 | `frontend/src/lang/modules/en.ts` | `enableHTTPS` label "Enable HTTPS" | re-apply the label |

@@ -29,14 +29,40 @@
                         <el-option :value="'index'" :label="$t('website.indexHtml')"></el-option>
                         <el-option :value="'php'" :label="$t('website.indexPHP')"></el-option>
                         <el-option :value="'stop'" :label="$t('website.stopHtml')"></el-option>
+                        <el-option
+                            v-for="code in errorCodes"
+                            :key="code"
+                            :value="code"
+                            :label="$t('github.errorPage' + code)"
+                        ></el-option>
                     </el-select>
                     <div class="mt-1.5">
                         <el-text v-if="req.type == '404'" type="info">
                             {{ $t('website.website404Helper') }}
                         </el-text>
+                        <el-text v-if="errorCodes.includes(req.type)" type="info">
+                            {{ $t('github.errorPageHelper') }}
+                        </el-text>
                     </div>
-                    <div class="mt-1.5">
-                        <el-checkbox v-model="req.sync">{{ $t('website.syncHtmlHelper') }}</el-checkbox>
+                    <div v-if="errorCodes.includes(req.type)" class="mt-1.5">
+                        <el-switch
+                            v-model="errorPagesEnabled"
+                            :disabled="loading"
+                            :before-change="changeErrorPages"
+                            :active-text="$t('github.useCustomErrorPages')"
+                        />
+                        <div>
+                            <el-text type="info" size="small">{{ $t('github.useCustomErrorPagesHelper') }}</el-text>
+                        </div>
+                    </div>
+                    <div class="mt-1.5 flex items-center justify-between">
+                        <el-checkbox v-if="req.type == '404'" v-model="req.sync">
+                            {{ $t('website.syncHtmlHelper') }}
+                        </el-checkbox>
+                        <span v-else></span>
+                        <el-button link type="primary" :disabled="loading || isDefault" @click="resetHtml">
+                            {{ $t('github.resetDefaultHtml') }}
+                        </el-button>
                     </div>
                     <div ref="htmlRef" class="default-html"></div>
                 </el-tab-pane>
@@ -54,7 +80,15 @@
 </template>
 <script lang="ts" setup>
 import { Website } from '@/api/interface/website';
-import { changeDefaultServer, getDefaultHtml, listWebsites, updateDefaultHtml } from '@/api/modules/website';
+import {
+    changeDefaultServer,
+    getDefaultHtml,
+    listWebsites,
+    resetDefaultHtml,
+    switchErrorPages,
+    updateDefaultHtml,
+} from '@/api/modules/website';
+import { ElMessageBox } from 'element-plus';
 import i18n from '@/lang';
 import { nextTick, reactive, ref } from 'vue';
 import { MsgSuccess } from '@/utils/message';
@@ -73,6 +107,9 @@ const content = ref('');
 const view = ref();
 const htmlRef = ref();
 const htmlLoaded = ref(false);
+const isDefault = ref(true); // fork: the page equals the built-in default
+const errorPagesEnabled = ref(true); // fork: custom error pages are on for all websites
+const errorCodes = ['400', '401', '403', '500', '502', '503', '504']; // fork
 const req = reactive({
     type: '404',
     sync: false,
@@ -114,6 +151,8 @@ const getHtml = async () => {
     try {
         const res = await getDefaultHtml(req.type);
         content.value = res.data.content;
+        isDefault.value = res.data.isDefault;
+        errorPagesEnabled.value = res.data.errorPagesEnabled;
         htmlLoaded.value = true;
         await nextTick();
         initEditor();
@@ -175,6 +214,45 @@ const submitHtml = async () => {
         const content = view.value.state.doc.toString();
         await updateDefaultHtml({ type: req.type, content: content, sync: req.sync });
         MsgSuccess(i18n.global.t('commons.msg.updateSuccess'));
+        await getHtml(); // fork: refresh the reset button state
+    } finally {
+        loading.value = false;
+    }
+};
+
+// fork: replace the page with the built-in default
+const resetHtml = async () => {
+    try {
+        await ElMessageBox.confirm(
+            i18n.global.t('github.resetDefaultHtmlConfirm'),
+            i18n.global.t('github.resetDefaultHtml'),
+            {
+                confirmButtonText: i18n.global.t('commons.button.confirm'),
+                cancelButtonText: i18n.global.t('commons.button.cancel'),
+                type: 'warning',
+            },
+        );
+    } catch {
+        return;
+    }
+    loading.value = true;
+    try {
+        await resetDefaultHtml({ type: req.type });
+        MsgSuccess(i18n.global.t('github.resetDefaultHtmlDone'));
+    } finally {
+        loading.value = false;
+    }
+    await getHtml();
+};
+// fork: el-switch awaits this, the switch only moves when it resolves
+const changeErrorPages = async () => {
+    loading.value = true;
+    try {
+        await switchErrorPages({ enable: !errorPagesEnabled.value });
+        MsgSuccess(i18n.global.t('commons.msg.updateSuccess'));
+        return true;
+    } catch {
+        return false;
     } finally {
         loading.value = false;
     }

@@ -661,6 +661,14 @@ export namespace Website {
 
     export interface WebsiteHtml {
         content: string;
+        isDefault: boolean; // fork: content equals the built-in default
+        errorPagesEnabled: boolean; // fork: custom error pages are on for all websites
+    }
+    export interface WebsiteHtmlReset {
+        type: string;
+    }
+    export interface WebsiteErrorPagesSwitch {
+        enable: boolean;
     }
     export interface WebsiteHtmlUpdate {
         type: string;

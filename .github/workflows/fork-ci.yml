@@ -30,7 +30,7 @@ jobs:
 
       - name: Unit tests (fork packages)
         run: |
-          (cd agent && go test ./utils/github/... && go test ./app/service/ -run "MemSustained|ForkClean|SameVersion")
+          (cd agent && go test ./utils/github/... && go test ./app/service/ -run "MemSustained|ForkClean|SameVersion|ForkErrorPage|ForkDefaultHtml|ForkStaleStock")
           (cd core && go test ./init/migration/migrations/ -run TestStripVMAndAIMenus)
           (cd core && go test ./utils/github/... && go test ./init/migration/migrations/ -run TestAddGithubMenu)
 

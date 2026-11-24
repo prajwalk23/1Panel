@@ -30,6 +30,7 @@ func Init() {
 	initDockerConf()
 	initAlertTask()
 	initMonitorDB()
+	go service.NewIWebsiteService().HealDefaultPages() // fork
 }
 
 func initGlobalData() {

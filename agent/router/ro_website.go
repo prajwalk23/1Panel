@@ -79,6 +79,8 @@ func (a *WebsiteRouter) InitRouter(Router *gin.RouterGroup) {
 
 		websiteRouter.GET("/default/html/:type", baseApi.GetDefaultHtml)
 		websiteRouter.POST("/default/html/update", baseApi.UpdateDefaultHtml)
+		websiteRouter.POST("/default/html/reset", baseApi.ResetDefaultHtml) // fork
+		websiteRouter.POST("/default/html/error-pages", baseApi.SwitchErrorPages) // fork
 
 		websiteRouter.GET("/:id/lbs", baseApi.GetLoadBalances)
 		websiteRouter.POST("/lbs/create", baseApi.CreateLoadBalance)

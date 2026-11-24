@@ -545,6 +545,9 @@ func configDefaultNginx(website *model.Website, domains []model.WebsiteDomain, a
 			setListen(server, strconv.Itoa(domain.Port), website.IPV6, false, website.DefaultServer, false)
 		}
 		server.UpdateServerName(serverNames)
+		if ensureErr := ensureErrorPageFiles(files.NewFileOp(), path.Join(nginxInstall.GetPath(), "root")); ensureErr == nil { // fork: shared error pages
+			server.UpdateDirective("include", []string{errorPagesInclude()})
+		}
 		if initialSSL != nil {
 			plan := buildWebsiteTLSPlan(domains, nginxInstall.HttpPort, nginxInstall.HttpsPort)
 			applyWebsiteSSLConfig(server, *website, plan, initialSSL.request)
@@ -1259,6 +1262,7 @@ func opWebsite(website *model.Website, operate string) error {
 	}
 	server := servers[0]
 	if operate == constant.StopWeb {
+		_, _ = NewIWebsiteService().GetDefaultHtml("stop") // fork: replace an untouched stock stop page before it is served
 		proxyInclude := fmt.Sprintf("/www/sites/%s/proxy/*.conf", website.Alias)
 		server.RemoveDirective("include", []string{proxyInclude})
 		rewriteInclude := fmt.Sprintf("/www/sites/%s/rewrite/%s.conf", website.Alias, website.Alias)
