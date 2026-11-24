@@ -337,6 +337,14 @@ type WebsiteHtmlReq struct {
 	Type string `json:"type" validate:"required"`
 }
 
+type WebsiteHtmlReset struct { // fork
+	Type string `json:"type" validate:"required"`
+}
+
+type WebsiteErrorPagesSwitch struct { // fork
+	Enable bool `json:"enable"`
+}
+
 type WebsiteHtmlUpdate struct {
 	Type    string `json:"type" validate:"required"`
 	Content string `json:"content" validate:"required"`

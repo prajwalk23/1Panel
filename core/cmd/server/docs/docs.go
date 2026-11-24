@@ -30067,6 +30067,92 @@ const docTemplate = `{
 				]
 			}
 		},
+		"/websites/default/html/error-pages": {
+			"post": {
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"description": "request",
+						"in": "body",
+						"name": "request",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/request.WebsiteErrorPagesSwitch"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				},
+				"security": [
+					{
+						"ApiKeyAuth": []
+					},
+					{
+						"Timestamp": []
+					}
+				],
+				"summary": "Switch custom error pages",
+				"tags": [
+					"Website"
+				],
+				"x-panel-log": {
+					"BeforeFunctions": [],
+					"bodyKeys": [
+						"enable"
+					],
+					"formatEN": "Switch custom error pages [enable]",
+					"paramKeys": []
+				}
+			}
+		},
+		"/websites/default/html/reset": {
+			"post": {
+				"consumes": [
+					"application/json"
+				],
+				"parameters": [
+					{
+						"description": "request",
+						"in": "body",
+						"name": "request",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/request.WebsiteHtmlReset"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				},
+				"security": [
+					{
+						"ApiKeyAuth": []
+					},
+					{
+						"Timestamp": []
+					}
+				],
+				"summary": "Reset default html",
+				"tags": [
+					"Website"
+				],
+				"x-panel-log": {
+					"BeforeFunctions": [],
+					"bodyKeys": [
+						"type"
+					],
+					"formatEN": "Reset default html [type]",
+					"paramKeys": []
+				}
+			}
+		},
 		"/websites/default/html/update": {
 			"post": {
 				"consumes": [
@@ -52051,6 +52137,25 @@ const docTemplate = `{
 			],
 			"type": "object"
 		},
+		"request.WebsiteErrorPagesSwitch": {
+			"properties": {
+				"enable": {
+					"type": "boolean"
+				}
+			},
+			"type": "object"
+		},
+		"request.WebsiteHtmlReset": {
+			"properties": {
+				"type": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"type"
+			],
+			"type": "object"
+		},
 		"request.WebsiteHtmlUpdate": {
 			"properties": {
 				"content": {
@@ -55027,6 +55132,12 @@ const docTemplate = `{
 			"properties": {
 				"content": {
 					"type": "string"
+				},
+				"errorPagesEnabled": {
+					"type": "boolean"
+				},
+				"isDefault": {
+					"type": "boolean"
 				}
 			},
 			"type": "object"

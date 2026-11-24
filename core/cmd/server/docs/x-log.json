@@ -3985,6 +3985,22 @@
 		],
 		"formatEN": "Nginx conf update [domain]"
 	},
+	"/websites/default/html/error-pages": {
+		"bodyKeys": [
+			"enable"
+		],
+		"paramKeys": [],
+		"beforeFunctions": [],
+		"formatEN": "Switch custom error pages [enable]"
+	},
+	"/websites/default/html/reset": {
+		"bodyKeys": [
+			"type"
+		],
+		"paramKeys": [],
+		"beforeFunctions": [],
+		"formatEN": "Reset default html [type]"
+	},
 	"/websites/default/html/update": {
 		"bodyKeys": [
 			"type"

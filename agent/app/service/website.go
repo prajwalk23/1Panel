@@ -114,6 +114,10 @@ type IWebsiteService interface {
 
 	UpdateDefaultHtml(req request.WebsiteHtmlUpdate) error
 	GetDefaultHtml(resourceType string) (*response.WebsiteHtmlRes, error)
+	ResetDefaultHtml(req request.WebsiteHtmlReset) error // fork
+	EnableErrorPages() error                              // fork
+	SwitchErrorPages(req request.WebsiteErrorPagesSwitch) error // fork
+	HealDefaultPages()                                    // fork
 
 	SetRealIPConfig(req request.WebsiteRealIP) error
 	GetRealIPConfig(websiteID uint) (*response.WebsiteRealIP, error)
@@ -2207,50 +2211,13 @@ func (w WebsiteService) GetDefaultHtml(resourceType string) (*response.WebsiteHt
 		_ = fileOp.CreateDir(defaultPath, constant.DirPerm)
 	}
 
-	res := &response.WebsiteHtmlRes{}
-
-	switch resourceType {
-	case "404":
-		resourcePath := path.Join(defaultPath, "404.html")
-		if content, _ := getResourceContent(fileOp, resourcePath); content != "" {
-			res.Content = content
-			return res, nil
-		}
-		res.Content = string(nginx_conf.NotFoundHTML)
-		return res, nil
-	case "php":
-		resourcePath := path.Join(defaultPath, "index.php")
-		if content, _ := getResourceContent(fileOp, resourcePath); content != "" {
-			res.Content = content
-			return res, nil
-		}
-		res.Content = string(nginx_conf.IndexPHP)
-		return res, nil
-	case "index":
-		resourcePath := path.Join(defaultPath, "index.html")
-		if content, _ := getResourceContent(fileOp, resourcePath); content != "" {
-			res.Content = content
-			return res, nil
-		}
-		res.Content = string(nginx_conf.Index)
-		return res, nil
-	case "domain404":
-		resourcePath := path.Join(rootPath, "404.html")
-		if content, _ := getResourceContent(fileOp, resourcePath); content != "" {
-			res.Content = content
-			return res, nil
-		}
-		res.Content = string(nginx_conf.DomainNotFoundHTML)
-		return res, nil
-	case "stop":
-		resourcePath := path.Join(rootPath, "stop", "index.html")
-		if content, _ := getResourceContent(fileOp, resourcePath); content != "" {
-			res.Content = content
-			return res, nil
-		}
-		res.Content = string(nginx_conf.StopHTML)
-		return res, nil
+	// fork: every page type, the error pages and the stale stock copies are handled in website_error_pages.go
+	spec, ok := defaultHtmlSpecFor(rootPath, resourceType)
+	if !ok {
+		return &response.WebsiteHtmlRes{}, nil
 	}
+	res := readDefaultHtml(fileOp, spec)
+	res.ErrorPagesEnabled = errorPagesEnabled(fileOp, rootPath)
 	return res, nil
 }
 
@@ -2287,9 +2254,20 @@ func (w WebsiteService) UpdateDefaultHtml(req request.WebsiteHtmlUpdate) error {
 	case "stop":
 		resourcePath = path.Join(rootPath, "stop", "index.html")
 	default:
-		return nil
+		// fork: error pages
+		spec, ok := defaultHtmlSpecFor(rootPath, req.Type)
+		if !ok || !isErrorPageType(req.Type) {
+			return nil
+		}
+		resourcePath = spec.path
 	}
-	return fileOp.SaveFile(resourcePath, req.Content, constant.DirPerm)
+	if err := fileOp.SaveFile(resourcePath, req.Content, constant.DirPerm); err != nil {
+		return err
+	}
+	if isErrorPageType(req.Type) {
+		return w.EnableErrorPages() // fork: make sure every site serves the error pages
+	}
+	return nil
 }
 
 func (w WebsiteService) ChangeGroup(group, newGroup uint) error {

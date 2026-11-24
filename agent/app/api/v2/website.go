@@ -859,6 +859,48 @@ func (b *BaseApi) UpdateDefaultHtml(c *gin.Context) {
 }
 
 // @Tags Website
+// @Summary Reset default html
+// @Accept json
+// @Param request body request.WebsiteHtmlReset true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /websites/default/html/reset [post]
+// @x-panel-log {"bodyKeys":["type"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Reset default html [type]"}
+func (b *BaseApi) ResetDefaultHtml(c *gin.Context) { // fork
+	var req request.WebsiteHtmlReset
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	if err := websiteService.ResetDefaultHtml(req); err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.Success(c)
+}
+
+// @Tags Website
+// @Summary Switch custom error pages
+// @Accept json
+// @Param request body request.WebsiteErrorPagesSwitch true "request"
+// @Success 200
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /websites/default/html/error-pages [post]
+// @x-panel-log {"bodyKeys":["enable"],"paramKeys":[],"BeforeFunctions":[],"formatEN":"Switch custom error pages [enable]"}
+func (b *BaseApi) SwitchErrorPages(c *gin.Context) { // fork
+	var req request.WebsiteErrorPagesSwitch
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	if err := websiteService.SwitchErrorPages(req); err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.Success(c)
+}
+
+// @Tags Website
 // @Summary Get website upstreams
 // @Accept json
 // @Param id path integer true "id"

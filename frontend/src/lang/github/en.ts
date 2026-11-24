@@ -288,4 +288,22 @@ export default {
     pullOnly: 'Pull only, no script',
     createSucceeded: 'Project created',
     linkedProjectMissing: 'No Git project was found for this item.',
+
+    // Settings > Website > Set default page: error pages
+    errorPageGroupDefault: 'Default pages',
+    errorPageGroupError: 'Error pages',
+    errorPage400: 'Error 400 Bad Request',
+    errorPage401: 'Error 401 Unauthorized',
+    errorPage403: 'Error 403 Forbidden',
+    errorPage500: 'Error 500 Internal Server Error',
+    errorPage502: 'Error 502 Bad Gateway',
+    errorPage503: 'Error 503 Service Unavailable',
+    errorPage504: 'Error 504 Gateway Timeout',
+    errorPageHelper: 'Shown by every website for this error. Saving applies the page to all websites.',
+    useCustomErrorPages: 'Use custom error pages',
+    useCustomErrorPagesHelper:
+        'On: websites show the pages below. Off: nginx uses its own built-in error pages. Applies to all websites.',
+    resetDefaultHtml: 'Reset to default',
+    resetDefaultHtmlConfirm: 'Replace this page with the built-in default? Your changes will be lost.',
+    resetDefaultHtmlDone: 'The page was reset to the default',
 };
