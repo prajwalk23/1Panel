@@ -96,3 +96,6 @@ superpowers
 /agent/utils/vm/helper/bin/1panel-kvm*
 # Added by code-review-graph
 .code-review-graph/
+.cursorrules
+.windsurfrules
+GEMINI.md
