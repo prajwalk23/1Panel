@@ -22,6 +22,12 @@ func Run() {
 	nyc, _ := time.LoadLocation(common.LoadTimeZoneByCmd())
 	global.Cron = cron.New(cron.WithLocation(nyc), cron.WithChain(cron.Recover(cron.DefaultLogger)), cron.WithChain(cron.DelayIfStillRunning(cron.DefaultLogger)))
 
+	// fork: follow the panel memory limit saved by core
+	service.SyncPanelMemoryLimit()
+	if _, err := global.Cron.AddFunc("@every 1m", service.SyncPanelMemoryLimit); err != nil {
+		global.LOG.Errorf("can not add memory limit sync job: %s", err.Error())
+	}
+
 	var (
 		interval model.Setting
 		status   model.Setting

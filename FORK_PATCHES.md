@@ -39,6 +39,7 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `frontend/src/lang/modules/en.ts` | `enableHTTPS` label "Enable HTTPS" | re-apply the label |
 | `agent/utils/common/sqlite.go`, `core/utils/common/sqlite.go` | PRAGMAs moved into the DSN (`_pragma=`), `cache_size(-1024)`, `SetMaxOpenConns(2)` | keep ours |
 | `agent/cmd/server/main.go`, `core/cmd/server/main.go` | `debug.SetMemoryLimit(512 MiB)` unless `GOMEMLIMIT` is set | re-add the block |
+| `core/router/common.go`, `agent/cron/cron.go`, `frontend/src/lang/github/index.ts`, `frontend/src/views/setting/panel/index.vue` | panel memory limit: `&MemoryLimitRouter{}`, `service.SyncPanelMemoryLimit()` + 1m job, `memoryLimit` messages merge, "Memory limit" row + dialog | re-add the lines |
 | `core/server/server.go` | MCP bridge + Docker prepare/sync only start when `mcp_settings.enabled` | re-add the `mcpEnabled` gates |
 | `core/init/hook/hook.go` | writes setting `PanelRunningVersion` (read by the agent `upgrade-rollback-clean` job) | re-add the block |
 | `agent/init/migration/migrate.go` | `DisableGPUMonitor`, `AddForkCleanCronjobs` appended; `AddMemorySustainedAlertType` appended to `migrateAlertDB`; `MigrateVMDatabase` removed | keep ours **last**, keep the VM entry removed |
@@ -96,6 +97,10 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
   `agent/app/service/{device_clean_auto,alert_mem_sustained}.go` (+ tests),
   `core/init/migration/migrations/fork_menu_strip.go` (+ test),
   `frontend/src/views/app-store/installed/upgrade/feishu-transition.vue`
+- Panel memory limit (Settings > Panel): `core/app/{dto,service,api/v2}/memory_limit.go`,
+  `core/router/ro_memory_limit.go`, `agent/app/service/memory_limit.go`,
+  `frontend/src/api/modules/memory-limit.ts`, `frontend/src/lang/github/memory-limit.ts`,
+  `frontend/src/views/setting/panel/memory-limit/`
 - Fork tooling: `.github/workflows/sync-upstream.yml`, `.github/workflows/fork-ci.yml`,
   `.github/workflows/release.yml`, `fork/`
 

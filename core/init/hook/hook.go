@@ -30,6 +30,7 @@ func Init() {
 		runningVersion = global.ForkVersion
 	}
 	_ = settingRepo.UpdateOrCreate("PanelRunningVersion", runningVersion)
+	service.ApplyPanelMemoryLimit() // fork: saved limit (env GOMEMLIMIT still wins)
 	global.CONF.Conn.Port, _ = settingRepo.GetValueByKey("ServerPort")
 	global.CONF.Conn.Ipv6, _ = settingRepo.GetValueByKey("Ipv6")
 	global.CONF.Base.Edition, _ = settingRepo.GetValueByKey("Edition")
