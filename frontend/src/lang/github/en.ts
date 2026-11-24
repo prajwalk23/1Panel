@@ -189,7 +189,7 @@ export default {
         'Clone the code from a Git repository. Deploys, the webhook and rollback are managed in Git Manager.',
     repoURL: 'Repository URL',
     repoURLPlaceholder: 'Please enter repository address',
-    repoURLExample: 'e.g. git@github.com:username/repo.git',
+    repoURLExample: "e.g. git{'@'}github.com:username/repo.git", // '@' starts linked messages in vue-i18n, so it is written as a literal
     authentication: 'Authentication',
     authPublic: 'Public',
     authToken: 'Token',
@@ -200,7 +200,7 @@ export default {
     tokenHelper: 'The token needs read access to the repository. It is stored encrypted.',
     tokenKept: 'Leave empty to keep the stored token',
     needHTTPSForToken: 'Token authentication needs an https repository URL',
-    needSSHForKey: 'SSH Key authentication needs an SSH URL like git@github.com:owner/repo.git',
+    needSSHForKey: "SSH Key authentication needs an SSH URL like git{'@'}github.com:owner/repo.git",
     sshKey: 'SSH Key',
     sshKeyShared: 'Shared panel key',
     sshKeyHelper: 'Make sure to add this SSH key to the repository in the Git provider.',

@@ -1,5 +1,8 @@
 <template>
     <div class="git-source">
+        <el-divider v-if="withSwitch" content-position="left">
+            <el-text type="info" size="small">{{ $t('github.menu') }}</el-text>
+        </el-divider>
         <el-form-item v-if="withSwitch" :label="$t('github.sourceSwitch')">
             <el-switch v-model="switchValue" />
             <span class="input-help">{{ $t('github.sourceSwitchHelper') }}</span>
