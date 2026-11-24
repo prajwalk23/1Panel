@@ -71,13 +71,28 @@ cmd/server/fileList.txt
 core/.golangci.yml
 agent/.golangci.yml
 
-.opencode
-openspec
+# AI assistant files & tool configs
 CLAUDE.md
 AGENTS.md
-opencode.json
+GEMINI.md
+.cursorrules
+.windsurfrules
+.mcp.json
+.opencode
+.opencode.json
+.github/copilot-instructions.md
+openspec
 superpowers
 .worktrees/
 .codex/
+.kiro/
+.claude/
+.cursor/
+.gemini/
+.windsurf/
+.continue/
+.aider*
 
 /agent/utils/vm/helper/bin/1panel-kvm*
+# Added by code-review-graph
+.code-review-graph/
