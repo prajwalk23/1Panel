@@ -789,13 +789,11 @@ const hasRefreshedOptionsOnHover = ref(false);
 const quickJumpRef = ref();
 const quickJumpPermissionMap = Object.fromEntries(
     [
-        ['Agent', 'ai_agent_view'],
         ['Website', 'website_view'],
         ['Database', 'database_view'],
         ['Cronjob', 'cronjob_view'],
         ['AppInstalled', 'app_view'],
         ['File', 'host_file_view'],
-        ['ModelServices', 'ai_model_view'],
     ].map(([name, permission]) => [name, useCan(permission)]),
 ) as Record<string, ReturnType<typeof useCan>>;
 

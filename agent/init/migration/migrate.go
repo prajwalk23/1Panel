@@ -128,6 +128,7 @@ func agentDBMigrations() []*gormigrate.Migration {
 		migrations.DisableGPUMonitor,      // fork: keep last
 		migrations.AddForkCleanCronjobs,   // fork: keep last
 		migrations.AddWebsiteErrorPagesOff, // fork: keep last
+		migrations.RemoveAIQuickJumps,      // fork: keep last
 	}
 }
 

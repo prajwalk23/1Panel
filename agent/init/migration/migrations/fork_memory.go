@@ -11,6 +11,15 @@ import (
 	"gorm.io/gorm"
 )
 
+// fork: AI agents and model services are not used, so their Overview quick-jump
+// entries are removed (also from the Overview settings dialog).
+var RemoveAIQuickJumps = &gormigrate.Migration{
+	ID: "20261124-fork-remove-ai-quick-jumps",
+	Migrate: func(tx *gorm.DB) error {
+		return tx.Where("name IN ?", []string{"Agent", "ModelServices"}).Delete(&model.QuickJump{}).Error
+	},
+}
+
 // fork: GPU polling is off by default (host MonitorStatus is untouched). It can be
 // switched back on in the monitor settings.
 var DisableGPUMonitor = &gormigrate.Migration{
