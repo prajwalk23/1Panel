@@ -1,6 +1,12 @@
 <template>
     <DialogPro v-model="open" :title="$t('setting.upgradePlanTitle')" @close="handleClose">
         <div v-if="version" class="mb-3">{{ $t('setting.upgradeAvailable', [version]) }}</div>
+        <div v-if="releaseNote" class="mb-3">
+            <div class="whats-new-title">{{ $t('setting.upgradeWhatsNew') }}</div>
+            <div class="whats-new panel-MdEditor">
+                <MarkDownEditor :content="releaseNote" />
+            </div>
+        </div>
         <el-alert v-if="plan.mode !== 'none'" type="info" :closable="false" class="mb-3" :title="planText" />
 
         <div v-if="!scheduling">
@@ -48,6 +54,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import MarkDownEditor from '@/components/mkdown-editor/index.vue';
 import { updateUpgradePlan } from '@/api/modules/setting';
 import { Setting } from '@/api/interface/setting';
 import i18n from '@/lang';
@@ -57,6 +64,7 @@ const emit = defineEmits(['upgrade', 'changed']);
 
 const open = ref(false);
 const version = ref('');
+const releaseNote = ref('');
 const plan = ref<Setting.UpgradePlan>({ mode: 'none', time: '' });
 const scheduling = ref(false);
 const mode = ref('daily');
@@ -66,10 +74,12 @@ const dailyTime = ref('03:00');
 interface DialogProps {
     version: string;
     plan: Setting.UpgradePlan;
+    releaseNote?: string;
 }
 
 const acceptParams = (params: DialogProps) => {
     version.value = params.version || '';
+    releaseNote.value = params.releaseNote || '';
     plan.value = params.plan || { mode: 'none', time: '' };
     scheduling.value = false;
     mode.value = plan.value.mode === 'once' ? 'once' : 'daily';
@@ -128,5 +138,21 @@ defineExpose({ acceptParams });
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+}
+.whats-new-title {
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+.whats-new {
+    max-height: 260px;
+    overflow-y: auto;
+    border: 1px solid var(--el-border-color-light);
+    border-radius: 6px;
+    :deep(.md-editor-preview) {
+        font-size: 13px;
+    }
+}
+:deep(.md-editor-dark) {
+    background-color: var(--panel-main-bg-color-9);
 }
 </style>

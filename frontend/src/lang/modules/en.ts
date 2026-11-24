@@ -4270,6 +4270,7 @@ const message = {
         upgradePlanSaved: 'Update plan saved',
         upgradePlanRemoved: 'Update plan removed',
         upgradePlanTitle: 'Panel update',
+        upgradeWhatsNew: "What's new in this update",
         source: 'Download source',
         versionNotSame: 'Node version mismatch with the main node. Please upgrade in Node Management before retrying.',
         currentNodeVersionNotSame:

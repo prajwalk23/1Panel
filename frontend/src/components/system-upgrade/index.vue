@@ -54,7 +54,7 @@ import Releases from '@/components/system-upgrade/releases/index.vue';
 import Plan from '@/components/system-upgrade/plan/index.vue';
 import i18n from '@/lang';
 import { MsgSuccess } from '@/utils/message';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useGlobalStore } from '@/composables/useGlobalStore';
 
 const { isOffline, isMasterPro, isEE, isIntl, isAdmin, hasNewVersion } = useGlobalStore();
@@ -138,7 +138,11 @@ const openUpgrade = () => {
 };
 
 const openPlan = (newVersion?: string) => {
-    planRef.value.acceptParams({ version: newVersion || '', plan: plan.value });
+    planRef.value.acceptParams({
+        version: newVersion || '',
+        plan: plan.value,
+        releaseNote: upgradeInfo.value?.releaseNote || '',
+    });
 };
 
 const loadPlan = async () => {
@@ -174,11 +178,12 @@ const promptNewVersion = async () => {
         return;
     }
     await loadPlan();
-    if (plan.value.mode !== 'none') {
-        return;
-    }
     try {
+        // always re-check so a stale persisted red dot clears, even when a plan or ignore is set
         if (!(await fetchUpgrade())) {
+            return;
+        }
+        if (plan.value.mode !== 'none') {
             return;
         }
         const key = 'upgradePrompted';
@@ -192,9 +197,39 @@ const promptNewVersion = async () => {
     }
 };
 
+// silent re-check keeps the red dot honest after an upgrade finishes or a scheduled upgrade ran
+const refreshUpgradeStatus = async () => {
+    if (!canPlan.value) {
+        return;
+    }
+    try {
+        await fetchUpgrade();
+    } catch (e) {
+        // request errors are already reported by the http layer
+    }
+};
+
+// version changed (upgrade done): drop the dot at once, then confirm with the server
+watch(version, (val, old) => {
+    if (!old || val === old || val === 'Waiting') {
+        return;
+    }
+    hasNewVersion.value = false;
+    refreshUpgradeStatus();
+});
+
+let statusTimer: ReturnType<typeof setInterval> | undefined;
+
 onMounted(async () => {
     await search();
     promptNewVersion();
+    statusTimer = setInterval(refreshUpgradeStatus, 5 * 60 * 1000);
+});
+
+onBeforeUnmount(() => {
+    if (statusTimer) {
+        clearInterval(statusTimer);
+    }
 });
 </script>
 

@@ -108,6 +108,11 @@ const GlobalStore = defineStore('GlobalState', {
         },
         setLogStatus(login: boolean) {
             this.isLogin = login;
+            if (!login) {
+                // logged out (e.g. session dropped by the post-update restart): drop the persisted
+                // update dot so it can't show stale after the next login; the footer re-checks.
+                this.hasNewVersion = false;
+            }
         },
         setAuthInfo(payload: {
             isAdmin: boolean;
@@ -123,6 +128,7 @@ const GlobalStore = defineStore('GlobalState', {
         },
         clearAuthInfo() {
             clearPageStateCache();
+            this.hasNewVersion = false;
             this.cacheUserID = '';
             this.permissions = [];
             this.masterOnlyPermissions = [];
