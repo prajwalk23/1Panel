@@ -11,6 +11,7 @@ type WebsiteSearch struct {
 	Order          string `json:"order" validate:"required,oneof=null ascending descending"`
 	WebsiteGroupID uint   `json:"websiteGroupId"`
 	Type           string `json:"type"`
+	RuntimeType    string `json:"runtimeType"` // fork
 }
 
 type WebsiteCreate struct {

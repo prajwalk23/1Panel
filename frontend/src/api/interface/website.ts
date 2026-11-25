@@ -77,6 +77,7 @@ export namespace Website {
         orderBy: string;
         order: string;
         websiteGroupId: number;
+        runtimeType?: string;
     }
 
     export interface WebSiteDel {

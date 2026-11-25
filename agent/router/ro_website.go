@@ -15,6 +15,7 @@ func (a *WebsiteRouter) InitRouter(Router *gin.RouterGroup) {
 	{
 		websiteRouter.POST("/search", baseApi.PageWebsite)
 		websiteRouter.GET("/list", baseApi.GetWebsites)
+		websiteRouter.GET("/runtime/types", baseApi.GetWebsiteRuntimeTypes) // fork
 		websiteRouter.POST("", baseApi.CreateWebsite)
 		websiteRouter.POST("/operate", baseApi.OpWebsite)
 		websiteRouter.POST("/log/search", baseApi.GetWebsiteLog)

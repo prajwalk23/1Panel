@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 	"github.com/1Panel-dev/1Panel/agent/app/model"
+	"github.com/1Panel-dev/1Panel/agent/constant"
 	"github.com/1Panel-dev/1Panel/agent/global"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -21,6 +22,7 @@ type IWebsiteRepo interface {
 	WithRuntimeID(runtimeID uint) DBOption
 	WithParentID(websiteID uint) DBOption
 	WithType(websiteType string) DBOption
+	WithRuntimeType(runtimeType string) DBOption // fork
 	WithDBType(dbType string) DBOption
 	WithDBTypes(dbTypes []string) DBOption
 	WithDBID(dbID uint) DBOption
@@ -36,6 +38,7 @@ type IWebsiteRepo interface {
 	DeleteAll(ctx context.Context) error
 
 	UpdateGroup(group, newGroup uint) error
+	ListRuntimeTypes() ([]string, error) // fork
 }
 
 func NewIWebsiteRepo() IWebsiteRepo {
@@ -127,6 +130,13 @@ func (w *WebsiteRepo) WithType(websiteType string) DBOption {
 	}
 }
 
+// fork
+func (w *WebsiteRepo) WithRuntimeType(runtimeType string) DBOption {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("type = ? AND runtime_id IN (SELECT id FROM runtimes WHERE type = ?)", constant.Runtime, runtimeType)
+	}
+}
+
 func (w *WebsiteRepo) WithDBType(dbType string) DBOption {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("db_type = ?", dbType)
@@ -196,6 +206,18 @@ func (w *WebsiteRepo) DeleteBy(ctx context.Context, opts ...DBOption) error {
 
 func (w *WebsiteRepo) DeleteAll(ctx context.Context) error {
 	return getTx(ctx).Where("1 = 1 ").Delete(&model.Website{}).Error
+}
+
+// ListRuntimeTypes returns the runtime languages used by at least one runtime website. // fork
+func (w *WebsiteRepo) ListRuntimeTypes() ([]string, error) {
+	types := make([]string, 0)
+	err := global.DB.Model(&model.Website{}).
+		Joins("JOIN runtimes ON runtimes.id = websites.runtime_id").
+		Where("websites.type = ?", constant.Runtime).
+		Distinct().
+		Order("runtimes.type").
+		Pluck("runtimes.type", &types).Error
+	return types, err
 }
 
 func (w *WebsiteRepo) UpdateGroup(group, newGroup uint) error {

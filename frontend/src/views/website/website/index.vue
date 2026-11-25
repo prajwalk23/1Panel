@@ -32,7 +32,7 @@
             </template>
             <template v-if="!openNginxConfig" #rightToolBar>
                 <TableViewSwitch v-model="viewMode" storage-key="website" />
-                <el-select class="p-w-200" v-model="req.type" @change="search()" :disabled="disabledConfig">
+                <el-select class="p-w-200" v-model="req.type" @change="changeType" :disabled="disabledConfig">
                     <template #prefix>{{ $t('commons.table.type') }}</template>
                     <el-option :label="$t('commons.table.all')" :value="''"></el-option>
                     <el-option
@@ -42,10 +42,18 @@
                         :key="item.value"
                     ></el-option>
                 </el-select>
-                <el-select v-model="req.websiteGroupId" @change="search()" class="p-w-200" :disabled="disabledConfig">
+                <el-select v-model="groupFilter" @change="search()" class="p-w-200" :disabled="disabledConfig">
                     <template #prefix>{{ $t('commons.table.group') }}</template>
                     <el-option :label="$t('commons.table.all')" :value="0"></el-option>
                     <el-option v-for="item in groups" :key="item.id" :label="item.name" :value="item.id" />
+                    <el-option-group v-if="showRuntimeFilter" :label="$t('website.runtime')">
+                        <el-option
+                            v-for="item in runtimeTypes"
+                            :key="item"
+                            :label="runtimeTypeLabels[item] || item"
+                            :value="item"
+                        />
+                    </el-option-group>
                 </el-select>
                 <TableSearch @search="search()" v-model:searchName="req.name" :disabled="disabledConfig" />
                 <TableRefresh @search="search()" :disabled="disabledConfig" />
@@ -59,7 +67,7 @@
             </template>
             <template v-if="!openNginxConfig" #main>
                 <ComplexTable
-                    :selection-context="() => [req.name, req.type, req.websiteGroupId]"
+                    :selection-context="() => [req.name, req.type, req.websiteGroupId, req.runtimeType]"
                     row-key="id"
                     :cache-pagination="false"
                     :pagination-config="paginationConfig"
@@ -353,7 +361,7 @@ import BatchSetHttps from '@/views/website/website/batch-op/https.vue';
 
 import i18n from '@/lang';
 import { toRef, onMounted, reactive, ref, computed } from 'vue';
-import { batchOperate, opWebsite, searchWebsites, updateWebsite } from '@/api/modules/website';
+import { batchOperate, getWebsiteRuntimeTypes, opWebsite, searchWebsites, updateWebsite } from '@/api/modules/website';
 import { Website } from '@/api/interface/website';
 import { App } from '@/api/interface/app';
 import { ElMessageBox } from 'element-plus';
@@ -403,6 +411,15 @@ const dialogBackupRef = ref();
 const defaultRef = ref();
 const data = ref();
 let groups = ref<Group.GroupInfo[]>([]);
+const runtimeTypes = ref<string[]>([]);
+const runtimeTypeLabels: Record<string, string> = {
+    php: 'PHP',
+    node: 'Node.js',
+    java: 'Java',
+    go: 'Go',
+    python: 'Python',
+    dotnet: '.NET',
+};
 const dataRef = ref();
 const columns = ref([]);
 const websiteDir = ref();
@@ -433,6 +450,7 @@ const pageState = usePageState(() => ({
         order: 'descending',
         websiteGroupId: 0,
         type: '',
+        runtimeType: '',
     },
     tableSort: {
         prop: '',
@@ -470,6 +488,37 @@ const disabledConfig = computed(() => {
     return nginxStatus.value != 'Running';
 });
 
+const showRuntimeFilter = computed(() => {
+    return runtimeTypes.value.length > 0 && (req.type === '' || req.type === 'runtime');
+});
+
+// The group select holds either a group id (number) or a runtime type (string).
+const groupFilter = computed<number | string>({
+    get: () => req.runtimeType || req.websiteGroupId,
+    set: (value) => {
+        const isRuntime = typeof value === 'string';
+        req.runtimeType = isRuntime ? value : '';
+        req.websiteGroupId = isRuntime ? 0 : value;
+    },
+});
+
+const changeType = () => {
+    if (req.type !== '' && req.type !== 'runtime') {
+        req.runtimeType = '';
+    }
+    search();
+};
+
+const listRuntimeTypes = async () => {
+    const res = await getWebsiteRuntimeTypes();
+    runtimeTypes.value = res.data || [];
+    if (req.runtimeType && !runtimeTypes.value.includes(req.runtimeType)) {
+        req.runtimeType = '';
+        paginationConfig.currentPage = 1;
+        search();
+    }
+};
+
 const changeSort = ({ prop, order }) => {
     tableSort.prop = prop || '';
     tableSort.order = order || null;
@@ -496,6 +545,9 @@ const changeSort = ({ prop, order }) => {
 const search = async () => {
     req.page = paginationConfig.currentPage;
     req.pageSize = paginationConfig.pageSize;
+
+    // Refreshed with every search so the filter follows created and deleted websites.
+    listRuntimeTypes().catch(() => {});
 
     loading.value = true;
     await searchWebsites(req)

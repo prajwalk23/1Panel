@@ -47,6 +47,21 @@ func (b *BaseApi) GetWebsites(c *gin.Context) {
 }
 
 // @Tags Website
+// @Summary List runtime types used by websites
+// @Success 200 {array} string
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /websites/runtime/types [get]
+func (b *BaseApi) GetWebsiteRuntimeTypes(c *gin.Context) { // fork
+	types, err := websiteService.GetWebsiteRuntimeTypes()
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, types)
+}
+
+// @Tags Website
 // @Summary List website names
 // @Success 200 {array} response.WebsiteOption
 // @Security ApiKeyAuth

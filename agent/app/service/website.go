@@ -160,6 +160,7 @@ type IWebsiteService interface {
 	BatchOpWebsite(req request.BatchWebsiteOp) error
 	BatchSetGroup(req request.BatchWebsiteGroup) error
 	BatchSetHttps(ctx context.Context, req request.BatchWebsiteHttps) error
+	GetWebsiteRuntimeTypes() ([]string, error) // fork
 }
 
 func NewIWebsiteService() IWebsiteService {
@@ -192,6 +193,9 @@ func (w WebsiteService) PageWebsite(req request.WebsiteSearch) (int64, []respons
 	}
 	if req.Type != "" {
 		opts = append(opts, websiteRepo.WithType(req.Type))
+	}
+	if req.RuntimeType != "" { // fork
+		opts = append(opts, websiteRepo.WithRuntimeType(req.RuntimeType))
 	}
 	total, websites, err := websiteRepo.Page(req.Page, req.PageSize, opts...)
 	if err != nil {
@@ -257,6 +261,11 @@ func (w WebsiteService) PageWebsite(req request.WebsiteSearch) (int64, []respons
 		websiteDTOs = append(websiteDTOs, siteDTO)
 	}
 	return total, websiteDTOs, nil
+}
+
+// fork
+func (w WebsiteService) GetWebsiteRuntimeTypes() ([]string, error) {
+	return websiteRepo.ListRuntimeTypes()
 }
 
 func (w WebsiteService) GetWebsites() ([]response.WebsiteDTO, error) {

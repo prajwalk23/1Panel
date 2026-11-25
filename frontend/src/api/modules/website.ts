@@ -11,6 +11,10 @@ export const searchWebsites = (req: Website.WebSiteSearch, node?: string) => {
     return http.post<ResPage<Website.WebsiteRes>>(`/websites/search${params}`, req);
 };
 
+export const getWebsiteRuntimeTypes = () => {
+    return http.get<string[]>(`/websites/runtime/types`);
+};
+
 export const listWebsites = () => {
     return http.get<Website.WebsiteDTO[]>(`/websites/list`);
 };
