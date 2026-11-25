@@ -203,14 +203,17 @@
                     <DomainCreate
                         v-model:form="website"
                         @gengerate="websiteForm.clearValidate()"
-                        @domain-blur="handleFirstDomainBlur"
                     ></DomainCreate>
                 </div>
                 <el-divider content-position="left">
                     <el-text type="info" size="small">{{ $t('website.advancedSettings') }}</el-text>
                 </el-divider>
                 <el-form-item :label="$t('website.alias')" prop="alias" class="mt-2">
-                    <el-input v-model.trim="website.alias" :placeholder="$t('website.aliasHelper')"></el-input>
+                    <el-input
+                        v-model.trim="website.alias"
+                        :placeholder="$t('website.aliasHelper')"
+                        @input="handleAliasInput"
+                    ></el-input>
                     <div>
                         <span class="input-help">
                             <span>{{ $t('website.staticPath') + staticPath + website.alias }}</span>
@@ -816,6 +819,7 @@ const acceptParams = async (openrestyVersion: string) => {
     if (!compareVersion(openrestyVersion, '1.27.1.2-3-3-focal')) {
         versionNotMatch.value = true;
     }
+    aliasManual.value = false;
     website.value = initData();
     gitEnabled.value = false;
     Object.assign(gitSource, emptySource());
@@ -1155,24 +1159,21 @@ watch(
     { deep: true },
 );
 
-const handleFirstDomainBlur = (index: number) => {
-    if (index !== 0) {
-        return;
-    }
-    const firstDomain = website.value.domains?.[0]?.domain || '';
-    fillAliasFromDomainIfEmpty(firstDomain);
+const aliasManual = ref(false);
+
+const handleAliasInput = (value: string) => {
+    aliasManual.value = value.trim() !== '';
 };
 
-const fillAliasFromDomainIfEmpty = (value: string) => {
-    if (!value || website.value.alias.trim() !== '') {
-        return;
-    }
-    const domain = value.split(':')[0].trim();
-    if (!domain) {
-        return;
-    }
-    website.value.alias = domain;
-};
+watch(
+    () => website.value.domains?.[0]?.domain,
+    (value) => {
+        if (aliasManual.value) {
+            return;
+        }
+        website.value.alias = (value || '').split(':')[0].trim();
+    },
+);
 
 const listWebsites = async () => {
     try {
