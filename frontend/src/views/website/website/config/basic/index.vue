@@ -10,6 +10,10 @@
             <el-tab-pane :label="$t('website.domainConfig')" name="0">
                 <Domain :key="id" :id="id" v-if="tabIndex == '0'"></Domain>
             </el-tab-pane>
+            <!-- fork -->
+            <el-tab-pane :label="$t('runtime.runtime')" name="19" v-if="website.type === 'runtime'">
+                <RuntimeInfo :id="id" v-if="tabIndex == '19'"></RuntimeInfo>
+            </el-tab-pane>
             <el-tab-pane :label="$t('website.sitePath')" name="1">
                 <SitePath :id="id" v-if="tabIndex == '1'"></SitePath>
             </el-tab-pane>
@@ -110,6 +114,7 @@ import Cors from './cors/index.vue';
 import Stream from './stream/index.vue';
 import GitTab from './git/index.vue';
 import ErrorPages from './error-pages/index.vue'; // fork
+import RuntimeInfo from './runtime/index.vue'; // fork
 defineOptions({ name: 'Basic' });
 
 const props = defineProps({
