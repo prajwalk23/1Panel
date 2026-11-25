@@ -187,15 +187,7 @@ func (r *RuntimeService) Create(create request.RuntimeCreate) (*model.Runtime, e
 		}
 	case constant.RuntimeNode, constant.RuntimeJava, constant.RuntimeGo, constant.RuntimePython, constant.RuntimeDotNet:
 		if !runtimeGitRequested(create) && !fileOp.Stat(create.CodeDir) { // fork: a git source may create the dir
-			// fork: default project dir /opt/projects/{name} is created on demand
-			cleanDir := path.Clean(create.CodeDir)
-			if strings.HasPrefix(cleanDir, "/opt/projects/") {
-				if err := fileOp.CreateDir(cleanDir, constant.DirPerm); err != nil {
-					return nil, err
-				}
-			} else {
-				return nil, buserr.New("ErrPathNotFound")
-			}
+			return nil, buserr.New("ErrPathNotFound")
 		}
 		for _, export := range create.ExposedPorts {
 			hostPorts = append(hostPorts, strconv.Itoa(export.HostPort))
