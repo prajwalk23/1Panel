@@ -145,6 +145,19 @@ watch(
     { deep: true },
 );
 
+// default code dir /opt/projects/{name}; follows the name until the user edits it
+let autoDir = '';
+watch(
+    () => runtime.name,
+    (newVal) => {
+        if (mode.value != 'create') return;
+        const cur = runtime.codeDir;
+        if (cur && cur !== '/' && cur !== autoDir) return;
+        autoDir = newVal ? `/opt/projects/${newVal}` : '';
+        runtime.codeDir = autoDir || '/';
+    },
+);
+
 const handleClose = () => {
     open.value = false;
     em('close', false);
