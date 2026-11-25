@@ -56,8 +56,8 @@
                     {{ $t('runtime.phpsourceHelper') }}
                 </span>
             </el-form-item>
-            <CreateWebsite v-if="mode === 'create'" v-model="runtime" />
             <NodeConfig v-model="runtime" />
+            <CreateWebsite v-if="mode === 'create'" v-model="runtime" />
         </el-form>
 
         <template #footer>
