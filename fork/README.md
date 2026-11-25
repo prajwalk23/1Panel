@@ -15,24 +15,27 @@ Licence: GPL-3.0, same as upstream. Source for every release is this repository.
 
 | Branch | Content | Written by |
 |---|---|---|
-| `main` | upstream stable tag + fork code. Default branch. | PRs and the sync job |
-| `sync/upstream-<tag>` | upstream tag that did not merge cleanly | sync job (PR into `main`) |
+| `main` | upstream stable tag + fork code. Default branch. | direct pushes and manual upstream merges |
 
 `main` is based on upstream **stable tags only** (first base: `v2.5.1`). Unreleased upstream code
 and its database migrations never reach `main`.
 
-## Sync job (`.github/workflows/sync-upstream.yml`)
+## Syncing upstream (manual)
 
-Runs daily and on demand:
+When upstream publishes a new stable tag (`v2.X.Y`):
 
-1. Finds the newest upstream stable tag (`v2.X.Y`). Stops if `main` already contains it.
-2. Merges the tag into `main`, keeping the fork's `.github/workflows`.
-   - Clean merge: pushed to `main`. Nothing is built or deployed.
-   - Conflict: pushes the tag as `sync/upstream-<tag>` and opens a PR. `main` is not touched.
-3. Never force-pushes, resets or rebases.
+```bash
+# Upstream tags go to their own namespace so they never mix with fork tags (v2.5.1.1 ...).
+git fetch --no-tags upstream "+refs/tags/*:refs/upstream-tags/*"
+git switch main
+git merge --no-ff --no-commit refs/upstream-tags/v2.X.Y
+# Keep the fork's workflows exactly as on main.
+git rm -r -f -q --ignore-unmatch -- .github/workflows
+git checkout HEAD -- .github/workflows
+```
 
-Resolve a conflict PR locally: `git fetch origin && git switch main && git merge origin/sync/upstream-<tag>`,
-fix the files listed in `FORK_PATCHES.md`, commit, push.
+Fix any conflicts using `FORK_PATCHES.md`, then commit as `chore(sync): merge upstream v2.X.Y` and
+push `main`. Never force-push, reset or rebase.
 
 ## Versions and releases
 
@@ -47,12 +50,8 @@ fix the files listed in `FORK_PATCHES.md`, commit, push.
 
 1. Push `main` and make it the default branch (Settings, General, Default branch).
 2. Actions tab: enable workflows.
-3. Settings, Actions, General: "Read and write permissions" and "Allow GitHub Actions to create and
-   approve pull requests".
-4. Create a fine-grained personal access token for this repository with **Contents**, **Workflows**
-   and **Pull requests** set to read and write. Save it as the repository secret `SYNC_TOKEN`.
-   The default Actions token cannot push upstream commits that touch workflow files.
-5. Keep the repository public, so panels can download releases without a token.
+3. Settings, Actions, General: "Read and write permissions".
+4. Keep the repository public, so panels can download releases without a token.
 
 ## Installing on a server that runs official 1Panel
 

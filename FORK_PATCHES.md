@@ -115,11 +115,10 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
   `core/router/ro_memory_limit.go`, `agent/app/service/memory_limit.go`,
   `frontend/src/api/modules/memory-limit.ts`, `frontend/src/lang/github/memory-limit.ts`,
   `frontend/src/views/setting/panel/memory-limit/`
-- Fork tooling: `.github/workflows/sync-upstream.yml`, `.github/workflows/fork-ci.yml`,
-  `.github/workflows/release.yml`, `fork/`
+- Fork tooling: `.github/workflows/fork-ci.yml`, `.github/workflows/release.yml`, `fork/`
 
 ## Upstream workflows
 
 `sync2gitee.yml`, `issue-translator.yml` and `add-labels-for-pr.yml` are **deleted** in the fork.
-The sync job always keeps the fork's `.github/workflows` as on `main` (it also resolves a
-modify/delete conflict when upstream edits one of the deleted files).
+When merging upstream, always keep the fork's `.github/workflows` as on `main` (this also resolves a
+modify/delete conflict when upstream edits one of the deleted files). Steps: `fork/README.md`.
