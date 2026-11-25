@@ -12,8 +12,6 @@ import (
 	"os"
 	"path"
 	"strings"
-	"sync"
-	"time"
 
 	"github.com/1Panel-dev/1Panel/core/app/dto"
 	"github.com/1Panel-dev/1Panel/core/app/model"
@@ -29,36 +27,19 @@ import (
 
 const forkChecksumFile = "checksums.txt"
 
-var forkSearchCache struct {
-	sync.Mutex
-	at   time.Time
-	info dto.UpgradeInfo
-}
-
 // forkSearchUpgrade answers the panel's own update check (the footer Update button and the
-// home page) from the fork's releases. The result is cached because the check runs on page
-// loads and GitHub limits anonymous API calls.
+// login/daily check) from the fork's releases. It is never cached: every call asks GitHub, and
+// the frontend decides how often to call (on login, every 24 hours, or when Update is clicked).
 func forkSearchUpgrade() *dto.UpgradeInfo {
-	forkSearchCache.Lock()
-	defer forkSearchCache.Unlock()
-	if !forkSearchCache.at.IsZero() && time.Since(forkSearchCache.at) < 10*time.Minute {
-		cached := forkSearchCache.info
-		return &cached
-	}
-	result := dto.UpgradeInfo{}
 	info, err := NewIGithubUpdateService().Info()
-	switch {
-	case err != nil:
+	if err != nil {
 		global.LOG.Errorf("check fork update failed: %v", err)
-		forkSearchCache.at = time.Now().Add(-9 * time.Minute) // try again in a minute
-	default:
-		if info.HasUpdate {
-			result = dto.UpgradeInfo{LatestVersion: info.LatestVersion, ReleaseNote: info.ReleaseNote}
-		}
-		forkSearchCache.at = time.Now()
+		return &dto.UpgradeInfo{}
 	}
-	forkSearchCache.info = result
-	return &result
+	if info.HasUpdate {
+		return &dto.UpgradeInfo{LatestVersion: info.LatestVersion, ReleaseNote: info.ReleaseNote}
+	}
+	return &dto.UpgradeInfo{}
 }
 
 type GithubUpdateService struct{}

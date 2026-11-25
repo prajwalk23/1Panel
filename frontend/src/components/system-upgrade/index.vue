@@ -88,7 +88,8 @@ const search = async () => {
 };
 
 // update complete = the running version differs from the one this browser last saw (survives the
-// post-update reload/re-login): clear the persisted red dot now; the server re-check follows.
+// post-update reload/re-login): drop the old red dot and make the check due, so the dot only comes
+// back from a fresh check against the new version, never from the previous result.
 const resetDotOnUpdateDone = (current: string) => {
     if (!current || current === 'Waiting') {
         return;
@@ -99,6 +100,7 @@ const resetDotOnUpdateDone = (current: string) => {
         if (seen && seen !== current) {
             hasNewVersion.value = false;
             sessionStorage.removeItem('upgradePrompted');
+            localStorage.removeItem(CHECK_KEY);
         }
         localStorage.setItem(key, current);
     } catch (e) {
@@ -134,8 +136,31 @@ const toEdition = () => {
     }
 };
 
+// The server never caches the check. This browser asks on login (login and logout clear the key),
+// then at most once every 24 hours, and whenever Update is clicked.
+const CHECK_KEY = 'upgradeChecked';
+const CHECK_INTERVAL = 24 * 60 * 60 * 1000;
+
+const isCheckDue = (): boolean => {
+    try {
+        const last = Number(localStorage.getItem(CHECK_KEY));
+        return !last || Date.now() - last >= CHECK_INTERVAL;
+    } catch (e) {
+        return true;
+    }
+};
+
+const markChecked = () => {
+    try {
+        localStorage.setItem(CHECK_KEY, String(Date.now()));
+    } catch (e) {
+        // storage may be blocked; the next load just checks again
+    }
+};
+
 // returns true when a new version exists; fills upgradeInfo and upgradeVersion
 const fetchUpgrade = async (): Promise<boolean> => {
+    markChecked();
     const res = await loadUpgradeInfo();
     if (!(res.data.testVersion || res.data.newVersion || res.data.latestVersion)) {
         hasNewVersion.value = false;
@@ -198,8 +223,11 @@ const promptNewVersion = async () => {
         return;
     }
     await loadPlan();
+    if (!isCheckDue()) {
+        return;
+    }
     try {
-        // always re-check so a stale persisted red dot clears, even when a plan or ignore is set
+        // the check also clears a stale persisted red dot, even when a plan or ignore is set
         if (!(await fetchUpgrade())) {
             return;
         }
@@ -217,7 +245,7 @@ const promptNewVersion = async () => {
     }
 };
 
-// silent re-check keeps the red dot honest after an upgrade finishes or a scheduled upgrade ran
+// silent re-check for the daily timer, and after an upgrade finishes or a scheduled upgrade ran
 const refreshUpgradeStatus = async () => {
     if (!canPlan.value) {
         return;
@@ -243,7 +271,7 @@ let statusTimer: ReturnType<typeof setInterval> | undefined;
 onMounted(async () => {
     await search();
     promptNewVersion();
-    statusTimer = setInterval(refreshUpgradeStatus, 5 * 60 * 1000);
+    statusTimer = setInterval(refreshUpgradeStatus, CHECK_INTERVAL);
 });
 
 onBeforeUnmount(() => {

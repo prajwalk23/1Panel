@@ -532,7 +532,6 @@ import {
     getSettingBaseInfo,
     getAgentSettingInfo,
     listAllSimpleNodes,
-    loadUpgradeInfo,
     getMemo,
     updateMemo,
     updateSetting,
@@ -557,11 +556,9 @@ const {
     defaultIO,
     isAdmin,
     isOnRestart,
-    hasNewVersion,
     isAdminOrNodeAdmin,
     isXpackOrEE,
     isProductPro,
-    isEnterprise,
     currentNode,
 } = useGlobalStore();
 
@@ -1252,18 +1249,6 @@ const hideEntrance = () => {
     showEntranceWarn.value = false;
 };
 
-const loadUpgradeStatus = async () => {
-    if (!isAdmin.value || isEnterprise.value) {
-        return;
-    }
-    const res = await loadUpgradeInfo();
-    if (res && (res.data.testVersion || res.data.newVersion || res.data.latestVersion)) {
-        hasNewVersion.value = true;
-    } else {
-        hasNewVersion.value = false;
-    }
-};
-
 const loadSettingInfo = async () => {
     const safeCache = getDashboardCache('safeStatus');
     const memoCache = getDashboardCache('memoCarouselSetting');
@@ -1347,9 +1332,6 @@ const fetchData = async () => {
     onLoadAgentSettingInfo();
     onLoadBaseInfo(true, 'all');
     scheduleDeferredFetch();
-    setTimeout(() => {
-        loadUpgradeStatus();
-    }, 2000);
 };
 
 onBeforeRouteUpdate((to, from, next) => {
