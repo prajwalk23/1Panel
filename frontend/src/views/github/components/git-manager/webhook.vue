@@ -6,7 +6,6 @@
             <div class="flex gap-2">
                 <el-select v-model="selected" class="flex-1" :disabled="saving" @change="onSelect">
                     <el-option :value="0" :label="$t('github.noneDoNotDeploy')" />
-                    <el-option v-if="scripts.length === 0" :value="-1" :label="$t('github.pullOnly')" />
                     <el-option v-for="item in scripts" :key="item.id" :value="item.id" :label="item.name" />
                 </el-select>
                 <el-button @click="emit('goto', 'script')">{{ $t('github.createScript') }}</el-button>
@@ -94,7 +93,7 @@ const loading = ref(false);
 const saving = ref(false);
 const info = ref<Github.WebhookInfo>();
 const scripts = ref<Github.ScriptInfo[]>([]);
-const selected = ref(0);
+const selected = ref<number | undefined>(0);
 const last = ref<Github.LogInfo>();
 
 const url = computed(() => webhookDisplayURL(info.value));
@@ -111,9 +110,10 @@ const load = async () => {
         if (!webhook.data.enabled) {
             selected.value = 0;
         } else {
+            // A webhook that is on without a script shows the empty placeholder.
             selected.value = scripts.value.some((item) => item.id === webhook.data.scriptID)
                 ? webhook.data.scriptID
-                : -1;
+                : undefined;
         }
     } finally {
         loading.value = false;
@@ -128,7 +128,7 @@ const loadLast = async () => {
 const onSelect = async (value: number) => {
     saving.value = true;
     try {
-        await configureGithubWebhook({ id: props.projectId, enabled: value !== 0, scriptID: value > 0 ? value : 0 });
+        await configureGithubWebhook({ id: props.projectId, enabled: value !== 0, scriptID: value });
         MsgSuccess(i18n.global.t('commons.msg.operationSuccess'));
         await load();
     } catch {

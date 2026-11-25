@@ -284,7 +284,6 @@ export default {
     webhookBoundDomain: 'Bound domain in use',
     webhookNoDomain: 'No domain is bound, the address you open the panel with is used',
     boundRestartHelper: 'After a server restart, the webhook script runs once for every project whose webhook is on.',
-    pullOnly: 'Pull only, no script',
     createSucceeded: 'Project created',
     linkedProjectMissing: 'No Git project was found for this item.',
 
