@@ -14,6 +14,7 @@
             <el-icon v-if="subItem.meta?.icon">
                 <SvgIcon :iconName="subItem.meta?.icon as string" />
             </el-icon>
+            <MenuLink :path="subItem.children[0].path" :title="$t(subItem.meta?.title as string, 2)" />
             <template #title>
                 <span>{{ $t(subItem.meta?.title as string, 2) }}</span>
             </template>
@@ -23,6 +24,7 @@
             <el-icon v-if="subItem.meta?.icon && level === 0">
                 <SvgIcon :iconName="subItem.meta?.icon as string" />
             </el-icon>
+            <MenuLink :path="subItem.path" :title="$t(subItem.meta?.title as string, 2)" />
             <template #title>
                 <span v-if="subItem.meta?.icon && level === 0">{{ $t(subItem.meta?.title as string, 2) }}</span>
                 <span v-else style="margin-left: 10px">{{ $t(subItem.meta?.title as string, 2) }}</span>
@@ -34,6 +36,7 @@
 <script setup lang="ts">
 import { RouteRecordRaw } from 'vue-router';
 import SvgIcon from '@/components/svg-icon/svg-icon.vue';
+import MenuLink from './MenuLink.vue';
 
 defineProps<{ menuList: RouteRecordRaw[]; level?: number }>();
 </script>
