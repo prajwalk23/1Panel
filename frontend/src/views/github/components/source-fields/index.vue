@@ -1,13 +1,4 @@
 <template>
-    <el-form-item :label="$t('github.repoURL')" :error="errors.url">
-        <el-input
-            v-model.trim="source.cloneURL"
-            :placeholder="$t('github.repoURLPlaceholder')"
-            @change="repo.onUrlChange()"
-        />
-        <span class="input-help">{{ $t('github.repoURLExample') }}</span>
-    </el-form-item>
-
     <el-form-item :label="$t('github.authentication')">
         <el-radio-group v-model="source.authMode" @change="repo.onAuthChange()">
             <el-radio-button value="public">{{ $t('github.authPublic') }}</el-radio-button>
@@ -21,7 +12,7 @@
             <el-input
                 v-model.trim="source.tokenUser"
                 :placeholder="$t('github.tokenUserPlaceholder')"
-                @change="repo.resetCheck()"
+                @change="repo.autoCheck()"
             />
         </el-form-item>
         <el-form-item :label="$t('github.tokenValue')" :error="errors.token">
@@ -31,7 +22,7 @@
                 show-password
                 autocomplete="new-password"
                 :placeholder="tokenStored ? $t('github.tokenKept') : ''"
-                @change="repo.resetCheck()"
+                @change="repo.autoCheck()"
             />
             <span class="input-help">{{ $t('github.tokenHelper') }}</span>
         </el-form-item>
@@ -39,7 +30,7 @@
 
     <el-form-item v-if="source.authMode === 'ssh'" :label="$t('github.sshKey')" :error="errors.key">
         <div class="flex w-full gap-2">
-            <el-select v-model="source.keyID" class="flex-1" @change="repo.resetCheck()">
+            <el-select v-model="source.keyID" class="flex-1" @change="repo.autoCheck()">
                 <el-option v-if="repo.keys.value.length === 0" :value="0" :label="$t('github.sshKeyShared')" />
                 <el-option v-for="item in repo.keys.value" :key="item.id" :value="item.id" :label="item.name" />
             </el-select>
@@ -73,6 +64,15 @@
         <span class="input-help">{{ $t('github.sshKeyHelper') }}</span>
     </el-form-item>
 
+    <el-form-item :label="$t('github.repoURL')" :error="errors.url">
+        <el-input
+            v-model.trim="source.cloneURL"
+            :placeholder="$t('github.repoURLPlaceholder')"
+            @change="(repo.onUrlChange(), repo.autoCheck())"
+        />
+        <span class="input-help">{{ $t('github.repoURLExample') }}</span>
+    </el-form-item>
+
     <el-form-item :label="$t('github.branchOrTag')" :error="errors.branch">
         <div class="flex w-full gap-2">
             <el-select
@@ -97,7 +97,7 @@
             v-if="repo.checkResult.value"
             :type="repo.checkResult.value.ok ? 'success' : 'error'"
             :closable="false"
-            class="mt-2"
+            class="!mt-2"
         >
             <template #title>
                 <span v-if="repo.checkResult.value.ok">

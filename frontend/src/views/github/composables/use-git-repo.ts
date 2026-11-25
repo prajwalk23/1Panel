@@ -106,18 +106,27 @@ export const useGitRepo = (source: Github.Source, options: GitRepoOptions = {}) 
         }
     };
 
+    // Number of the newest check: an answer to an older one is dropped.
+    let latestCheck = 0;
     const resetCheck = () => {
+        latestCheck++;
+        checking.value = false;
         checkResult.value = undefined;
     };
+    // Fetches the branches without a click, once the form holds enough to reach the repository.
+    const autoCheck = () => {
+        resetCheck();
+        check(true).catch(() => {});
+    };
     const onUrlChange = () => {
-        checkResult.value = undefined;
+        resetCheck();
         branches.value = [];
     };
     const onAuthChange = () => {
-        checkResult.value = undefined;
         if (source.authMode === 'ssh' && !source.keyID && keys.value.length > 0) {
             source.keyID = keys.value[0].id;
         }
+        autoCheck();
     };
 
     // Reaches the repository with the chosen credentials and fills the branch list.
@@ -128,6 +137,7 @@ export const useGitRepo = (source: Github.Source, options: GitRepoOptions = {}) 
             if (!quiet) MsgError(message || i18n.global.t('github.repoHelper'));
             return false;
         }
+        const request = ++latestCheck;
         checking.value = true;
         try {
             const res = await checkGithubRepo({
@@ -138,6 +148,7 @@ export const useGitRepo = (source: Github.Source, options: GitRepoOptions = {}) 
                 token: source.token,
                 projectID: options.projectID?.value,
             });
+            if (request !== latestCheck) return false;
             checkResult.value = res.data;
             branches.value = res.data.branches || [];
             if (res.data.ok && (!source.branch || (!options.keepBranch && !branches.value.includes(source.branch)))) {
@@ -145,7 +156,7 @@ export const useGitRepo = (source: Github.Source, options: GitRepoOptions = {}) 
             }
             return res.data.ok;
         } finally {
-            checking.value = false;
+            if (request === latestCheck) checking.value = false;
         }
     };
 
@@ -172,7 +183,8 @@ export const useGitRepo = (source: Github.Source, options: GitRepoOptions = {}) 
             const res = await createGithubKey(name, 'shared');
             await loadKeys();
             source.keyID = res.data.id;
-            checkResult.value = undefined;
+            // No auto check: the new key still has to be added to the repository.
+            resetCheck();
             MsgSuccess(i18n.global.t('github.keyCreated'));
         } finally {
             creatingKey.value = false;
@@ -189,7 +201,7 @@ export const useGitRepo = (source: Github.Source, options: GitRepoOptions = {}) 
         branchOptions,
         githubRepoName,
         loadKeys,
-        resetCheck,
+        autoCheck,
         onUrlChange,
         onAuthChange,
         check,
