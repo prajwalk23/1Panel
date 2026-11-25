@@ -35,7 +35,7 @@
                     <el-input type="number" v-model.number="create.domains[index].port"></el-input>
                 </el-form-item>
             </el-col>
-            <el-col class="domain-create-field domain-create-ssl" :span="2" :xs="6">
+            <el-col v-if="!hideSsl" class="domain-create-field domain-create-ssl" :span="2" :xs="6">
                 <el-form-item :label="index == 0 ? 'SSL' : ''" :prop="`domains.${index}.ssl`">
                     <el-checkbox
                         class="domain-create-ssl-control"
@@ -96,6 +96,10 @@ const props = defineProps({
         default: function () {
             return {};
         },
+    },
+    hideSsl: {
+        type: Boolean,
+        default: false,
     },
 });
 

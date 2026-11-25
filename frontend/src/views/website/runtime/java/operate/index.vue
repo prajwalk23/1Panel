@@ -37,6 +37,7 @@
             <el-form-item :label="$t('website.remark')" prop="remark">
                 <el-input type="textarea" :rows="1" clearable v-model="runtime.remark" />
             </el-form-item>
+            <CreateWebsite v-if="mode === 'create'" v-model="runtime" />
             <NodeConfig v-model="runtime" />
         </el-form>
         <template #footer>
@@ -57,6 +58,8 @@ import GitSource from '@/views/github/components/git-source/index.vue';
 import { Github } from '@/api/interface/github';
 import { buildCloneURL, emptySource } from '@/views/github/composables/use-git-repo';
 import NodeConfig from '../../components/node-config.vue';
+import CreateWebsite from '../../components/create-website.vue';
+import { checkRuntimeWebsite, createWebsiteForRuntime, initRuntimeWebsite } from '../../common/utils';
 
 import { App } from '@/api/interface/app';
 import { Runtime } from '@/api/interface/runtime';
@@ -100,6 +103,7 @@ const initData = (type: string) => ({
     volumes: [],
     remark: '',
     gitMode: 'none',
+    ...initRuntimeWebsite(),
 });
 let runtime = reactive<Runtime.RuntimeCreate>(initData('java'));
 const rules = ref<any>({
@@ -185,11 +189,13 @@ const submit = async (formEl: FormInstance | undefined) => {
             } else {
                 runtime.gitMode = 'none';
             }
+            if (!checkRuntimeWebsite(runtime)) return;
             loading.value = true;
             const taskID = newUUID();
             runtime.taskID = taskID;
             CreateRuntime(runtime)
-                .then(() => {
+                .then(async (res) => {
+                    await createWebsiteForRuntime(runtime, res.data);
                     MsgSuccess(i18n.global.t('commons.msg.createSuccess'));
                     handleClose();
                     em('submit', taskID);

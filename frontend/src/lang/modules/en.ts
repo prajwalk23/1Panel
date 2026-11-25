@@ -4987,6 +4987,12 @@ const message = {
         volcengine: 'Volcengine',
         runtimePortHelper: 'The current runtime environment has multiple ports. Select a proxy port.',
         runtimePortWarn: 'The current runtime environment has no ports, unable to proxy',
+        createWebsiteTitle: 'Create Website',
+        createWebsiteWith: 'Create a website for this runtime',
+        createWebsiteHelper: 'A website is created automatically and proxies to the runtime port',
+        createWebsiteNoPort: 'Add an exposed port in the Port tab first, the website proxies to it',
+        createWebsiteProxyPort: 'Proxy port',
+        createWebsiteFailed: 'Runtime created, but creating the website failed. Create it from the Websites page.',
         cacheWarn: 'Please turn off the cache switch in the reverse proxy first',
         loadBalanceHelper:
             'After creating the load balancing, go to "Reverse Proxy", add a proxy and set the backend address to: http://<load balancing name>',

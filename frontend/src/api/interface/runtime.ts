@@ -91,6 +91,12 @@ export namespace Runtime {
         gitAuthMode?: string;
         gitTokenUser?: string;
         gitToken?: string;
+        // fork: create a website together with the runtime (frontend only, chained after create)
+        createWebsite?: boolean;
+        domains?: any[];
+        alias?: string;
+        webSiteGroupId?: number;
+        websitePort?: number;
     }
 
     export interface ExposedPort {
