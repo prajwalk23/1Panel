@@ -138,6 +138,13 @@ func (u *UpgradeService) SearchUpgrade() (*dto.UpgradeInfo, error) {
 }
 
 func (u *UpgradeService) LoadNotes(req dto.Upgrade) (string, error) {
+	if global.IsForkBuild() { // fork: release notes come from the fork's GitHub release body
+		release, err := loadForkRelease(strings.TrimSpace(req.Version))
+		if err != nil {
+			return "", err
+		}
+		return release.Body, nil
+	}
 	mode := global.CONF.Base.Mode
 	if strings.Contains(req.Version, "beta") {
 		mode = "beta"
