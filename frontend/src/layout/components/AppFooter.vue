@@ -8,8 +8,11 @@
                 <a v-else href="https://1panel.pro/" target="_blank">
                     Copyright © {{ year }} {{ $t('commons.lingxia') }}
                 </a>
+                <span>·</span>
+                <a href="https://github.com/prajwalk23/1Panel" target="_blank" rel="noopener noreferrer">
+                    Fork by Prajwal
+                </a>
             </div>
-            <FooterNavigation class="footer-navigation-panel" />
             <SystemUpgrade class="footer-upgrade" />
         </div>
     </div>
@@ -17,7 +20,6 @@
 
 <script setup lang="ts">
 import SystemUpgrade from '@/components/system-upgrade/index.vue';
-import FooterNavigation from '@/components/footer-navigation/index.vue';
 import { useGlobalStore } from '@/composables/useGlobalStore';
 
 const { isIntl, isMobile } = useGlobalStore();
@@ -67,11 +69,7 @@ const year = new Date().getFullYear();
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-}
-
-.footer-navigation-panel {
-    order: -1;
-    flex-basis: 100%;
+    column-gap: 6px;
 }
 
 .footer-upgrade {
@@ -93,9 +91,7 @@ const year = new Date().getFullYear();
         justify-content: flex-start;
     }
 
-    .footer-navigation-panel {
-        order: 0;
-        flex-basis: auto;
+    .footer-upgrade {
         margin-left: auto;
     }
 }
