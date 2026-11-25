@@ -521,6 +521,27 @@ func (b *BaseApi) ListGithubScripts(c *gin.Context) {
 }
 
 // @Tags GitHub
+// @Summary Load the commands a new deploy script starts from
+// @Accept json
+// @Param request body dto.GithubScriptList true "request"
+// @Success 200 {string} content
+// @Security ApiKeyAuth
+// @Security Timestamp
+// @Router /github/scripts/default [post]
+func (b *BaseApi) LoadGithubDefaultScript(c *gin.Context) {
+	var req dto.GithubScriptList
+	if err := helper.CheckBindAndValidate(&req, c); err != nil {
+		return
+	}
+	data, err := githubService.DefaultScript(req)
+	if err != nil {
+		helper.InternalServer(c, err)
+		return
+	}
+	helper.SuccessWithData(c, data)
+}
+
+// @Tags GitHub
 // @Summary Create deploy script
 // @Accept json
 // @Param request body dto.GithubScriptOperate true "request"

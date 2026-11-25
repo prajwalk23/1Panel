@@ -28,6 +28,7 @@ func (s *GithubRouter) InitRouter(Router *gin.RouterGroup) {
 		githubRouter.POST("/projects/webhook/config", baseApi.ConfigureGithubWebhook)
 
 		githubRouter.POST("/scripts/list", baseApi.ListGithubScripts)
+		githubRouter.POST("/scripts/default", baseApi.LoadGithubDefaultScript)
 		githubRouter.POST("/scripts", baseApi.CreateGithubScript)
 		githubRouter.POST("/scripts/update", baseApi.UpdateGithubScript)
 		githubRouter.POST("/scripts/del", baseApi.DeleteGithubScript)

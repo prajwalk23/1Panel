@@ -12,8 +12,7 @@ export default {
     projectPath: 'Project folder',
     projectPathHelper: 'The repository is cloned here when the folder is empty or missing.',
     deployCommand: 'Deploy command',
-    deployCommandHelper:
-        'Runs in the project folder after every pull. Available variables: $DEPLOY_COMMIT, $DEPLOY_BRANCH, $DEPLOY_TRIGGER, $DEPLOY_PATH, $DEPLOY_REPO. Leave empty to only pull.',
+    deployCommandHelper: 'Runs in the project folder after every pull. Leave empty to only pull.',
     updateStrategy: 'Update mode',
     ffOnly: 'Fast-forward only',
     ffOnlyHelper: 'Safe: fails if the folder has local commits.',
@@ -36,8 +35,8 @@ export default {
     scriptContent: 'Script',
     scriptRunAs: 'Run as user',
     scriptRunAsHelper:
-        'Root by default. Pick another system user to run the script as. The project folder is handed to that user before the script runs.',
-    rootUser: 'root (default)',
+        'The system user the script runs as. For a user other than root, the project folder is handed to that user before the script runs.',
+    rootUser: 'root',
     defaultScript: 'Default',
     linkedScript: 'Webhook',
     deleteScriptHelper: 'Delete script {0}?',

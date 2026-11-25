@@ -48,6 +48,9 @@ export const loadGithubWebhook = (id: number) => {
 export const listGithubScripts = (projectID: number) => {
     return http.post<Array<Github.ScriptInfo>>(`/github/scripts/list`, { projectID: projectID });
 };
+export const loadGithubDefaultScript = (projectID: number) => {
+    return http.post<string>(`/github/scripts/default`, { projectID: projectID });
+};
 export const createGithubScript = (params: Github.ScriptOperate) => {
     return http.post<Github.ScriptInfo>(`/github/scripts`, params);
 };

@@ -5,8 +5,11 @@ package service
 
 import (
 	"bufio"
+	"context"
 	"os"
 	"os/user"
+	"path"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -19,10 +22,7 @@ import (
 	githubutil "github.com/1Panel-dev/1Panel/agent/utils/github"
 )
 
-const (
-	githubDefaultScriptName     = "default"
-	githubDefaultScriptTemplate = "# Runs in the project folder after every pull.\n# Variables: $DEPLOY_COMMIT $DEPLOY_BRANCH $DEPLOY_TRIGGER $DEPLOY_PATH $DEPLOY_REPO $DEPLOY_SCRIPT\n"
-)
+const githubDefaultScriptName = "default"
 
 // githubScriptHasCommands is false for scripts that only hold comments and blank lines.
 func githubScriptHasCommands(content string) bool {
@@ -64,6 +64,52 @@ func githubResolveScript(project *model.GithubProject, scriptID uint) (model.Git
 		return scripts[0], nil
 	}
 	return model.GithubScript{}, nil
+}
+
+var githubPlainShellArg = regexp.MustCompile(`^[A-Za-z0-9_@%+=:,./-]+$`)
+
+// githubShellArg quotes a value only when the shell would not read it as one word.
+func githubShellArg(value string) string {
+	if githubPlainShellArg.MatchString(value) {
+		return value
+	}
+	return "'" + strings.ReplaceAll(value, "'", `'\''`) + "'"
+}
+
+// githubRestartCommand restarts the containers of a project: the runtime container of a
+// linked runtime or website, else the compose project of the folder. Empty when neither exists.
+func githubRestartCommand(project model.GithubProject) string {
+	runtimeID := project.RuntimeID
+	if runtimeID == 0 && project.WebsiteID != 0 {
+		if website, err := websiteRepo.GetFirst(repo.WithByID(project.WebsiteID)); err == nil {
+			runtimeID = website.RuntimeID
+		}
+	}
+	if runtimeID != 0 {
+		runtime, err := runtimeRepo.GetFirst(context.Background(), repo.WithByID(runtimeID))
+		if err == nil && runtime.ContainerName != "" {
+			return "docker restart " + githubShellArg(runtime.ContainerName)
+		}
+	}
+	for _, name := range []string{"docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml"} {
+		if _, err := os.Stat(path.Join(project.ProjectPath, name)); err == nil {
+			return "docker compose restart"
+		}
+	}
+	return ""
+}
+
+// DefaultScript returns the commands a new script starts from, filled in for the project.
+func (g *GithubService) DefaultScript(req dto.GithubScriptList) (string, error) {
+	project, err := githubRepo.GetProject(repo.WithByID(req.ProjectID))
+	if err != nil {
+		return "", buserr.New("ErrRecordNotFound")
+	}
+	lines := []string{"cd " + githubShellArg(project.ProjectPath), "git pull origin " + githubShellArg(project.Branch)}
+	if restart := githubRestartCommand(project); restart != "" {
+		lines = append(lines, restart)
+	}
+	return strings.Join(lines, "\n") + "\n", nil
 }
 
 func githubScriptInfo(script model.GithubScript, linkedID uint) dto.GithubScriptInfo {
@@ -130,14 +176,10 @@ func (g *GithubService) CreateScript(req dto.GithubScriptOperate) (*dto.GithubSc
 		return nil, buserr.New("ErrGithubNameExist")
 	}
 	scripts, _ := githubRepo.ListScripts(githubRepo.WithByProjectID(project.ID))
-	content := strings.ReplaceAll(req.Content, "\r\n", "\n")
-	if strings.TrimSpace(content) == "" {
-		content = githubDefaultScriptTemplate
-	}
 	script := model.GithubScript{
 		ProjectID: project.ID,
 		Name:      name,
-		Content:   content,
+		Content:   strings.ReplaceAll(req.Content, "\r\n", "\n"),
 		RunAsUser: runAs,
 		IsDefault: len(scripts) == 0,
 	}

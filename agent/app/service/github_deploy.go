@@ -202,7 +202,7 @@ func runGithubDeploy(ctx context.Context, projectID uint, req githubDeployReq) {
 	}
 	if githubScriptHasCommands(script.Content) {
 		deployTask.AddSubTaskWithAliasAndOps("GithubStepDeploy", func(t *task.Task) error {
-			return githubRunScript(ctx, t, project, script, setting, req, headCommit, timeout)
+			return githubRunScript(ctx, t, project, script, setting, req, env, headCommit, timeout)
 		}, nil, 0, timeout+time.Minute)
 	}
 
@@ -335,7 +335,7 @@ func githubChownTree(ctx context.Context, t *task.Task, userName, dir string) er
 	return cmd.NewCommandMgr(cmd.WithTask(*t), cmd.WithContext(ctx), cmd.WithTimeout(5*time.Minute)).Run("chown", "-R", owner, dir)
 }
 
-func githubRunScript(ctx context.Context, t *task.Task, project model.GithubProject, script model.GithubScript, setting dto.GithubSetting, req githubDeployReq, headCommit string, timeout time.Duration) error {
+func githubRunScript(ctx context.Context, t *task.Task, project model.GithubProject, script model.GithubScript, setting dto.GithubSetting, req githubDeployReq, gitEnv []string, headCommit string, timeout time.Duration) error {
 	shell := setting.DefaultShell
 	if !cmd.Which(shell) {
 		shell = "sh"
@@ -362,6 +362,9 @@ func githubRunScript(ctx context.Context, t *task.Task, project model.GithubProj
 			return err
 		}
 		name, args = "runuser", append([]string{"-u", script.RunAsUser, "--", shell}, args...)
+	} else {
+		// Root scripts get the git credentials of the project, so `git pull` works on private repositories.
+		env = append(env, gitEnv...)
 	}
 	t.Logf("%s: %s, %s (%s)", i18n.GetMsgByKey("GithubStepDeploy"), script.Name, shell, project.ProjectPath)
 	mgr := cmd.NewCommandMgr(cmd.WithTask(*t), cmd.WithContext(ctx), cmd.WithTimeout(timeout), cmd.WithWorkDir(project.ProjectPath), cmd.WithEnv(env...))

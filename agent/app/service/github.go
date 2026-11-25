@@ -54,6 +54,7 @@ type IGithubService interface {
 	Cancel(id uint) error
 
 	ListScripts(req dto.GithubScriptList) ([]dto.GithubScriptInfo, error)
+	DefaultScript(req dto.GithubScriptList) (string, error)
 	CreateScript(req dto.GithubScriptOperate) (*dto.GithubScriptInfo, error)
 	UpdateScript(req dto.GithubScriptOperate) error
 	DeleteScript(id uint) error

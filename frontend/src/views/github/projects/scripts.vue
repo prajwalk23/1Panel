@@ -55,7 +55,7 @@
                 <el-col :span="12">
                     <el-form-item :label="$t('github.scriptRunAs')" prop="runAsUser">
                         <el-select v-model="form.runAsUser" class="w-full">
-                            <el-option value="" :label="$t('github.rootUser')" />
+                            <el-option value="root" :label="$t('github.rootUser')" />
                             <el-option v-for="item in users" :key="item" :value="item" :label="item" />
                         </el-select>
                     </el-form-item>
@@ -87,6 +87,7 @@ import {
     deleteGithubScript,
     listGithubScripts,
     listGithubSystemUsers,
+    loadGithubDefaultScript,
     updateGithubScript,
 } from '@/api/modules/github';
 
@@ -108,11 +109,8 @@ const emptyForm = (): Github.ScriptOperate => ({ id: 0, projectID: 0, name: '', 
 const form = reactive<Github.ScriptOperate>(emptyForm());
 const rules = reactive({
     name: [Rules.requiredInput],
+    runAsUser: [Rules.requiredSelect],
 });
-
-// Same template the backend uses when a script is created without content.
-const defaultScriptTemplate =
-    '# Runs in the project folder after every pull.\n# Variables: $DEPLOY_COMMIT $DEPLOY_BRANCH $DEPLOY_TRIGGER $DEPLOY_PATH $DEPLOY_REPO $DEPLOY_SCRIPT\n';
 
 const load = async () => {
     loading.value = true;
@@ -137,17 +135,16 @@ const acceptParams = (id: number, name: string) => {
         .catch(() => {});
 };
 
-const onOpenForm = (row?: Github.ScriptInfo) => {
+const onOpenForm = async (row?: Github.ScriptInfo) => {
     Object.assign(form, emptyForm(), { projectID: projectID.value });
     if (row) {
-        Object.assign(form, { id: row.id, name: row.name, content: row.content, runAsUser: row.runAsUser });
+        Object.assign(form, { id: row.id, name: row.name, content: row.content, runAsUser: row.runAsUser || 'root' });
     } else {
-        // A new script starts from the default template so it can be edited and saved.
-        form.content = defaultScriptTemplate;
-        if (scripts.value.length === 0) {
-            form.name = 'default';
-        }
+        // The backend fills in the folder and container of the project.
+        const res = await loadGithubDefaultScript(projectID.value).catch(() => undefined);
+        form.content = res?.data || '';
     }
+    formRef.value?.clearValidate();
     formVisible.value = true;
 };
 
