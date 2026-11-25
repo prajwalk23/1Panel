@@ -67,7 +67,7 @@ const addPort = () => {
     props.exposedPorts.push({
         hostPort: undefined,
         containerPort: undefined,
-        hostIP: '',
+        hostIP: '127.0.0.1',
         protocol: 'tcp',
     });
 };
