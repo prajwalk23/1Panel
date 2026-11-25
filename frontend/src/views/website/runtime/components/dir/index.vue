@@ -110,6 +110,19 @@ watch(
     { deep: true },
 );
 
+// default code dir /opt/projects/{name}; follows the name until the user edits it
+let autoDir = '';
+watch(
+    () => runtime.value.name,
+    (newVal) => {
+        if (props.mode != 'create') return;
+        const cur = runtime.value.codeDir;
+        if (cur && cur !== '/' && cur !== autoDir) return;
+        autoDir = newVal ? `/opt/projects/${newVal}` : '';
+        runtime.value.codeDir = autoDir || '/';
+    },
+);
+
 const changeDir = () => {
     if (props.appKey == 'node') {
         getScripts();
