@@ -77,5 +77,6 @@ func coreMigrations() []*gormigrate.Migration {
 		migrations.MoveOpsReportMenuToAgent,
 		migrations.AddGithubMenu,     // fork: keep last
 		migrations.StripVMAndAIMenus, // fork: keep last
+		migrations.AddDnsRecordMenu,  // fork: keep last
 	}
 }
