@@ -130,46 +130,6 @@ jobs:
           (cd agent && go vet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...)
           (cd core && go vet ./utils/github/... ./app/... ./router/... ./global/... ./init/migration/... ./i18n/...)
 
-      - name: Cache security tools
-        # Compiling govulncheck and gosec takes about a minute; the binaries only change when the pinned versions change.
-        id: sectools
-        uses: actions/cache@v4
-        with:
-          path: ~/sectools/bin
-          key: sectools-${{ runner.os }}-govulncheck-v1.10.0-gosec-v2.30.0
-
-      - name: Install security tools
-        if: steps.sectools.outputs.cache-hit != 'true'
-        continue-on-error: true
-        run: |
-          set -euo pipefail
-          export GOBIN="${HOME}/sectools/bin"
-          go install golang.org/x/vuln/cmd/govulncheck@v1.10.0
-          go install github.com/securego/gosec/v2/cmd/gosec@v2.30.0
-
-      - name: Security scan (govulncheck, gosec)
-        # Report only for now: findings show in the log but do not stop the release.
-        # Remove continue-on-error once the baseline is clean.
-        continue-on-error: true
-        run: |
-          set -uo pipefail
-          export PATH="${HOME}/sectools/bin:${PATH}"
-          rc=0
-          echo "::group::govulncheck agent"
-          (cd agent && govulncheck ./...) || rc=1
-          echo "::endgroup::"
-          echo "::group::govulncheck core"
-          (cd core && govulncheck ./...) || rc=1
-          echo "::endgroup::"
-          echo "::group::gosec agent (fork packages)"
-          (cd agent && gosec -quiet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...) || rc=1
-          echo "::endgroup::"
-          echo "::group::gosec core (fork packages)"
-          (cd core && gosec -quiet ./utils/github/... ./app/... ./router/... ./global/... ./init/migration/... ./i18n/...) || rc=1
-          echo "::endgroup::"
-          if [ "${rc}" != "0" ]; then echo "::warning::Security scan reported findings, see the log."; fi
-          exit "${rc}"
-
       - name: Build binaries
         run: |
           set -euo pipefail

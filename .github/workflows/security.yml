@@ -1,0 +1,96 @@
+# fork: security scan, kept apart from release.yml so findings never block a release.
+# A govulncheck finding turns this run red, and GitHub sends the failed run notification.
+name: Security
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Daily, to catch advisories published while nothing is pushed.
+    - cron: '17 3 * * *'
+  # Once after every release build.
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.event.workflow_run.head_sha || github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  scan:
+    name: Scan
+    if: >-
+      github.repository != '1Panel-dev/1Panel' &&
+      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # After a release, scan the commit that was built.
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: agent/go.mod
+          cache-dependency-path: |
+            agent/go.sum
+            core/go.sum
+
+      - name: Stub embedded frontend files
+        # core embeds the built frontend; the scanners only need the files to exist, so the frontend is not built here.
+        run: |
+          mkdir -p core/cmd/server/web/assets
+          touch core/cmd/server/web/assets/.keep core/cmd/server/web/index.html
+
+      - name: Cache security tools
+        # Compiling govulncheck and gosec takes about a minute; the binaries only change when the pinned versions change.
+        id: sectools
+        uses: actions/cache@v4
+        with:
+          path: ~/sectools/bin
+          key: sectools-${{ runner.os }}-govulncheck-v1.10.0-gosec-v2.30.0
+
+      - name: Install security tools
+        if: steps.sectools.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          export GOBIN="${HOME}/sectools/bin"
+          go install golang.org/x/vuln/cmd/govulncheck@v1.10.0
+          go install github.com/securego/gosec/v2/cmd/gosec@v2.30.0
+
+      - name: Vulnerability scan (govulncheck)
+        run: |
+          set -uo pipefail
+          export PATH="${HOME}/sectools/bin:${PATH}"
+          rc=0
+          echo "::group::govulncheck agent"
+          (cd agent && govulncheck ./...) || rc=1
+          echo "::endgroup::"
+          echo "::group::govulncheck core"
+          (cd core && govulncheck ./...) || rc=1
+          echo "::endgroup::"
+          if [ "${rc}" != "0" ]; then echo "::error::govulncheck reported vulnerabilities, see the log."; fi
+          exit "${rc}"
+
+      - name: Code scan (gosec)
+        # Report only: the existing findings are not triaged yet.
+        # Remove continue-on-error once the baseline is clean.
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+          export PATH="${HOME}/sectools/bin:${PATH}"
+          rc=0
+          echo "::group::gosec agent (fork packages)"
+          (cd agent && gosec -quiet ./utils/github/... ./app/api/v2/... ./router/... ./init/migration/... ./i18n/...) || rc=1
+          echo "::endgroup::"
+          echo "::group::gosec core (fork packages)"
+          (cd core && gosec -quiet ./utils/github/... ./app/... ./router/... ./global/... ./init/migration/... ./i18n/...) || rc=1
+          echo "::endgroup::"
+          if [ "${rc}" != "0" ]; then echo "::warning::gosec reported findings, see the log."; fi
+          exit "${rc}"
