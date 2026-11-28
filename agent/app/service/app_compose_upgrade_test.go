@@ -83,6 +83,10 @@ func TestUpgradeComposeLoadsOnlyEffectiveTarget(t *testing.T) {
 	if err := db.Model(&details[0]).UpdateColumn("docker_compose", "invalid: [").Error; err != nil {
 		t.Fatal(err)
 	}
+	// The installed version's template is cached, it is the base for keeping customized settings.
+	if err := db.Model(&details[1]).UpdateColumn("docker_compose", composeUpgradeCurrent).Error; err != nil {
+		t.Fatal(err)
+	}
 	service := NewIAppInstalledService()
 	noCompose := false
 	versions, err := service.GetUpdateVersions(request.AppUpdateVersion{AppInstallID: install.ID, LoadCompose: &noCompose})

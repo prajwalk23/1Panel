@@ -901,6 +901,11 @@ func (a *AppInstallService) GetUpdateVersions(req request.AppUpdateVersion) ([]d
 		if err != nil {
 			return versions, err
 		}
+		if merged, mergeErr := preserveComposeCustomizations(install, content); mergeErr != nil {
+			global.LOG.Warnf("keep customized docker-compose.yml settings of %s failed: %v", install.Name, mergeErr)
+		} else {
+			content = merged
+		}
 		versions[target].DockerCompose = content
 		break
 	}

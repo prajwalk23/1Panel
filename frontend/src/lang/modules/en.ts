@@ -2575,9 +2575,9 @@ const message = {
         commandHelper: 'This command will run on the server to create the container. Continue?',
         updateHelper1: 'Detected that this container comes from the app store. Please note the following two points:',
         updateHelper2:
-            '1. The current modifications will not be synchronized to the installed applications in the app store.',
+            '1. Network, mount, environment, host mapping, DNS, hostname, label and restart policy changes are saved to the application docker-compose.yml and kept on rebuild and upgrade.',
         updateHelper3:
-            '2. If you modify the application on the installed page, the currently edited content will become invalid.',
+            '2. Image, port, command, CPU and memory changes are not saved and will be lost on rebuild or upgrade. Set ports and resource limits from the installed application page.',
         updateHelper4: 'Editing the container requires rebuilding, and any non-persistent data will be lost. Continue?',
         containerList: 'Container list',
         operatorHelper: 'Run {0} on the following container. Continue?',
@@ -2657,7 +2657,7 @@ const message = {
         sizeRootFs: 'Virtual Size',
         sizeRootFsHelper: 'Total size of all image layers the container depends on + container layer',
         containerFromAppHelper:
-            'Detected that this container originates from the app store. App operations may cause current edits to be invalidated.',
+            'Detected that this container originates from the app store. App operations may undo changes to the image, ports, command, CPU and memory.',
         containerFromAppHelper1:
             'Click the [Param] button in the installed applications list to enter the editing page and modify the container name.',
         command: 'Command',

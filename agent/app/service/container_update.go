@@ -13,6 +13,7 @@ import (
 
 	"github.com/1Panel-dev/1Panel/agent/app/dto"
 	"github.com/1Panel-dev/1Panel/agent/app/task"
+	"github.com/1Panel-dev/1Panel/agent/buserr"
 	"github.com/1Panel-dev/1Panel/agent/global"
 	"github.com/1Panel-dev/1Panel/agent/i18n"
 	"github.com/1Panel-dev/1Panel/agent/utils/docker"
@@ -71,6 +72,21 @@ func (u *ContainerService) ContainerUpdate(req dto.ContainerOperate) error {
 				return err
 			}
 
+			appInstall, fromApp := findAppInstallByContainer(oldContainer)
+			var oldSettings dto.ContainerOperate
+			if fromApp {
+				if _, busy := appUpgradeLocks.LoadOrStore(appInstall.ID, struct{}{}); busy {
+					return buserr.New("TaskIsExecuting")
+				}
+				defer appUpgradeLocks.Delete(appInstall.ID)
+				// Read the original settings while the old container still exists.
+				info, err := u.ContainerInfo(dto.OperationWithName{Name: req.Name})
+				if err != nil {
+					return err
+				}
+				oldSettings = *info
+			}
+
 			cleanupErr, err := switchContainer(ctx, client, req.Name, oldContainer, func() (container.CreateResponse, error) {
 				return client.ContainerCreate(ctx, config, hostConf, networkConf, &v1.Platform{}, req.Name)
 			}, config.Tty, t)
@@ -79,6 +95,11 @@ func (u *ContainerService) ContainerUpdate(req dto.ContainerOperate) error {
 			}
 			if cleanupErr != nil {
 				taskItem.Log(i18n.GetWithNameAndErr("ContainerCleanupWarning", containerSwitchBackupName(oldContainer.ID), cleanupErr))
+			}
+			if fromApp {
+				if err := syncAppComposeFromContainer(appInstall.ID, oldContainer.Config.Labels, oldSettings, req); err != nil {
+					taskItem.Logf("WARNING: save the changes to the application docker-compose.yml failed, they will be lost on the next upgrade: %v", err)
+				}
 			}
 			return nil
 		}, nil, 0, 0)

@@ -303,6 +303,14 @@ func (u *appUpgradeContext) prepare(t *task.Task) error {
 	if strings.TrimSpace(u.candidate.DockerCompose) == "" {
 		return buserr.WithName("ErrFileNotFound", "docker-compose.yml")
 	}
+	if u.req.DockerCompose == "" && u.candidate.App.Key != vllmAppKeyForUpgrade {
+		merged, mergeErr := preserveComposeCustomizations(u.original, u.candidate.DockerCompose)
+		if mergeErr != nil {
+			t.Logf("WARNING: keep customized docker-compose.yml settings failed: %v", mergeErr)
+		} else {
+			u.candidate.DockerCompose = merged
+		}
+	}
 
 	u.envContent, err = renderUpgradeEnv(&u.candidate, u.oldEnvContent)
 	if err != nil {
