@@ -13,7 +13,6 @@ type MultiNodeProvider interface {
 	IsUseCustomApp() bool
 	GetImagePrefix() string
 	RemoveTamper(website string)
-	StartClam(startClam *model.Clam, isUpdate bool) (int, error)
 	LoadNodeInfo(isBase bool) (model.NodeInfo, error)
 
 	LoadRequestTransport() *http.Transport

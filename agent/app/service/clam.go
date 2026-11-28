@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/1Panel-dev/1Panel/agent/app/dto"
-	"github.com/1Panel-dev/1Panel/agent/app/model"
 	"github.com/1Panel-dev/1Panel/agent/app/repo"
 	"github.com/1Panel-dev/1Panel/agent/app/task"
 	"github.com/1Panel-dev/1Panel/agent/buserr"
@@ -22,7 +21,6 @@ import (
 	"github.com/1Panel-dev/1Panel/agent/utils/cmd"
 	"github.com/1Panel-dev/1Panel/agent/utils/common"
 	"github.com/1Panel-dev/1Panel/agent/utils/controller"
-	"github.com/1Panel-dev/1Panel/agent/utils/xpack"
 	"github.com/jinzhu/copier"
 	"github.com/robfig/cron/v3"
 )
@@ -179,16 +177,19 @@ func (c *ClamService) Create(req dto.ClamCreate, operator string) error {
 	if clam.InfectedStrategy == "none" || clam.InfectedStrategy == "remove" {
 		clam.InfectedDir = ""
 	}
-	if len(req.Spec) != 0 {
-		entryID, err := xpack.MultiNodeProvider.StartClam(&clam, false)
-		if err != nil {
-			return err
-		}
-		clam.EntryID = entryID
-		clam.Status = constant.StatusEnable
-	}
 	if err := clamRepo.Create(&clam); err != nil {
 		return err
+	}
+	if len(clam.Spec) != 0 {
+		// fork: register after create so the job knows the rule ID
+		entryID, err := c.addClamJob(clam.ID, clam.Spec)
+		if err != nil {
+			_ = clamRepo.Delete(repo.WithByID(clam.ID))
+			return err
+		}
+		if err := clamRepo.Update(clam.ID, map[string]interface{}{"status": constant.StatusEnable, "entry_id": entryID}); err != nil {
+			return err
+		}
 	}
 	if req.AlertCount != 0 && req.AlertTitle != "" && req.AlertMethod != "" {
 		createAlert := dto.AlertCreate{
@@ -218,26 +219,21 @@ func (c *ClamService) Update(req dto.ClamUpdate, operator string) error {
 	if req.InfectedStrategy == "none" || req.InfectedStrategy == "remove" {
 		req.InfectedDir = ""
 	}
-	var clamItem model.Clam
-	if err := copier.Copy(&clamItem, &req); err != nil {
-		return buserr.WithDetail("ErrStructTransform", err.Error(), nil)
-	}
-	clamItem.EntryID = clam.EntryID
 	upMap := map[string]interface{}{}
-	if len(clam.Spec) != 0 && clam.EntryID != 0 {
-		global.Cron.Remove(cron.EntryID(clamItem.EntryID))
-		upMap["entry_id"] = 0
-	}
 	if len(req.Spec) == 0 {
 		upMap["status"] = ""
 		upMap["entry_id"] = 0
 	}
 	if len(req.Spec) != 0 && clam.Status != constant.StatusDisable {
-		newEntryID, err := xpack.MultiNodeProvider.StartClam(&clamItem, true)
+		newEntryID, err := c.addClamJob(req.ID, req.Spec)
 		if err != nil {
 			return err
 		}
 		upMap["entry_id"] = newEntryID
+	}
+	// fork: remove the old job only once the new spec was accepted
+	if len(clam.Spec) != 0 && clam.EntryID != 0 {
+		global.Cron.Remove(cron.EntryID(clam.EntryID))
 	}
 	if len(clam.Spec) == 0 && len(req.Spec) != 0 {
 		upMap["status"] = constant.StatusEnable
@@ -277,9 +273,12 @@ func (c *ClamService) UpdateStatus(id uint, status string) error {
 		err     error
 	)
 	if status == constant.StatusEnable {
-		entryID, err = xpack.MultiNodeProvider.StartClam(&clam, true)
+		entryID, err = c.addClamJob(clam.ID, clam.Spec)
 		if err != nil {
 			return err
+		}
+		if clam.EntryID != 0 {
+			global.Cron.Remove(cron.EntryID(clam.EntryID))
 		}
 	} else {
 		global.Cron.Remove(cron.EntryID(clam.EntryID))
@@ -314,20 +313,74 @@ func (c *ClamService) Delete(req dto.ClamDelete) error {
 }
 
 func (c *ClamService) HandleOnce(id uint) error {
+	run, err := c.prepareScan(id)
+	if err != nil {
+		return err
+	}
+	go func() {
+		_ = run()
+	}()
+	return nil
+}
+
+// fork: scheduled scans
+func (c *ClamService) addClamJob(id uint, spec string) (int, error) {
+	entryID, err := global.Cron.AddFunc(spec, func() {
+		// run in the foreground so the cron chain delays overlapping scans of this rule
+		run, err := c.prepareScan(id)
+		if err == nil {
+			err = run()
+		}
+		if err != nil {
+			global.LOG.Errorf("scheduled scan of clam rule %d failed, err: %v", id, err)
+		}
+	})
+	if err != nil {
+		return 0, err
+	}
+	global.LOG.Infof("start clam cronjob entryID: %d", entryID)
+	return int(entryID), nil
+}
+
+// StartClamJobs registers the enabled scheduled scans, called on agent start.
+func StartClamJobs() {
+	clams, err := clamRepo.List(repo.WithByStatus(constant.StatusEnable))
+	if err != nil {
+		global.LOG.Errorf("load scheduled clam scans failed, err: %v", err)
+		return
+	}
+	c := &ClamService{}
+	for _, item := range clams {
+		if len(item.Spec) == 0 {
+			continue
+		}
+		entryID, err := c.addClamJob(item.ID, item.Spec)
+		if err != nil {
+			global.LOG.Errorf("start clam cronjob %s failed, err: %v", item.Name, err)
+		}
+		if err := clamRepo.Update(item.ID, map[string]interface{}{"entry_id": entryID}); err != nil {
+			global.LOG.Errorf("update clam cronjob %s failed, err: %v", item.Name, err)
+		}
+	}
+}
+
+// prepareScan creates the record and task of a scan and returns the function running it.
+func (c *ClamService) prepareScan(id uint) (func() error, error) {
 	if active := clam.CheckWithStopAll(true, clamRepo); !active {
-		return buserr.New("ErrClamdscanNotFound")
+		return nil, buserr.New("ErrClamdscanNotFound")
 	}
 	clamItem, _ := clamRepo.Get(repo.WithByID(id))
 	if clamItem.ID == 0 {
-		return buserr.New("ErrRecordNotFound")
+		return nil, buserr.New("ErrRecordNotFound")
 	}
 	record := clamRepo.StartRecords(clamItem.ID)
 	taskItem, err := task.NewTaskWithOps("clam-"+clamItem.Name, task.TaskScan, task.TaskScopeClam, record.TaskID, clamItem.ID)
 	if err != nil {
-		return fmt.Errorf("new task for exec shell failed, err: %v", err)
+		clamRepo.EndRecords(record, constant.StatusFailed, err.Error())
+		return nil, fmt.Errorf("new task for exec shell failed, err: %v", err)
 	}
 	clam.AddScanTask(taskItem, clamItem, record.StartTime.Format(constant.DateTimeSlimLayout))
-	go func() {
+	return func() error {
 		err := taskItem.Execute()
 		taskRepo := repo.NewITaskRepo()
 		taskItem, _ := taskRepo.GetFirst(taskRepo.WithByID(record.TaskID))
@@ -336,13 +389,13 @@ func (c *ClamService) HandleOnce(id uint) error {
 		}
 		if err != nil {
 			clamRepo.EndRecords(record, constant.StatusFailed, err.Error())
-			return
+			return err
 		}
 		clam.AnalysisFromLog(taskItem.LogFile, &record)
 		clamRepo.EndRecords(record, constant.StatusDone, "")
 		handleAlert(record.InfectedFiles, clamItem.Name, clamItem.ID)
-	}()
-	return nil
+		return nil
+	}, nil
 }
 
 func (c *ClamService) SearchRecords(req dto.ClamLogSearch) (int64, interface{}, error) {

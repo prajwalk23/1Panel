@@ -3295,7 +3295,6 @@ const message = {
         clam: {
             clam: 'Virus scan',
             cron: 'Scheduled scan',
-            cronHelper: 'Commercial Edition supports scheduled scans',
             specErr: 'Execution schedule format error, please check and retry!',
             disableMsg:
                 'Stopping scheduled execution will prevent this scan task from running automatically. Continue?',
@@ -3330,7 +3329,6 @@ const message = {
             clamLog: '@:toolbox.clam.clamConf logs',
             freshClam: 'FreshClam',
             freshClamLog: '@:toolbox.clam.freshClam logs',
-            alertHelper: 'Commercial Edition supports scheduled scans and SMS alerts',
             alertTitle: 'Virus scan task 「{0}」 detected infected file alert',
         },
     },

@@ -23,10 +23,6 @@ func NewIMultiNodeProvider() providers.MultiNodeProvider {
 
 func (m *multiNodeHelper) RemoveTamper(website string) {}
 
-func (m *multiNodeHelper) StartClam(startClam *model.Clam, isUpdate bool) (int, error) {
-	return 0, buserr.New("ErrXpackNotFound")
-}
-
 func (m *multiNodeHelper) LoadNodeInfo(isBase bool) (model.NodeInfo, error) {
 	var info model.NodeInfo
 	info.BaseDir = common.LoadParams("BASE_DIR")

@@ -116,6 +116,8 @@ func Run() {
 			global.LOG.Errorf("update cronjob %s %s failed, err: %v", cronJobs[i].Type, cronJobs[i].Name, err)
 		}
 	}
+	// fork: restore scheduled virus scans
+	service.StartClamJobs()
 	global.Cron.Start()
 }
 

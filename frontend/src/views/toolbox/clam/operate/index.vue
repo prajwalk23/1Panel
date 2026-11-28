@@ -56,7 +56,7 @@
                     <el-form-item prop="hasSpec">
                         <el-checkbox v-model="dialogData.rowData!.hasSpec" :label="$t('toolbox.clam.cron')" />
                     </el-form-item>
-                    <el-form-item prop="spec" v-if="dialogData.rowData!.hasSpec && isProductPro">
+                    <el-form-item prop="spec" v-if="dialogData.rowData!.hasSpec">
                         <div class="grid sm:grid-cols-4 gap-4 grid-cols-1">
                             <el-select v-model="dialogData.rowData!.specObj.specType" @change="changeSpecType()">
                                 <el-option
@@ -131,16 +131,6 @@
                         <el-form-item prop="hasAlert">
                             <el-checkbox v-model="dialogData.rowData!.hasAlert" :label="$t('xpack.alert.isAlert')" />
                             <span class="input-help">{{ $t('xpack.alert.clamHelper') }}</span>
-                        </el-form-item>
-                        <el-form-item
-                            v-if="(dialogData.rowData!.hasAlert || dialogData.rowData!.hasSpec) && !isProductPro"
-                        >
-                            <span class="input-help logText">
-                                {{ $t('toolbox.clam.alertHelper') }}
-                                <el-link class="link" type="primary" @click="toUpload">
-                                    {{ $t('license.levelUpPro') }}
-                                </el-link>
-                            </span>
                         </el-form-item>
                         <el-form-item
                             :label="$t('xpack.alert.alertMethod')"
@@ -222,7 +212,6 @@
                 </el-button>
             </span>
         </template>
-        <LicenseImport ref="licenseRef" />
     </DrawerPro>
     <FileList ref="scanDirRef" @choose="loadDir" />
     <FileList ref="infectedDirRef" @choose="loadInfectedDir" />
@@ -234,17 +223,14 @@ import { Rules } from '@/global/form-rules';
 import FileList from '@/components/file-list/index.vue';
 import i18n from '@/lang';
 import { ElForm } from 'element-plus';
-import LicenseImport from '@/components/license-import/index.vue';
 import { MsgError, MsgSuccess } from '@/utils/message';
 import { Toolbox } from '@/api/interface/toolbox';
 import { createClam, updateClam } from '@/api/modules/toolbox';
-import { useGlobalStore } from '@/composables/useGlobalStore';
 import { Alert } from '@/api/interface/alert';
 import { ListAlertConfigs } from '@/api/modules/alert';
 import { specOptions, transObjToSpec, transSpecToObj, weekOptions } from '@/views/cronjob/cronjob/helper';
 import { splitTimeFromSecond, transferTimeToSecond } from '@/utils/validate';
 import { getAlertConfigDisplayName } from '@/views/setting/alert/setting/drawer/secret-field';
-const { isProductPro } = useGlobalStore();
 
 const alertConfigs = ref<Alert.AlertConfigInfo[]>([]);
 const loadAlertConfigs = async () => {
@@ -338,7 +324,6 @@ const getAlertConfigOptionLabel = (c: Alert.AlertConfigInfo): string => {
     }
 };
 
-const licenseRef = ref();
 const scanDirRef = ref();
 const infectedDirRef = ref();
 interface DialogProps {
@@ -518,10 +503,6 @@ const hasHour = (item: any) => {
     return item.specType !== 'perHour' && item.specType !== 'perNMinute' && item.specType !== 'perNSecond';
 };
 
-const toUpload = () => {
-    licenseRef.value.acceptParams();
-};
-
 const changeSpecType = () => {
     let item = dialogData.value.rowData!.specObj;
     switch (item.specType) {
@@ -562,6 +543,7 @@ const onSubmit = async (formEl: FormInstance | undefined) => {
             spec = transObjToSpec(item.specType, item.week, item.day, item.hour, item.minute, item.second);
             if (spec === '') {
                 MsgError(i18n.global.t('cronjob.cronSpecHelper'));
+                loading.value = false;
                 return;
             }
         }
@@ -645,14 +627,5 @@ defineExpose({
 
 :global(.alert-config-method-dropdown .el-select-dropdown__item.is-selected::after) {
     right: 16px;
-}
-
-.logText {
-    line-height: 22px;
-    font-size: 12px;
-    .link {
-        font-size: 12px !important;
-        margin-top: -3px;
-    }
 }
 </style>
