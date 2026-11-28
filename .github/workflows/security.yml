@@ -4,7 +4,7 @@ name: Security
 
 on:
   schedule:
-    # Once a day. Not run on push or after releases; use "Run workflow" for an extra scan.
+    # Once a day, only if there are new commits. Not run on push or after releases; use "Run workflow" for an extra scan.
     - cron: '17 3 * * *'
   workflow_dispatch:
 
@@ -16,9 +16,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  check:
+    name: Check for new commits
+    if: github.repository != '1Panel-dev/1Panel'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+    outputs:
+      scan: ${{ steps.diff.outputs.scan }}
+    steps:
+      - name: Compare with the last scheduled run
+        # Compares commits rather than dates, so a late cron run cannot miss any. A manual run always scans.
+        id: diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          scan=true
+          if [ "${GITHUB_EVENT_NAME}" = "schedule" ]; then
+            last="$(gh api "repos/${GITHUB_REPOSITORY}/actions/workflows/security.yml/runs?event=schedule&status=completed&per_page=1" --jq '.workflow_runs[0].head_sha // ""')"
+            if [ "${last}" = "${GITHUB_SHA}" ]; then
+              scan=false
+              echo "::notice::No new commits since the last scheduled run, scan skipped."
+            fi
+          fi
+          echo "scan=${scan}" >> "${GITHUB_OUTPUT}"
+
   scan:
     name: Scan
-    if: github.repository != '1Panel-dev/1Panel'
+    needs: check
+    if: needs.check.outputs.scan == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
