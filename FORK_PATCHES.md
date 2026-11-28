@@ -49,7 +49,7 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `agent/cmd/server/main.go`, `core/cmd/server/main.go` | `debug.SetMemoryLimit(512 MiB)` unless `GOMEMLIMIT` is set | re-add the block |
 | `core/router/common.go`, `agent/cron/cron.go`, `frontend/src/lang/github/index.ts`, `frontend/src/views/setting/panel/index.vue` | panel memory limit: `&MemoryLimitRouter{}`, `service.SyncPanelMemoryLimit()` + 1m job, `memoryLimit` messages merge, "Memory limit" row + dialog | re-add the lines |
 | `core/server/server.go` | MCP bridge + Docker prepare/sync only start when `mcp_settings.enabled` | re-add the `mcpEnabled` gates |
-| `core/init/hook/hook.go` | writes setting `PanelRunningVersion` (read by the agent `upgrade-rollback-clean` job) | re-add the block |
+| `core/init/hook/hook.go` | writes settings `PanelRunningVersion` (read by the agent `upgrade-rollback-clean` job and the new version alert) and `PanelForkRepo` (new version alert) | re-add the block |
 | `agent/init/migration/migrate.go` | `DisableGPUMonitor`, `AddForkCleanCronjobs` appended; `AddMemorySustainedAlertType` appended to `migrateAlertDB`; `MigrateVMDatabase` removed | keep ours **last**, keep the VM entry removed |
 | `agent/app/service/cronjob_helper.go` | `handleSystemClean` switches on `forkCleanMode(cronjob.Config)` | re-add the switch |
 | `agent/app/service/alert_helper.go`, `agent/utils/alert/alert.go` | `memorySustained` in `resourceTypes`, `resetAlertState`, `resourceTask`, `getModuleName`, `GetAlertDetailContent` | re-add the cases |
@@ -66,6 +66,7 @@ Base: upstream tag `v2.5.1` (806de63). Upstream merges come from stable tags onl
 | `core/constant/common.go` | `/github*` paths in `WebUrlMap` | re-add the entries |
 | `frontend/src/views/website/website/config/basic/index.vue` | `Git` tab (`name="17"`) when `website.gitMode === 'git'` | re-add the pane and import |
 | `frontend/src/api/interface/runtime.ts` | `gitMode`/`gitCloneURL` on `Runtime`, `gitAuthMode`/`gitTokenUser`/`gitToken` on `RuntimeCreate` | re-add the fields |
+| `agent/app/service/alert_helper.go`, `agent/utils/alert/alert.go`, `agent/i18n/lang/en.yaml` | the `panelUpdate` alert takes its version from `loadPanelUpdateVersion` (fork releases) and `PanelVersionAlert` shows `{{ .version }}` | re-add the call, the param and the placeholder |
 
 ## Removed upstream features
 
@@ -108,7 +109,7 @@ It also calls these package-private helpers from `upgrade.go`. A rename upstream
 - Frontend: `frontend/src/routers/modules/github.ts`, `frontend/src/views/github/`,
   `frontend/src/api/modules/github.ts`, `frontend/src/api/interface/github.ts`, `frontend/src/lang/github/`
 - Memory / cleanup / alert: `agent/init/migration/migrations/fork_memory.go`,
-  `agent/app/service/{device_clean_auto,alert_mem_sustained}.go` (+ tests),
+  `agent/app/service/{device_clean_auto,alert_mem_sustained,alert_panel_update}.go` (+ tests),
   `core/init/migration/migrations/fork_menu_strip.go` (+ test),
   `frontend/src/views/app-store/installed/upgrade/feishu-transition.vue`
 - Panel memory limit (Settings > Panel): `core/app/{dto,service,api/v2}/memory_limit.go`,

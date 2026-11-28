@@ -490,7 +490,7 @@ func GetAlertDetailContent(detail dto.AlertDetail, agentInfo *dto.AgentInfo) str
 	case "licenseTime":
 		return i18n.GetMsgWithMap("LicenseExpirationAlert", map[string]interface{}{"day": getValueByIndex(params, "1"), "node": getNodeName(agentInfo), "ip": getNodeIp(agentInfo)})
 	case "panelUpdate":
-		return i18n.GetMsgWithMap("PanelVersionAlert", map[string]interface{}{"node": getNodeName(agentInfo), "ip": getNodeIp(agentInfo)})
+		return i18n.GetMsgWithMap("PanelVersionAlert", map[string]interface{}{"version": getValueByIndex(params, "1"), "node": getNodeName(agentInfo), "ip": getNodeIp(agentInfo)}) // fork: version
 	case "cpu":
 		return i18n.GetMsgWithMap("ResourceAlert", map[string]interface{}{"time": getValueByIndex(params, "1"), "name": getValueByIndex(params, "2"), "used": getValueByIndex(params, "3"), "node": getNodeName(agentInfo), "ip": getNodeIp(agentInfo)})
 	case "memory":

@@ -654,7 +654,7 @@ SSLAlert: "Panel {{ .node }}{{ .ip }}: {{ .num }} SSL certificates expire in {{ 
 DiskUsedAlert: "Panel {{ .node }}{{ .ip }}: disk {{ .name }} usage reached {{ .used }}. Log in to view details."
 ResourceAlert: "Panel {{ .node }}{{ .ip }}: average {{ .name }} usage in {{ .time }} minutes is {{ .used }}. Log in to view details."
 MemorySustainedAlert: "Panel {{ .node }}{{ .ip }}: {{ .name }} usage has stayed above the threshold for {{ .time }} minutes (now {{ .used }}). Log in to view details."
-PanelVersionAlert: "Panel {{ .node }}{{ .ip }}: a new panel version is available. Log in to view details."
+PanelVersionAlert: "Panel {{ .node }}{{ .ip }}: new panel version {{ .version }} is available. Log in to view details."
 PanelPwdExpirationAlert: "Panel {{ .node }}{{ .ip }}: panel password expires in {{ .day }} days. Log in to view details."
 CommonAlert: "Panel {{ .node }}{{ .ip }}: {{ .msg }}. Log in to view details."
 NodeExceptionAlert: "Panel {{ .node }}{{ .ip }}: {{ .num }} nodes are abnormal. Log in to view details."

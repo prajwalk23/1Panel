@@ -20,7 +20,6 @@ import (
 	alertUtil "github.com/1Panel-dev/1Panel/agent/utils/alert"
 	"github.com/1Panel-dev/1Panel/agent/utils/common"
 	"github.com/1Panel-dev/1Panel/agent/utils/psutil"
-	versionUtil "github.com/1Panel-dev/1Panel/agent/utils/version"
 	"github.com/1Panel-dev/1Panel/agent/utils/xpack"
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
@@ -353,19 +352,17 @@ func loadPanelPwd(alert dto.AlertDTO) {
 
 func loadPanelUpdate(alert dto.AlertDTO) {
 	// only master alert
-	info, err := versionUtil.GetUpgradeVersionInfo()
+	version, err := loadPanelUpdateVersion() // fork: fork releases on fork builds
 	if err != nil {
 		global.LOG.Errorf("error getting version info: %s", err)
 		return
 	}
-
-	version := getValidVersion(info)
 	if version == "" {
 		return
 	}
 
 	sender := NewAlertSender(alert, version)
-	sender.Send(version, []dto.Param{})
+	sender.Send(version, []dto.Param{{Index: "1", Key: "version", Value: version}}) // fork: version in message
 }
 
 // Load CPU usage data and send it to the channel
