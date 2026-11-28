@@ -3,36 +3,25 @@
 name: Security
 
 on:
-  push:
-    branches: [main]
   schedule:
-    # Daily, to catch advisories published while nothing is pushed.
+    # Once a day. Not run on push or after releases; use "Run workflow" for an extra scan.
     - cron: '17 3 * * *'
-  # Once after every release build.
-  workflow_run:
-    workflows: [Release]
-    types: [completed]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: security-${{ github.event.workflow_run.head_sha || github.ref }}-${{ github.event_name }}
+  group: security-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
   scan:
     name: Scan
-    if: >-
-      github.repository != '1Panel-dev/1Panel' &&
-      (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
+    if: github.repository != '1Panel-dev/1Panel'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          # After a release, scan the commit that was built.
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: actions/setup-go@v5
         with:
