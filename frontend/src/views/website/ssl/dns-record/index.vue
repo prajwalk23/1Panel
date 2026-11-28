@@ -25,6 +25,11 @@
                     {{ $t('website.dnsRecordCreate') }}
                 </el-button>
             </template>
+            <template #rightToolBar>
+                <el-button v-permission type="primary" plain @click="openDnsAccount">
+                    {{ $t('website.dnsAccountManage') }}
+                </el-button>
+            </template>
             <template #main>
                 <el-alert
                     v-if="loaded && accounts.length === 0"
@@ -89,6 +94,7 @@ import { Website } from '@/api/interface/website';
 import { deleteDnsRecord, searchDnsAccount, searchDnsRecords, searchDnsZones } from '@/api/modules/website';
 import { computed, onMounted, reactive, ref } from 'vue';
 import i18n from '@/lang';
+import { routerToNameWithQuery } from '@/utils/router';
 
 // Providers that support DNS record management (keep in sync with agent/utils/dns).
 const SUPPORTED_TYPES = ['CloudFlare', 'AliYun', 'AWSRoute53', 'TencentCloud'];
@@ -180,6 +186,10 @@ const loadRecords = async () => {
     } finally {
         loading.value = false;
     }
+};
+
+const openDnsAccount = () => {
+    routerToNameWithQuery('SSL-DNS', { uncached: 'true' });
 };
 
 const openCreate = () => {
